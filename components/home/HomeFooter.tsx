@@ -27,7 +27,7 @@ export function HomeFooter({
   const handleEmailCopy = async () => {
     await navigator.clipboard.writeText("sanya.malhotra031@gmail.com");
     setHasCopiedEmail(true);
-    window.setTimeout(() => setHasCopiedEmail(false), 1800);
+    window.setTimeout(() => setHasCopiedEmail(false), 900);
   };
 
   return (
