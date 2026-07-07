@@ -20,13 +20,13 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: "case-study-template",
-    title: "Case study template for the next product story",
-    subtitle: "Upcoming Case Study",
+    title: "Redesigning how contributors discover, claim, and complete reviews",
+    subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
-    role: "Upcoming Project",
-    year: "2026",
-    tags: ["TEMPLATE"],
+    role: "Bitcoin Transcript Review",
+    year: "Jun 2026",
+    tags: ["HANDED-OFF"],
     href: "/work/case-study-template",
     media: {
       type: "image",

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600;1,700&display=swap");
 @import "tailwindcss";
 
 @font-face {
@@ -815,44 +815,13 @@ video {
 }
 
 .case-study-card {
+  --case-frame-gap: 4px;
+  --case-media-inset: 0.8rem;
+  --case-plus-size: 16px;
+  --case-frame-offset: calc((var(--case-plus-size) / 2) + var(--case-frame-gap));
   position: relative;
   max-width: min(64.4vw, 60.8rem);
   margin: 0 auto;
-}
-
-.case-study-card::before,
-.case-study-card::after,
-.case-study-card__link::before,
-.case-study-card__link::after {
-  position: absolute;
-  z-index: 2;
-  width: 0.55rem;
-  height: 0.55rem;
-  color: var(--ink);
-  content: "+";
-  font-family: var(--mono);
-  font-size: 0.9rem;
-  line-height: 0.55rem;
-}
-
-.case-study-card::before {
-  top: -1.2rem;
-  left: -1.05rem;
-}
-
-.case-study-card::after {
-  top: -1.2rem;
-  right: -1.05rem;
-}
-
-.case-study-card__link::before {
-  bottom: 5.85rem;
-  left: -1.05rem;
-}
-
-.case-study-card__link::after {
-  right: -1.05rem;
-  bottom: 5.85rem;
 }
 
 .case-study-card__link {
@@ -861,10 +830,76 @@ video {
   gap: 0.7rem;
 }
 
+.case-study-card__media-frame {
+  position: relative;
+  padding: var(--case-media-inset);
+}
+
+.case-study-card__frame-stroke,
+.case-study-card__frame-plus {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.case-study-card__frame-stroke[data-edge="top"],
+.case-study-card__frame-stroke[data-edge="bottom"] {
+  left: var(--case-frame-offset);
+  width: calc(100% - (var(--case-frame-offset) * 2));
+  height: 1px;
+}
+
+.case-study-card__frame-stroke[data-edge="top"] {
+  top: 0;
+}
+
+.case-study-card__frame-stroke[data-edge="bottom"] {
+  bottom: 0;
+}
+
+.case-study-card__frame-stroke[data-edge="right"],
+.case-study-card__frame-stroke[data-edge="left"] {
+  top: var(--case-frame-offset);
+  width: 2px;
+  height: calc(100% - (var(--case-frame-offset) * 2));
+}
+
+.case-study-card__frame-stroke[data-edge="right"] {
+  right: 0;
+}
+
+.case-study-card__frame-stroke[data-edge="left"] {
+  left: 0;
+}
+
+.case-study-card__frame-plus {
+  width: var(--case-plus-size);
+  height: var(--case-plus-size);
+}
+
+.case-study-card__frame-plus[data-corner="top-left"] {
+  top: calc(var(--case-plus-size) / -2);
+  left: calc(var(--case-plus-size) / -2);
+}
+
+.case-study-card__frame-plus[data-corner="top-right"] {
+  top: calc(var(--case-plus-size) / -2);
+  right: calc(var(--case-plus-size) / -2);
+}
+
+.case-study-card__frame-plus[data-corner="bottom-left"] {
+  bottom: calc(var(--case-plus-size) / -2);
+  left: calc(var(--case-plus-size) / -2);
+}
+
+.case-study-card__frame-plus[data-corner="bottom-right"] {
+  right: calc(var(--case-plus-size) / -2);
+  bottom: calc(var(--case-plus-size) / -2);
+}
+
 .case-study-card__media {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(22, 19, 15, 0.28);
   background-color: #f3f3f1;
   background-image:
     linear-gradient(45deg, #dededc 25%, transparent 25%),
@@ -898,6 +933,7 @@ video {
 .case-study-card__body {
   display: grid;
   gap: 0.34rem;
+  margin-top: 8px;
 }
 
 .case-study-card__primary-meta {
@@ -905,9 +941,9 @@ video {
   flex-wrap: wrap;
   gap: 0.7rem;
   align-items: center;
-  color: rgba(22, 19, 15, 0.62);
+  color: rgba(33, 33, 33, 0.7);
   font-family: var(--mono);
-  font-size: clamp(0.55rem, 0.7vw, 0.66rem);
+  font-size: 0.875rem;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -920,10 +956,10 @@ video {
 .case-study-card__title {
   max-width: 60.8rem;
   margin: 0;
-  color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1rem, 1.52vw, 1.42rem);
-  font-weight: 700;
+  color: #212121;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.375rem;
+  font-weight: 500;
   line-height: 1.34;
 }
 
