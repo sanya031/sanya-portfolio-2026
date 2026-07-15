@@ -45,9 +45,9 @@ export const caseStudies: CaseStudy[] = [
     tags: ["SHIPPED"],
     href: "/work/bitcoin-dev-project",
     media: {
-      type: "image",
-      src: undefined,
-      alt: "Preview image for the Bitcoin Dev Project case study",
+      type: "video",
+      src: "/assets/case-study-2/hero-media.mp4",
+      alt: "Preview of the Bitcoin Dev Project case study",
     },
   },
 ];
