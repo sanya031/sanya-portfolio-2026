@@ -173,11 +173,11 @@ export const caseStudyPages: CaseStudyPage[] = [
         intro:
           "Instead of expecting visitors to understand how the organization was structured, the homepage presented clear actions based on what they wanted to accomplish. The new homepage helps visitors:",
         items: [
-          "Understand BDP's mission",
-          "See who the community supports",
-          "Choose a pathway based on their goal",
-          "Discover featured resources and opportunities",
-          "Build familiarity with the new identity",
+          "1. Understand BDP's mission",
+          "2. See who the community supports",
+          "3. Choose a pathway based on their goal",
+          "4. Discover featured resources and opportunities",
+          "5. Build familiarity with the new identity",
         ],
       },
       {
