@@ -117,11 +117,11 @@ export const caseStudyPages: CaseStudyPage[] = [
         intro:
           "This was not simply a visual refresh. The redesign needed to make the organization clearer today while creating a flexible foundation for future resources and initiatives.",
         items: [
-          "Explain BDP quickly",
-          "Organise resources around user goals",
-          "Make resources easier to browse",
-          "Create a recognisable identity",
-          "Support future growth",
+          "1. Explain BDP quickly",
+          "2. Organise resources around user goals",
+          "3. Make resources easier to browse",
+          "4. Create a recognisable identity",
+          "5. Support future growth",
         ],
         columns: true,
       },
