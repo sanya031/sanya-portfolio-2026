@@ -169,7 +169,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "ordered",
-        title: "Redesigning the homepage around three questions",
+        title: "Organizing the homepage around what visitors came to do",
         intro:
           "Instead of expecting visitors to understand how the organization was structured, the homepage presented clear actions based on what they wanted to accomplish. The new homepage helps visitors:",
         items: [
@@ -310,11 +310,11 @@ export const caseStudyPages: CaseStudyPage[] = [
         intro:
           "If I continued developing the website, I would conduct more structured usability testing with developers at different experience levels.",
         items: [
-          "Whether first-time visitors understand BDP's purpose",
-          "How quickly developers can find a relevant resource",
-          "Whether the difficulty labels match user expectations",
-          "Which filters are most useful as the resource library grows",
-          "How often visitors move between Learn, Contribute, and Get Funded",
+          "1. Whether first-time visitors understand BDP's purpose",
+          "2. How quickly developers can find a relevant resource",
+          "3. Whether the difficulty labels match user expectations",
+          "4. Which filters are most useful as the resource library grows",
+          "5. How often visitors move between Learn, Contribute, and Get Funded",
         ],
       },
     ],
