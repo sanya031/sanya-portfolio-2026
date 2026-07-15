@@ -53,6 +53,7 @@ export function FloatingNavbar({
       className="floating-navbar"
       data-animation="slide-in-during-statement"
       data-auto-expanded={!isHiddenOnFirstFold && !isOverFooter}
+      data-over-footer={isOverFooter}
       data-hidden-on-first-fold={isHiddenOnFirstFold}
       data-variant={visualVariant}
       aria-label="Primary navigation"

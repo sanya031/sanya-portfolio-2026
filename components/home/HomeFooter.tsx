@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { HangingStamp, type HangingStampProps } from "../physics/HangingStamp";
 
 export type FooterLink = {
   label: string;
@@ -9,12 +8,11 @@ export type FooterLink = {
 };
 
 export type HomeFooterProps = {
-  stamp: HangingStampProps;
+  stamp?: unknown;
   links?: FooterLink[];
 };
 
 export function HomeFooter({
-  stamp,
   links = [
     { label: "Linkedin", href: "https://www.linkedin.com/in/sanya031malhotra/" },
     { label: "X", href: "https://x.com/sanyamalhotraa?s=11" },
@@ -29,15 +27,11 @@ export function HomeFooter({
   const handleEmailCopy = async () => {
     await navigator.clipboard.writeText("sanya.malhotra031@gmail.com");
     setHasCopiedEmail(true);
-    window.setTimeout(() => setHasCopiedEmail(false), 1800);
+    window.setTimeout(() => setHasCopiedEmail(false), 900);
   };
 
   return (
     <footer id="contact" className="home-footer" data-nav-theme="dark">
-      <div className="home-footer__stamp">
-        <HangingStamp {...stamp} />
-      </div>
-
       <div className="home-footer__content">
         <h2 className="home-footer__title">Get in touch</h2>
 
@@ -50,6 +44,25 @@ export function HomeFooter({
               onClick={handleEmailCopy}
               type="button"
             >
+              <span
+                className="home-footer__copy-feedback"
+                data-visible={hasCopiedEmail}
+                aria-live="polite"
+              >
+                <img
+                  className="home-footer__copy-icon"
+                  src="/assets/tap-L.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Copied to clipboard</span>
+                <img
+                  className="home-footer__copy-icon"
+                  src="/assets/tap-R.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>
               Email
             </button>
             {links.map((link) => (
@@ -65,9 +78,6 @@ export function HomeFooter({
             ))}
           </nav>
         </div>
-        <p className="home-footer__copy-feedback" aria-live="polite">
-          {hasCopiedEmail ? "Copied to clipboard" : ""}
-        </p>
       </div>
 
       <div className="home-footer__motifs" aria-hidden="true">
