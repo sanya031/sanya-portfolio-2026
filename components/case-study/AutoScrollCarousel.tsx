@@ -13,6 +13,7 @@ export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
   const isPointerDownRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragScrollLeftRef = useRef(0);
+  const autoScrollLeftRef = useRef(0);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -23,10 +24,16 @@ export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
 
       if (scroller && !isPointerDownRef.current) {
         const delta = time - lastTime;
-        scroller.scrollLeft += delta * 0.018;
+        const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
 
-        if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 1) {
-          scroller.scrollLeft = 0;
+        if (maxScrollLeft > 0) {
+          autoScrollLeftRef.current += delta * 0.08;
+
+          if (autoScrollLeftRef.current >= maxScrollLeft - 1) {
+            autoScrollLeftRef.current = 0;
+          }
+
+          scroller.scrollLeft = autoScrollLeftRef.current;
         }
       }
 
@@ -53,6 +60,7 @@ export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
           isPointerDownRef.current = true;
           dragStartXRef.current = event.clientX;
           dragScrollLeftRef.current = scroller.scrollLeft;
+          autoScrollLeftRef.current = scroller.scrollLeft;
           scroller.setPointerCapture(event.pointerId);
         }}
         onPointerMove={(event) => {
@@ -63,11 +71,20 @@ export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
           }
 
           scroller.scrollLeft = dragScrollLeftRef.current - (event.clientX - dragStartXRef.current);
+          autoScrollLeftRef.current = scroller.scrollLeft;
         }}
         onPointerLeave={() => {
+          if (scrollerRef.current) {
+            autoScrollLeftRef.current = scrollerRef.current.scrollLeft;
+          }
+
           isPointerDownRef.current = false;
         }}
         onPointerUp={() => {
+          if (scrollerRef.current) {
+            autoScrollLeftRef.current = scrollerRef.current.scrollLeft;
+          }
+
           isPointerDownRef.current = false;
         }}
         ref={scrollerRef}

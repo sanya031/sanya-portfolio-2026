@@ -15,6 +15,9 @@ export function CaseStudyMedia({ asset, className = "" }: CaseStudyMediaProps) {
       data-scrollable={asset.scrollable}
     >
       <div className="case-study-page__media-surface">
+        {asset.overlayLabel ? (
+          <span className="case-study-page__media-overlay-label">{asset.overlayLabel}</span>
+        ) : null}
         {asset.type === "video" ? (
           <video
             autoPlay

@@ -3,7 +3,8 @@ export type CaseStudyAsset = {
   src: string;
   alt: string;
   caption?: string;
-  frame?: "hero" | "walkthrough" | "resources" | "old-website";
+  overlayLabel?: string;
+  frame?: "hero" | "problem" | "walkthrough" | "resources" | "old-website";
   scrollable?: boolean;
 };
 
@@ -30,6 +31,8 @@ export type CaseStudyPage = {
     | ({ variant: "split" } & CaseStudyTextBlock & { cards: CaseStudyTextBlock[] })
     | ({ variant: "media" } & CaseStudyAsset)
     | ({ variant: "media-grid"; items: CaseStudyAsset[] })
+    | { variant: "logo-grid" }
+    | { variant: "visual-system-grid" }
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; author: string; role: string })
     | ({
@@ -106,9 +109,10 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "image",
-        src: `${basePath}/scroll website img.png`,
+        src: `${basePath}/problem-img.jpg`,
         alt: "Scrollable view of the previous Bitcoin Dev Project website",
-        scrollable: true,
+        overlayLabel: "OLD HOMEPAGE AND LOGO",
+        frame: "problem",
       },
       {
         variant: "ordered",
@@ -149,10 +153,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/design-decidion-1.jpg`,
-        alt: "Logomark and identity explorations for Bitcoin Dev Project",
+        variant: "logo-grid",
       },
       {
         variant: "text",
@@ -162,10 +163,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/design-decision-2.jpg`,
-        alt: "Brand colors, typography, stickers, and illustration system",
+        variant: "visual-system-grid",
       },
       {
         variant: "ordered",
@@ -179,12 +177,14 @@ export const caseStudyPages: CaseStudyPage[] = [
           "4. Discover featured resources and opportunities",
           "5. Build familiarity with the new identity",
         ],
+        columns: true,
       },
       {
         variant: "media",
         type: "video",
         src: `${basePath}/homepage_walkthrough.mov`,
         alt: "Homepage walkthrough for the redesigned Bitcoin Dev Project site",
+        overlayLabel: "NEW HOMEPAGE WALKTHROUGH",
         frame: "walkthrough",
       },
       {
@@ -223,6 +223,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         type: "video",
         src: `${basePath}/exploring-resources.mov`,
         alt: "Exploring resources interaction on the redesigned site",
+        overlayLabel: "EXPLORING RESOURCES",
         frame: "resources",
       },
       {
