@@ -11,6 +11,7 @@ export type CaseStudyAsset = {
 export type CaseStudyTextBlock = {
   eyebrow?: string;
   title: string;
+  titleSize?: "small" | "medium";
   body: string[];
   emphasis?: string;
 };
@@ -33,12 +34,16 @@ export type CaseStudyPage = {
     | ({ variant: "media-grid"; items: CaseStudyAsset[] })
     | { variant: "logo-grid" }
     | { variant: "visual-system-grid" }
+    | { variant: "two-column-row" }
+    | { variant: "portal-comparison-row" }
+    | { variant: "resource-card-stack" }
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
-    | ({ variant: "quote"; quote: string; author: string; role: string })
+    | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
     | ({
         variant: "ordered";
         eyebrow?: string;
         title: string;
+        titleSize?: "small" | "medium";
         intro: string;
         items: string[];
         columns?: boolean;
@@ -246,33 +251,34 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "text",
         title: "Iteration 1: Grouping resources strictly by difficulty",
+        titleSize: "small",
         body: [
           "The first direction divided resources into beginner, intermediate, and advanced sections.",
-          "This created a clear hierarchy, but the number of beginner resources made the page unbalanced. The long beginner section pushed intermediate and advanced content much further down the page.",
-          "As the resource library grew, this structure would make certain categories increasingly difficult to reach.",
+          "This created a clear hierarchy, but the number of beginner resources made the page unbalanced. The long beginner section pushed intermediate and advanced content much further down the page. As the resource library grew, this structure would make certain categories increasingly difficult to reach.",
         ],
       },
       {
         variant: "text",
         title: "Iteration 2: Collapsing sections behind \"View more\"",
+        titleSize: "small",
         body: [
           "The second direction shortened the page by initially hiding some resources behind \"View more\" controls.",
-          "Although this reduced scrolling, it also reduced visibility. Visitors had to repeatedly open sections to understand what was available, adding effort to a task that should support quick exploration.",
-          "Important resources could remain hidden simply because a visitor did not expand the correct section.",
+          "Although this reduced scrolling, it also reduced visibility. Visitors had to repeatedly open sections to understand what was available, adding effort to a task that should support quick exploration. Important resources could remain hidden simply because a visitor did not expand the correct section.",
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/iterations.png`,
-        alt: "Resource discovery layout iterations",
+        variant: "two-column-row",
       },
       {
-        variant: "ordered",
+        variant: "text",
         title: "Final iteration: A mixed layout with visible difficulty",
-        intro:
+        titleSize: "small",
+        body: [
           "The selected direction surfaced resources together while showing difficulty directly on each card. This allowed visitors to scan the full collection without moving through several separate sections. Filters provided additional control without hiding resources by default.",
-        items: ["Intent", "Format", "Difficulty"],
+        ],
+      },
+      {
+        variant: "resource-card-stack",
       },
       {
         variant: "text",
@@ -284,15 +290,23 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
+        variant: "text",
+        title: "Team Perspective",
+        titleSize: "medium",
+        body: [],
+      },
+      {
         variant: "quote",
         quote:
-          "Her illustration and visual design work is particularly strong. She redesigned our website with original hand-drawn illustrations that gave the brand a warm, playful feel, exactly the tone we were going for. She also has a good eye for user flows and thinks carefully about the full experience. She is no stranger to going past the visuals and digging into the why behind design decisions.",
+          "Her illustration and visual design work is particularly strong. She redesigned our website with original hand-drawn illustrations that gave the brand a warm, playful feel, exactly the tone we were going for. She also has a good eye for user flows and thinks carefully about the full experience. She is no stranger to going past the visuals and digging into the \"why\" behind design decisions.",
+        highlight:
+          "She is no stranger to going past the visuals and digging into the \"why\" behind design decisions.",
         author: "Stacie Waleyko",
         role: "Team Lead, Bitcoin Dev Project",
       },
       {
         variant: "text",
-        title: "Using AI as a starting point, not a final output",
+        title: "Using AI as an accelerator",
         body: [
           "AI-assisted image generation helped speed up early illustration exploration.",
           "However, the generated images were not consistent enough to function as final brand assets. I manually redrew and refined the selected directions to match the visual system and maintain consistency across different applications.",
@@ -300,10 +314,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/ai-img.jpg`,
-        alt: "AI generated image and digitally drawn illustration comparison",
+        variant: "portal-comparison-row",
       },
       {
         variant: "ordered",

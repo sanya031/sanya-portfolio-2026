@@ -4,6 +4,7 @@ import { HomeFooter } from "../home/HomeFooter";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 import { PlaybackVideo } from "./PlaybackVideo";
+import { ResourceCardStack } from "./ResourceCardStack";
 
 export type CaseStudyPageProps = {
   page: CaseStudyPageData;
@@ -12,11 +13,13 @@ export type CaseStudyPageProps = {
 function TextSection({
   eyebrow,
   title,
+  titleSize,
   body,
   emphasis,
 }: {
   eyebrow?: string;
   title: string;
+  titleSize?: "small" | "medium";
   body: string[];
   emphasis?: string;
 }) {
@@ -24,13 +27,17 @@ function TextSection({
     <section className="case-study-page__section">
       {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
       <div className="case-study-page__text-stack">
-        <h2 className="case-study-page__section-title">{title}</h2>
-        <div className="case-study-page__body-copy">
-          {body.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-          {emphasis ? <p className="case-study-page__emphasis">{emphasis}</p> : null}
-        </div>
+        <h2 className="case-study-page__section-title" data-title-size={titleSize}>
+          {title}
+        </h2>
+        {body.length > 0 || emphasis ? (
+          <div className="case-study-page__body-copy">
+            {body.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {emphasis ? <p className="case-study-page__emphasis">{emphasis}</p> : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -39,12 +46,14 @@ function TextSection({
 function OrderedSection({
   eyebrow,
   title,
+  titleSize,
   intro,
   items,
   columns,
 }: {
   eyebrow?: string;
   title: string;
+  titleSize?: "small" | "medium";
   intro: string;
   items: string[];
   columns?: boolean;
@@ -53,7 +62,9 @@ function OrderedSection({
     <section className="case-study-page__section" data-columns={columns}>
       {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
       <div className="case-study-page__text-stack">
-        <h2 className="case-study-page__section-title">{title}</h2>
+        <h2 className="case-study-page__section-title" data-title-size={titleSize}>
+          {title}
+        </h2>
         <p className="case-study-page__body-copy">{intro}</p>
         <ol className="case-study-page__ordered-list">
           {items.map((item) => (
@@ -101,13 +112,39 @@ function SplitSection({
   );
 }
 
-function QuoteSection({ quote, author, role }: { quote: string; author: string; role: string }) {
+function QuoteSection({
+  quote,
+  highlight,
+  author,
+  role,
+}: {
+  quote: string;
+  highlight?: string;
+  author: string;
+  role: string;
+}) {
+  const highlightIndex = highlight ? quote.indexOf(highlight) : -1;
+  const hasHighlight = highlight && highlightIndex >= 0;
+
   return (
     <section className="case-study-page__quote">
-      <span className="case-study-page__quote-mark" aria-hidden="true">
-        "
-      </span>
-      <blockquote>{quote}</blockquote>
+      <img
+        className="case-study-page__quote-mark"
+        src="/assets/case-study-2/pixel-quote.svg"
+        alt=""
+        aria-hidden="true"
+      />
+      <blockquote>
+        {hasHighlight ? (
+          <>
+            {quote.slice(0, highlightIndex)}
+            <span className="case-study-page__quote-highlight">{highlight}</span>
+            {quote.slice(highlightIndex + highlight.length)}
+          </>
+        ) : (
+          quote
+        )}
+      </blockquote>
       <p>
         <strong>{author}</strong>
         <span>{role}</span>
@@ -238,6 +275,81 @@ function VisualSystemGridSection() {
   );
 }
 
+function TwoColumnRowSection() {
+  return (
+    <section className="case-study-page__two-column-row" aria-label="Two column iteration layout">
+      <div className="case-study-page__two-column-cell">
+        <span>
+          ITERATION 1: STRICTLY GROUPED
+          <br />
+          BY DIFFICULTY
+        </span>
+        <img
+          alt="Iteration 1 resource discovery layout grouped by difficulty"
+          src="/assets/case-study-2/iteration 1.png"
+        />
+      </div>
+      <div className="case-study-page__two-column-cell">
+        <span>
+          ITERATION 2: COLLAPSED SECTIONS
+          <br />
+          ("VIEW MORE")
+        </span>
+        <img
+          alt="Iteration 2 resource discovery layout with collapsed sections"
+          src="/assets/case-study-2/iteration 2.png"
+        />
+      </div>
+    </section>
+  );
+}
+
+function PortalComparisonRowSection() {
+  return (
+    <section className="case-study-page__portal-row" aria-label="AI exploration and final portal animation">
+      <div className="case-study-page__portal-cell" data-cell="exploration">
+        <span>AI GENERATED IMG</span>
+        <img
+          alt="Portal illustration before animation refinement"
+          className="case-study-page__portal-image"
+          src="/assets/case-study-2/portal-before.png"
+        />
+      </div>
+      <div className="case-study-page__portal-cell" data-cell="final">
+        <span>DIGITALLY DRAWN OVER IMG</span>
+        <PlaybackVideo
+          ariaLabel="Portal animation after illustration refinement"
+          className="case-study-page__portal-video"
+          src="/assets/case-study-2/portal-after.mp4"
+        />
+      </div>
+    </section>
+  );
+}
+
+const resourceCards = [
+  {
+    alt: "Saving Satoshi resource card",
+    src: "/assets/case-study-2/Card - 1.png",
+  },
+  {
+    alt: "Cryptography camp workbook resource card",
+    src: "/assets/case-study-2/Card - 2.png",
+  },
+  {
+    alt: "Bitcoin Transcripts resource card",
+    src: "/assets/case-study-2/Card - 3.png",
+  },
+  {
+    alt: "Boss Projects resource card",
+    src: "/assets/case-study-2/Card - 4.png",
+  },
+  {
+    alt: "Good first issues resource card",
+    src: "/assets/case-study-2/Card - 5.png",
+  },
+];
+
 export function CaseStudyPage({ page }: CaseStudyPageProps) {
   return (
     <main className="case-study-page">
@@ -310,6 +422,18 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               return <VisualSystemGridSection key={`${section.variant}-${index}`} />;
             }
 
+            if (section.variant === "two-column-row") {
+              return <TwoColumnRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "portal-comparison-row") {
+              return <PortalComparisonRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "resource-card-stack") {
+              return <ResourceCardStack cards={resourceCards} key={`${section.variant}-${index}`} />;
+            }
+
             if (section.variant === "carousel") {
               return <AutoScrollCarousel items={section.items} key={`${section.variant}-${index}`} />;
             }
@@ -319,6 +443,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         </div>
       </div>
 
+      <div className="case-study-page__footer-tear" aria-hidden="true" />
       <HomeFooter />
     </main>
   );
