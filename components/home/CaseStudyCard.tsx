@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { CaseStudy } from "../../data/caseStudies";
+import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
 
 export type CaseStudyCardProps = {
   caseStudy: CaseStudy;
@@ -7,10 +9,16 @@ export type CaseStudyCardProps = {
 export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
   const frameCorners = ["top-left", "top-right", "bottom-left", "bottom-right"];
   const frameEdges = ["top", "right", "bottom", "left"];
+  const mediaLayoutId = caseStudy.media.src ? `case-study-media-${caseStudy.id}` : undefined;
 
   return (
     <article className="case-study-card" data-cursor="case-study">
-      <a className="case-study-card__link" href={caseStudy.href}>
+      <Link
+        aria-label={`View ${caseStudy.title} case study`}
+        className="case-study-card__link"
+        href={caseStudy.href}
+        scroll={false}
+      >
         <div className="case-study-card__media-frame">
           {frameEdges.map((edge) => (
             <img
@@ -37,10 +45,12 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
             />
           ))}
 
-          <div className="case-study-card__media">
+          <SharedMediaSurface className="case-study-card__media" layoutId={mediaLayoutId}>
             {caseStudy.media.type === "video" && caseStudy.media.src ? (
               <video
+                autoPlay
                 className="case-study-card__video"
+                loop
                 muted
                 playsInline
                 poster={caseStudy.media.poster}
@@ -60,7 +70,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
                 aria-label={caseStudy.media.alt}
               />
             )}
-          </div>
+          </SharedMediaSurface>
         </div>
 
         <div className="case-study-card__body">
@@ -76,7 +86,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
             <h3 className="case-study-card__title">{caseStudy.title}</h3>
           </div>
         </div>
-      </a>
+      </Link>
     </article>
   );
 }

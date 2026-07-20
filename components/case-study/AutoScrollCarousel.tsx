@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import AutoScroll from "embla-carousel-auto-scroll";
+import useEmblaCarousel from "embla-carousel-react";
+import { useEffect, useMemo, useState } from "react";
 import type { CaseStudyAsset } from "../../data/caseStudyPages";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 
@@ -8,73 +10,68 @@ export type AutoScrollCarouselProps = {
   items: CaseStudyAsset[];
 };
 
-export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const isPointerDownRef = useRef(false);
-  const dragStartXRef = useRef(0);
-  const dragScrollLeftRef = useRef(0);
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    let animationFrame = 0;
-    let lastTime = performance.now();
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
 
-    const tick = (time: number) => {
-      const scroller = scrollerRef.current;
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
 
-      if (scroller && !isPointerDownRef.current) {
-        const delta = time - lastTime;
-        scroller.scrollLeft += delta * 0.018;
-
-        if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 1) {
-          scroller.scrollLeft = 0;
-        }
-      }
-
-      lastTime = time;
-      animationFrame = requestAnimationFrame(tick);
-    };
-
-    animationFrame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(animationFrame);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
+  return prefersReducedMotion;
+}
+
+export function AutoScrollCarousel({ items }: AutoScrollCarouselProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [isHovering, setIsHovering] = useState(false);
+  const autoScrollPlugins = useMemo(
+    () =>
+      prefersReducedMotion
+        ? []
+        : [
+            AutoScroll({
+              playOnInit: true,
+              speed: isHovering ? 0.35 : 0.85,
+              startDelay: 650,
+              stopOnFocusIn: false,
+              stopOnInteraction: false,
+              stopOnMouseEnter: false,
+            }),
+          ],
+    [isHovering, prefersReducedMotion],
+  );
+  const [emblaRef] = useEmblaCarousel(
+    {
+      align: "start",
+      dragFree: true,
+      loop: true,
+      skipSnaps: true,
+    },
+    autoScrollPlugins,
+  );
+
   return (
-    <section className="case-study-page__carousel-wrap">
+    <section
+      className="case-study-page__carousel-wrap"
+      onPointerEnter={() => setIsHovering(true)}
+      onPointerLeave={() => setIsHovering(false)}
+    >
       <div
         className="case-study-page__carousel"
-        onPointerDown={(event) => {
-          const scroller = scrollerRef.current;
-
-          if (!scroller) {
-            return;
-          }
-
-          isPointerDownRef.current = true;
-          dragStartXRef.current = event.clientX;
-          dragScrollLeftRef.current = scroller.scrollLeft;
-          scroller.setPointerCapture(event.pointerId);
-        }}
-        onPointerMove={(event) => {
-          const scroller = scrollerRef.current;
-
-          if (!scroller || !isPointerDownRef.current) {
-            return;
-          }
-
-          scroller.scrollLeft = dragScrollLeftRef.current - (event.clientX - dragStartXRef.current);
-        }}
-        onPointerLeave={() => {
-          isPointerDownRef.current = false;
-        }}
-        onPointerUp={() => {
-          isPointerDownRef.current = false;
-        }}
-        ref={scrollerRef}
+        ref={emblaRef}
       >
-        {items.map((item) => (
-          <CaseStudyMedia asset={item} key={item.src} />
-        ))}
+        <div className="case-study-page__carousel-track">
+          {items.map((item) => (
+            <div className="case-study-page__carousel-slide" key={item.src}>
+              <CaseStudyMedia asset={item} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
