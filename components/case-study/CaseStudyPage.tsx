@@ -5,6 +5,8 @@ import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
+import { HeroContentReveal } from "../transitions/HeroContentReveal";
+import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
 export type CaseStudyPageProps = {
   page: CaseStudyPageData;
@@ -351,20 +353,29 @@ const resourceCards = [
 ];
 
 export function CaseStudyPage({ page }: CaseStudyPageProps) {
+  const heroLayoutId = `case-study-media-${page.slug}`;
+
   return (
     <main className="case-study-page">
+      <ScrollToTopOnMount />
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
-          <Link className="case-study-page__back-link" href="/#work">
-            Back to work
-          </Link>
-          <div className="case-study-page__meta" aria-label="Case study metadata">
-            {page.meta.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
-          <h1>{page.title}</h1>
-          <CaseStudyMedia asset={page.hero} className="case-study-page__hero-media" />
+          <HeroContentReveal>
+            <Link className="case-study-page__back-link" href="/#work" scroll={false}>
+              Back to work
+            </Link>
+            <div className="case-study-page__meta" aria-label="Case study metadata">
+              {page.meta.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+            <h1>{page.title}</h1>
+          </HeroContentReveal>
+          <CaseStudyMedia
+            asset={page.hero}
+            className="case-study-page__hero-media"
+            layoutId={heroLayoutId}
+          />
         </header>
 
         <dl className="case-study-page__facts">

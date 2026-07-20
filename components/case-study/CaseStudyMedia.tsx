@@ -1,11 +1,13 @@
 import type { CaseStudyAsset } from "../../data/caseStudyPages";
+import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
 
 export type CaseStudyMediaProps = {
   asset: CaseStudyAsset;
   className?: string;
+  layoutId?: string;
 };
 
-export function CaseStudyMedia({ asset, className = "" }: CaseStudyMediaProps) {
+export function CaseStudyMedia({ asset, className = "", layoutId }: CaseStudyMediaProps) {
   const mediaClassName = ["case-study-page__media", className].filter(Boolean).join(" ");
 
   return (
@@ -14,7 +16,7 @@ export function CaseStudyMedia({ asset, className = "" }: CaseStudyMediaProps) {
       data-frame={asset.frame}
       data-scrollable={asset.scrollable}
     >
-      <div className="case-study-page__media-surface">
+      <SharedMediaSurface className="case-study-page__media-surface" layoutId={layoutId}>
         {asset.overlayLabel ? (
           <span className="case-study-page__media-overlay-label">{asset.overlayLabel}</span>
         ) : null}
@@ -31,7 +33,7 @@ export function CaseStudyMedia({ asset, className = "" }: CaseStudyMediaProps) {
         ) : (
           <img className="case-study-page__media-asset" src={asset.src} alt={asset.alt} />
         )}
-      </div>
+      </SharedMediaSurface>
       {asset.caption ? (
         <figcaption className="case-study-page__caption">{asset.caption}</figcaption>
       ) : null}

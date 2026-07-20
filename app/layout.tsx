@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TransitionProvider } from "../components/transitions/TransitionProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <TransitionProvider>{children}</TransitionProvider>
+      </body>
     </html>
   );
 }
