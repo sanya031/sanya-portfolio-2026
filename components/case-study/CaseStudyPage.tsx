@@ -1,5 +1,9 @@
 import Link from "next/link";
-import type { CaseStudyPage as CaseStudyPageData } from "../../data/caseStudyPages";
+import type {
+  CaseStudyAsset,
+  CaseStudyFinding,
+  CaseStudyPage as CaseStudyPageData,
+} from "../../data/caseStudyPages";
 import { HomeFooter } from "../home/HomeFooter";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { CaseStudyMedia } from "./CaseStudyMedia";
@@ -329,6 +333,78 @@ function PortalComparisonRowSection() {
   );
 }
 
+function AuditArtifactsSection({ items }: { items: CaseStudyAsset[] }) {
+  return (
+    <section className="case-study-page__audit-artifacts" aria-label="Audit artifacts">
+      {items.map((item, index) => (
+        <article className="case-study-page__audit-artifact" key={`${item.src}-${index}`}>
+          {item.overlayLabel ? <span>{item.overlayLabel}</span> : null}
+          <img src={item.src} alt={item.alt} />
+          {index === 1 ? (
+            <div className="case-study-page__audit-legend" aria-label="Design evolution stages">
+              <span>
+                <i data-color="understand" />
+                UNDERSTAND
+              </span>
+              <span>
+                <i data-color="explore" />
+                EXPLORE
+              </span>
+              <span>
+                <i data-color="refine" />
+                REFINE
+              </span>
+            </div>
+          ) : null}
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
+  return (
+    <section className="case-study-page__audit-findings" aria-label="Audit findings">
+      {items.map((item) => (
+        <article className="case-study-page__audit-finding" key={item.title}>
+          <div className="case-study-page__audit-finding-media">
+            <img src={item.image.src} alt={item.image.alt} />
+          </div>
+          <div className="case-study-page__audit-finding-copy">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function WorkflowComparisonSection() {
+  return (
+    <section className="case-study-page__workflow-comparison" aria-label="Old and revised workflow">
+      <div className="case-study-page__workflow-row" data-row="old">
+        <span>OLD WORKFLOW</span>
+        <img
+          src="/assets/case-study-1/old_workflow.png"
+          alt="Old transcript review workflow from browsing to submission"
+        />
+        <p className="case-study-page__workflow-note">
+          <span aria-hidden="true">!</span>
+          Committing before context
+        </p>
+      </div>
+      <div className="case-study-page__workflow-row" data-row="revised">
+        <span>REVISED WORKFLOW</span>
+        <img
+          src="/assets/case-study-1/new_workfow.png"
+          alt="Revised transcript review workflow separating preview from claiming"
+        />
+      </div>
+    </section>
+  );
+}
+
 const resourceCards = [
   {
     alt: "Saving Satoshi resource card",
@@ -423,6 +499,18 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
                   ))}
                 </section>
               );
+            }
+
+            if (section.variant === "audit-artifacts") {
+              return <AuditArtifactsSection items={section.items} key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "audit-findings") {
+              return <AuditFindingsSection items={section.items} key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "workflow-comparison") {
+              return <WorkflowComparisonSection key={`${section.variant}-${index}`} />;
             }
 
             if (section.variant === "logo-grid") {

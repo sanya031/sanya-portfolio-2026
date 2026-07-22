@@ -16,6 +16,12 @@ export type CaseStudyTextBlock = {
   emphasis?: string;
 };
 
+export type CaseStudyFinding = {
+  image: CaseStudyAsset;
+  title: string;
+  body: string;
+};
+
 export type CaseStudyFact = {
   label: string;
   value: string[];
@@ -32,6 +38,9 @@ export type CaseStudyPage = {
     | ({ variant: "split" } & CaseStudyTextBlock & { cards: CaseStudyTextBlock[] })
     | ({ variant: "media" } & CaseStudyAsset)
     | ({ variant: "media-grid"; items: CaseStudyAsset[] })
+    | ({ variant: "audit-artifacts"; items: CaseStudyAsset[] })
+    | ({ variant: "audit-findings"; items: CaseStudyFinding[] })
+    | { variant: "workflow-comparison" }
     | { variant: "logo-grid" }
     | { variant: "visual-system-grid" }
     | { variant: "two-column-row" }
@@ -51,9 +60,200 @@ export type CaseStudyPage = {
   >;
 };
 
+const transcriptReviewBasePath = "/assets/case-study-1";
 const basePath = "/assets/case-study-2";
 
 export const caseStudyPages: CaseStudyPage[] = [
+  {
+    slug: "case-study-template",
+    meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
+    title: "Redesigning how contributors discover, claim, and complete transcript reviews",
+    hero: {
+      type: "image",
+      src: `${transcriptReviewBasePath}/hero-placeholder.svg`,
+      alt: "Placeholder hero image for the Bitcoin Transcript Review case study",
+      frame: "hero",
+    },
+    facts: [
+      {
+        label: "Organisation",
+        value: ["Bitcoin Dev Project", "Bitcoin Transcript Review (Product)"],
+      },
+      { label: "Collaborators", value: ["1 Developer", "1 Designer"] },
+      { label: "Timeline", value: ["1 Month"] },
+      {
+        label: "Skills",
+        value: ["UX Audit", "Information Architecture", "Visual Design"],
+      },
+    ],
+    sections: [
+      {
+        variant: "text",
+        eyebrow: "Overview",
+        title: "Helping contributors spend less time navigating and more time reviewing transcripts",
+        body: [
+          "The platform enabled contributors to claim, edit, and submit transcript reviews, but the experience was fragmented across different parts of the product. Discovering new work, continuing active reviews, and tracking completed contributions all required different navigation patterns and mental models.",
+          "This redesign focused on reducing friction across the contributor journey, from discovering work to submitting reviews. The goals were to streamline navigation, surface key actions at the right moments, clarify the scope of a review before commitment, and create a more connected end-to-end experience.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
+        alt: "Placeholder image for the Bitcoin Transcript Review overview section",
+      },
+      {
+        variant: "text",
+        eyebrow: "Audit",
+        title: "Each screen worked independently, but the journey between them did not.",
+        body: [
+          "I audited the experience from discovering transcripts to tracking completed work. Questions and observations were documented in FigJam and grouped by stage of the contributor journey. The audit showed that the friction was not caused by one broken screen. It came from how contributors moved between disconnected parts of the product.",
+        ],
+      },
+      {
+        variant: "audit-artifacts",
+        items: [
+          {
+            type: "image",
+            src: `${transcriptReviewBasePath}/figjam.png`,
+            alt: "FigJam audit notes grouped by contributor journey stage",
+            overlayLabel: "SNIPPET FROM FIGJAM",
+          },
+          {
+            type: "image",
+            src: `${transcriptReviewBasePath}/dsgn_evol.png`,
+            alt: "Design evolution from the transcript review redesign process",
+            overlayLabel: "DESIGN EVOLUTION",
+          },
+        ],
+      },
+      {
+        variant: "audit-findings",
+        items: [
+          {
+            image: {
+              type: "image",
+              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
+              alt: "Placeholder for finding about discovering additional reviews",
+            },
+            title:
+              "1. Finding additional reviews became harder once contributors started working.",
+            body: "The main CTA disappeared after a review was claimed, so finding more work moved into the profile menu instead of staying visible in the workflow.",
+          },
+          {
+            image: {
+              type: "image",
+              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
+              alt: "Placeholder for finding about claiming transcripts before reviewing context",
+            },
+            title: "2. Claiming happened before contributors had enough context.",
+            body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit.",
+          },
+          {
+            image: {
+              type: "image",
+              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
+              alt: "Placeholder for finding about active work and review history",
+            },
+            title:
+              "3. Active work and review history supported different goals but shared the same structure.",
+            body: "Active reviews needed deadline-focused actions, while history needed completion and payment status. The shared layout blurred those priorities.",
+          },
+          {
+            image: {
+              type: "image",
+              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
+              alt: "Placeholder for finding about static workflow information",
+            },
+            title: "4. Information remained static even as contributor goals changed.",
+            body: "The same fields appeared across stages, even when contributors needed different cues before claiming, while editing, and after submission.",
+          },
+        ],
+      },
+      {
+        variant: "text",
+        eyebrow: "Solution",
+        title: "Separating exploration from commitment reshaped the contributor journey.",
+        body: [
+          "The audit showed that the largest source of friction was not one interface, it was the transition from browsing to claiming. Contributors were expected to commit before they had enough information to make that decision.",
+          "I separated evaluating a review from accepting responsibility for it. Browsing, previewing, claiming, editing, and tracking reviews became distinct but connected stages.",
+        ],
+      },
+      {
+        variant: "workflow-comparison",
+      },
+      {
+        variant: "text",
+        eyebrow: "Key Decisions",
+        title: "Primary contributor tasks should remain accessible at every stage.",
+        body: [
+          "Available Reviews and My Reviews were moved into the main navigation. This removed the dependency on the profile drawer and kept finding work and continuing work accessible regardless of the contributor's current state.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        alt: "Placeholder image for main navigation key decision",
+      },
+      {
+        variant: "text",
+        title: "Choosing work should feel like browsing opportunities, not scanning a database.",
+        body: [
+          "The original table spread related information across distant columns and treated Claim as the first action. I redesigned it as a compact list that groups each transcript's title, source, speakers, labels, duration, and reward.",
+          "Rows open a transcript preview, while hover feedback communicates that each item is interactive.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        alt: "Placeholder image for available reviews list redesign",
+      },
+      {
+        variant: "text",
+        title: "Contributors should understand a review before starting the timer.",
+        body: [
+          "Selecting a transcript now opens the editor in preview mode. Contributors can inspect the transcript, source video, speakers, tags, and review details before claiming it.",
+          "Editing tools and submission remain unavailable until the review is claimed. Claiming assigns the transcript and begins the 24-hour editing window.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        alt: "Placeholder image for transcript preview mode",
+      },
+      {
+        variant: "text",
+        title: "Contributors needed a way to leave work they could not complete.",
+        body: [
+          "After claiming, the preview banner becomes a persistent status bar showing the remaining time and a secondary Withdraw Review action.",
+          "Withdrawing returns the transcript to the available queue, allowing another contributor to claim it instead of waiting for the review to expire.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        alt: "Placeholder image for withdrawing an active review",
+      },
+      {
+        variant: "text",
+        title: "Active work should take priority over reference information.",
+        body: [
+          "The My Reviews page focuses on reviews that require action. Historical reviews remain persistently accessible through a click of a tab change without competing with active work.",
+          "The two views now show information suited to their purpose.",
+        ],
+      },
+      {
+        variant: "media",
+        type: "image",
+        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        alt: "Placeholder image for active reviews and review history",
+      },
+    ],
+  },
   {
     slug: "bitcoin-dev-project",
     meta: ["Bitcoin Dev Project", "Dec 2025", "Shipped"],
@@ -66,7 +266,10 @@ export const caseStudyPages: CaseStudyPage[] = [
     },
     facts: [
       { label: "Organisation", value: ["Bitcoin Dev Project"] },
-      { label: "Collaborators", value: ["2 Developers", "1 PM", "1 Designer (me)"] },
+      {
+        label: "Collaborators",
+        value: ["2 Developers", "Open-source developers", "1 PM", "1 Designer (me)"],
+      },
       { label: "Timeline", value: ["4 Months", "Shipped Dec 2025"] },
       {
         label: "Skills",
