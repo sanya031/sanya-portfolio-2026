@@ -4,7 +4,7 @@ export type CaseStudyAsset = {
   alt: string;
   caption?: string;
   overlayLabel?: string;
-  frame?: "hero" | "problem" | "walkthrough" | "resources" | "old-website";
+  frame?: "hero" | "problem" | "walkthrough" | "resources" | "old-website" | "before-after";
   scrollable?: boolean;
 };
 
@@ -40,6 +40,7 @@ export type CaseStudyPage = {
     | ({ variant: "media-grid"; items: CaseStudyAsset[] })
     | ({ variant: "audit-artifacts"; items: CaseStudyAsset[] })
     | ({ variant: "audit-findings"; items: CaseStudyFinding[] })
+    | { variant: "butter-container" }
     | { variant: "workflow-comparison" }
     | { variant: "logo-grid" }
     | { variant: "visual-system-grid" }
@@ -69,9 +70,9 @@ export const caseStudyPages: CaseStudyPage[] = [
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
     title: "Redesigning how contributors discover, claim, and complete transcript reviews",
     hero: {
-      type: "image",
-      src: `${transcriptReviewBasePath}/hero-placeholder.svg`,
-      alt: "Placeholder hero image for the Bitcoin Transcript Review case study",
+      type: "video",
+      src: `${transcriptReviewBasePath}/hero-vid-purple.mov`,
+      alt: "Animated hero preview of the Bitcoin Transcript Review redesign",
       frame: "hero",
     },
     facts: [
@@ -95,12 +96,6 @@ export const caseStudyPages: CaseStudyPage[] = [
           "The platform enabled contributors to claim, edit, and submit transcript reviews, but the experience was fragmented across different parts of the product. Discovering new work, continuing active reviews, and tracking completed contributions all required different navigation patterns and mental models.",
           "This redesign focused on reducing friction across the contributor journey, from discovering work to submitting reviews. The goals were to streamline navigation, surface key actions at the right moments, clarify the scope of a review before commitment, and create a more connected end-to-end experience.",
         ],
-      },
-      {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
-        alt: "Placeholder image for the Bitcoin Transcript Review overview section",
       },
       {
         variant: "text",
@@ -128,47 +123,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "audit-findings",
-        items: [
-          {
-            image: {
-              type: "image",
-              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
-              alt: "Placeholder for finding about discovering additional reviews",
-            },
-            title:
-              "1. Finding additional reviews became harder once contributors started working.",
-            body: "The main CTA disappeared after a review was claimed, so finding more work moved into the profile menu instead of staying visible in the workflow.",
-          },
-          {
-            image: {
-              type: "image",
-              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
-              alt: "Placeholder for finding about claiming transcripts before reviewing context",
-            },
-            title: "2. Claiming happened before contributors had enough context.",
-            body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit.",
-          },
-          {
-            image: {
-              type: "image",
-              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
-              alt: "Placeholder for finding about active work and review history",
-            },
-            title:
-              "3. Active work and review history supported different goals but shared the same structure.",
-            body: "Active reviews needed deadline-focused actions, while history needed completion and payment status. The shared layout blurred those priorities.",
-          },
-          {
-            image: {
-              type: "image",
-              src: `${transcriptReviewBasePath}/overview-placeholder.svg`,
-              alt: "Placeholder for finding about static workflow information",
-            },
-            title: "4. Information remained static even as contributor goals changed.",
-            body: "The same fields appeared across stages, even when contributors needed different cues before claiming, while editing, and after submission.",
-          },
-        ],
+        variant: "butter-container",
       },
       {
         variant: "text",
@@ -193,8 +148,9 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
+        src: `${transcriptReviewBasePath}/key-1.png`,
         alt: "Placeholder image for main navigation key decision",
+        frame: "before-after",
       },
       {
         variant: "text",

@@ -921,6 +921,10 @@ video {
   will-change: transform;
 }
 
+.case-study-card__media[data-media-type="video"] {
+  background: #f3f3f1;
+}
+
 .case-study-card__image,
 .case-study-card__video,
 .case-study-card__placeholder {
@@ -936,7 +940,9 @@ video {
 }
 
 .case-study-card__video {
+  height: calc(100% + 20px);
   object-fit: cover;
+  object-position: center top;
   mix-blend-mode: normal;
   opacity: 1;
 }
@@ -1003,9 +1009,9 @@ video {
   --case-column-width: 50.875rem;
   --case-heading: #32404f;
   --case-body: #787878;
-  --case-label: #cd4429;
+  --case-label: #c728d5;
   --case-border: #e4e0d7;
-  background: #ffffff;
+  background: #fff3a6;
   color: var(--case-body);
   font-family: "Geist", Arial, sans-serif;
 }
@@ -1073,6 +1079,7 @@ video {
   color: var(--case-label);
   font-size: 0.875rem;
   line-height: 1.3;
+  text-transform: uppercase;
 }
 
 .case-study-page__meta span:not(:last-child)::after {
@@ -1166,11 +1173,11 @@ video {
 
 .case-study-page__hero-media .case-study-page__media-asset {
   width: calc(var(--hero-container-width) * 1px * var(--hero-scale));
-  height: calc(var(--hero-video-height) * 1px * var(--hero-scale));
+  height: calc((var(--hero-video-height) * 1px + 20px) * var(--hero-scale));
   max-width: 100%;
   min-height: 0;
   object-fit: cover;
-  object-position: center bottom;
+  object-position: center top;
   border-radius: calc(24px * var(--hero-scale));
 }
 
@@ -1333,8 +1340,31 @@ video {
 }
 
 .case-study-page__full-media .case-study-page__media-surface {
-  aspect-ratio: 814 / 365;
+  aspect-ratio: 814 / 400;
   width: 100%;
+}
+
+.case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::before,
+.case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::after {
+  position: absolute;
+  z-index: 2;
+  color: #000000;
+  font-family: "Departure Mono", "Courier New", monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::before {
+  top: 18%;
+  right: 5%;
+  content: "BEFORE";
+}
+
+.case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::after {
+  bottom: 17%;
+  left: 5%;
+  content: "AFTER";
 }
 
 .case-study-page__media[data-scrollable="true"] .case-study-page__media-surface {
@@ -1565,6 +1595,106 @@ video {
   font-size: 1rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
+}
+
+.case-study-page__butter-block {
+  display: grid;
+  gap: 0;
+  justify-items: start;
+  width: 100%;
+  max-width: var(--case-column-width);
+}
+
+.case-study-page__butter-tabs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.case-study-page__butter-container {
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  width: 100%;
+  aspect-ratio: 814 / 431;
+  overflow: hidden;
+  border: 1px solid #e8dfad;
+  background: #fff3a6;
+}
+
+.case-study-page__butter-container img,
+.case-study-page__butter-container video {
+  width: 90%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.case-study-page__butter-copy {
+  display: grid;
+  gap: 0.72rem;
+  max-width: 100%;
+  margin-top: 1.2rem;
+}
+
+.case-study-page__butter-copy h3 {
+  margin: 0;
+  color: var(--case-heading);
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.34;
+}
+
+.case-study-page__butter-copy p {
+  margin: 0;
+  color: var(--case-body);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.case-study-page__butter-chip {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding: 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #000000;
+  font-family: "Departure Mono", "Courier New", monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: default;
+}
+
+.case-study-page__butter-chip:nth-child(n + 2) {
+  opacity: 0.5;
+}
+
+.case-study-page__butter-chip[data-active="true"] {
+  opacity: 1;
+}
+
+.case-study-page__butter-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: var(--butter-highlight-width, 0);
+  height: 100%;
+  border: 1px solid #e8dfad;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #fff3a6;
+  transform: translateX(var(--butter-highlight-left, 0));
+  transition:
+    transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width;
 }
 
 .case-study-page__workflow-comparison {

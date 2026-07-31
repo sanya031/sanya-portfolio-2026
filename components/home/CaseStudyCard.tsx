@@ -45,7 +45,11 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
             />
           ))}
 
-          <SharedMediaSurface className="case-study-card__media" layoutId={mediaLayoutId}>
+          <SharedMediaSurface
+            className="case-study-card__media"
+            layoutId={mediaLayoutId}
+            data-media-type={caseStudy.media.type}
+          >
             {caseStudy.media.type === "video" && caseStudy.media.src ? (
               <video
                 autoPlay

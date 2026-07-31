@@ -29,9 +29,9 @@ export const caseStudies: CaseStudy[] = [
     tags: ["HANDED-OFF"],
     href: "/work/case-study-template",
     media: {
-      type: "image",
-      src: undefined,
-      alt: "Placeholder preview for an upcoming case study",
+      type: "video",
+      src: "/assets/case-study-1/hero-vid-purple.mov",
+      alt: "Preview of the Bitcoin Transcript Review case study",
     },
   },
   {

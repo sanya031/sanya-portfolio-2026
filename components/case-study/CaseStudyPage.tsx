@@ -6,6 +6,7 @@ import type {
 } from "../../data/caseStudyPages";
 import { HomeFooter } from "../home/HomeFooter";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
+import { ButterIssueTabs } from "./ButterIssueTabs";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
@@ -380,6 +381,14 @@ function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
   );
 }
 
+function ButterContainerSection() {
+  return (
+    <section className="case-study-page__butter-block" aria-label="Audit summary">
+      <ButterIssueTabs />
+    </section>
+  );
+}
+
 function WorkflowComparisonSection() {
   return (
     <section className="case-study-page__workflow-comparison" aria-label="Old and revised workflow">
@@ -507,6 +516,10 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "audit-findings") {
               return <AuditFindingsSection items={section.items} key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "butter-container") {
+              return <ButterContainerSection key={`${section.variant}-${index}`} />;
             }
 
             if (section.variant === "workflow-comparison") {
