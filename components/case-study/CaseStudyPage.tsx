@@ -275,7 +275,7 @@ function VisualSystemGridSection() {
           ariaLabel="Customisable character illustration animation"
           className="case-study-page__visual-system-fill-media"
           playbackRate={1.5}
-          src="/assets/case-study-2/character-design-decisions-2.mov"
+          src="/assets/case-study-2/character-design-decisions-2.mp4"
         />
       </div>
     </section>

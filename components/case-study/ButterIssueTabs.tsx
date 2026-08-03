@@ -17,7 +17,7 @@ const issues = [
     label: "HIDDEN DISCOVERY",
     media: {
       type: "video",
-      src: "/assets/case-study-1/hidden-disc.mov",
+      src: "/assets/case-study-1/hidden-disc.mp4",
       alt: "Hidden discovery interaction showing contributors finding more transcript work",
     },
     title: "Finding additional reviews became harder once contributors started working.",

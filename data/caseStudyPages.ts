@@ -71,7 +71,7 @@ export const caseStudyPages: CaseStudyPage[] = [
     title: "Redesigning how contributors discover, claim, and complete transcript reviews",
     hero: {
       type: "video",
-      src: `${transcriptReviewBasePath}/hero-vid-purple.mov`,
+      src: `${transcriptReviewBasePath}/hero-vid-purple.mp4`,
       alt: "Animated hero preview of the Bitcoin Transcript Review redesign",
       frame: "hero",
     },
@@ -346,7 +346,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "video",
-        src: `${basePath}/homepage_walkthrough.mov`,
+        src: `${basePath}/homepage_walkthrough.mp4`,
         alt: "Homepage walkthrough for the redesigned Bitcoin Dev Project site",
         overlayLabel: "NEW HOMEPAGE WALKTHROUGH",
         frame: "walkthrough",
@@ -385,7 +385,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "video",
-        src: `${basePath}/exploring-resources.mov`,
+        src: `${basePath}/exploring-resources.mp4`,
         alt: "Exploring resources interaction on the redesigned site",
         overlayLabel: "EXPLORING RESOURCES",
         frame: "resources",
