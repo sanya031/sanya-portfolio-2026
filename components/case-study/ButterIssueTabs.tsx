@@ -92,7 +92,7 @@ export function ButterIssueTabs() {
   } as CSSProperties;
 
   return (
-    <>
+    <div className="case-study-page__butter-panel">
       <div
         className="case-study-page__butter-tabs"
         aria-label="Audit issue labels"
@@ -139,6 +139,6 @@ export function ButterIssueTabs() {
         <h3>{activeIssue.title}</h3>
         <p>{activeIssue.body}</p>
       </div>
-    </>
+    </div>
   );
 }

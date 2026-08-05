@@ -1612,6 +1612,15 @@ video {
   gap: 8px;
 }
 
+.case-study-page__butter-panel {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  background: rgba(245, 245, 245, 0.7);
+}
+
 .case-study-page__butter-container {
   display: grid;
   align-items: end;
