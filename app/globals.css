@@ -1131,10 +1131,16 @@ video {
   --case-heading: #32404f;
   --case-body: #787878;
   --case-label: #c728d5;
+  --case-rail-active: var(--case-label);
   --case-border: #e4e0d7;
   background: #fff3a6;
   color: var(--case-body);
   font-family: "Geist", Arial, sans-serif;
+}
+
+.case-study-page[data-case-study-slug="bitcoin-dev-project"] {
+  --case-label: #cd4429;
+  --case-rail-active: var(--case-label);
 }
 
 .case-study-page__paper {
@@ -1353,6 +1359,138 @@ video {
 
 .case-study-page__content:has(.case-study-page__resource-card-stack) {
   overflow: visible;
+}
+
+.case-study-page__section-anchor {
+  scroll-margin-top: 2rem;
+}
+
+.case-study-section-rail {
+  --case-rail-right-offset: clamp(1rem, 1.8vw, 1.7rem);
+  --case-rail-compact-width: 2.35rem;
+  --case-rail-gap: 10px;
+  position: fixed;
+  top: 50%;
+  right: var(--case-rail-right-offset);
+  z-index: 21;
+  display: grid;
+  min-width: 3rem;
+  justify-items: end;
+  transform: translateY(-50%);
+}
+
+.case-study-section-rail::before {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: var(--case-rail-gap);
+  height: min(34rem, calc(100vh - 3rem));
+  content: "";
+  transform: translateY(-50%);
+}
+
+.case-study-section-rail__lines {
+  display: grid;
+  width: var(--case-rail-compact-width);
+  gap: 0.38rem;
+  justify-items: center;
+  border: 1px solid rgba(30, 30, 30, 0.14);
+  border-radius: 16px;
+  background: rgba(249, 249, 249, 0.73);
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.06);
+  padding: 1rem 0.38rem;
+}
+
+.case-study-section-rail__line {
+  width: 1.25rem;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(32, 30, 30, 0.38);
+  transition: background-color 140ms ease, opacity 140ms ease, width 140ms ease;
+}
+
+.case-study-section-rail__line[data-secondary="true"] {
+  width: 1rem;
+  opacity: 0.62;
+}
+
+.case-study-section-rail__line[data-active="true"] {
+  width: 1.45rem;
+  background: var(--case-rail-active);
+  opacity: 1;
+}
+
+.case-study-section-rail__panel {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--case-rail-gap));
+  display: grid;
+  width: min(
+    13rem,
+    calc(
+      50vw - (var(--case-column-width) / 2) - var(--case-rail-right-offset) -
+        var(--case-rail-compact-width) - (var(--case-rail-gap) * 2)
+    )
+  );
+  max-height: min(34rem, calc(100vh - 3rem));
+  gap: 0.06rem;
+  overflow-y: auto;
+  border: 1px solid rgba(30, 30, 30, 0.14);
+  border-radius: 16px;
+  background: rgba(249, 249, 249, 0.73);
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.06);
+  padding: 0.7rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0.45rem, -50%) scale(0.98);
+  transform-origin: right center;
+  transition: opacity 140ms ease, transform 160ms ease;
+}
+
+.case-study-section-rail:hover .case-study-section-rail__panel,
+.case-study-section-rail:focus-within .case-study-section-rail__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(0, -50%) scale(1);
+}
+
+.case-study-section-rail__link {
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  color: rgba(32, 30, 30, 0.82);
+  font-family: "Geist", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.3;
+  padding: 0.38rem 0.56rem;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  transition: background-color 140ms ease, color 140ms ease, opacity 140ms ease;
+  white-space: nowrap;
+}
+
+.case-study-section-rail__link[data-secondary="true"] {
+  color: rgba(32, 30, 30, 0.52);
+  font-size: 0.84rem;
+  padding-left: 0.95rem;
+}
+
+.case-study-section-rail__link:hover,
+.case-study-section-rail__link:focus-visible {
+  color: color-mix(in srgb, var(--case-rail-active) 60%, transparent);
+  outline: none;
+}
+
+.case-study-section-rail__link[data-active="true"] {
+  color: var(--case-rail-active);
+  outline: none;
+}
+
+@media (max-width: 1180px) {
+  .case-study-section-rail__panel {
+    display: none;
+  }
 }
 
 .case-study-page__section {
@@ -2933,6 +3071,10 @@ video {
   .floating-navbar__icon {
     width: 2.15rem;
     height: 1.95rem;
+  }
+
+  .case-study-section-rail {
+    display: none;
   }
 
   .work-section {
