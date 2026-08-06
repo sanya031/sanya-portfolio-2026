@@ -1,7 +1,14 @@
-import Link from "next/link";
-import type { CaseStudyPage as CaseStudyPageData } from "../../data/caseStudyPages";
+import type {
+  CaseStudyAsset,
+  CaseStudyFinding,
+  CaseStudyPage as CaseStudyPageData,
+} from "../../data/caseStudyPages";
+import { navItems } from "../../data/navItems";
 import { HomeFooter } from "../home/HomeFooter";
+import { BackToWorkLink } from "../navigation/BackToWorkLink";
+import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
+import { ButterIssueTabs } from "./ButterIssueTabs";
 import { CaseStudyMedia } from "./CaseStudyMedia";
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
@@ -18,12 +25,17 @@ function TextSection({
   titleSize,
   body,
   emphasis,
+  decisionNotes,
 }: {
   eyebrow?: string;
   title: string;
   titleSize?: "small" | "medium";
   body: string[];
   emphasis?: string;
+  decisionNotes?: Array<{
+    title: string;
+    body: string;
+  }>;
 }) {
   return (
     <section className="case-study-page__section">
@@ -38,6 +50,16 @@ function TextSection({
               <p key={paragraph}>{paragraph}</p>
             ))}
             {emphasis ? <p className="case-study-page__emphasis">{emphasis}</p> : null}
+          </div>
+        ) : null}
+        {decisionNotes?.length ? (
+          <div className="case-study-page__decision-notes">
+            {decisionNotes.map((note) => (
+              <article key={note.title}>
+                <h3>{note.title}</h3>
+                <p>{note.body}</p>
+              </article>
+            ))}
           </div>
         ) : null}
       </div>
@@ -270,7 +292,7 @@ function VisualSystemGridSection() {
           ariaLabel="Customisable character illustration animation"
           className="case-study-page__visual-system-fill-media"
           playbackRate={1.5}
-          src="/assets/case-study-2/character-design-decisions-2.mov"
+          src="/assets/case-study-2/character-design-decisions-2.mp4"
         />
       </div>
     </section>
@@ -329,6 +351,144 @@ function PortalComparisonRowSection() {
   );
 }
 
+function AuditArtifactsSection({ items }: { items: CaseStudyAsset[] }) {
+  return (
+    <section className="case-study-page__audit-artifacts" aria-label="Audit artifacts">
+      {items.map((item, index) => (
+        <article className="case-study-page__audit-artifact" key={`${item.src}-${index}`}>
+          {item.overlayLabel ? <span>{item.overlayLabel}</span> : null}
+          <img src={item.src} alt={item.alt} />
+          {index === 1 ? (
+            <div className="case-study-page__audit-legend" aria-label="Design evolution stages">
+              <span>
+                <i data-color="understand" />
+                UNDERSTAND
+              </span>
+              <span>
+                <i data-color="explore" />
+                EXPLORE
+              </span>
+              <span>
+                <i data-color="refine" />
+                REFINE
+              </span>
+            </div>
+          ) : null}
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
+  return (
+    <section className="case-study-page__audit-findings" aria-label="Audit findings">
+      {items.map((item) => (
+        <article className="case-study-page__audit-finding" key={item.title}>
+          <div className="case-study-page__audit-finding-media">
+            <img src={item.image.src} alt={item.image.alt} />
+          </div>
+          <div className="case-study-page__audit-finding-copy">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function ButterContainerSection() {
+  return (
+    <section className="case-study-page__butter-block" aria-label="Audit summary">
+      <ButterIssueTabs />
+    </section>
+  );
+}
+
+function WorkflowComparisonSection() {
+  return (
+    <section className="case-study-page__workflow-comparison" aria-label="Old and revised workflow">
+      <div className="case-study-page__workflow-row" data-row="old">
+        <span>OLD WORKFLOW</span>
+        <img
+          src="/assets/case-study-1/old_workflow.png"
+          alt="Old transcript review workflow from browsing to submission"
+        />
+        <p className="case-study-page__workflow-note">
+          <span aria-hidden="true">!</span>
+          Committing before context
+        </p>
+      </div>
+      <div className="case-study-page__workflow-row" data-row="revised">
+        <span>REVISED WORKFLOW</span>
+        <img
+          src="/assets/case-study-1/new_workfow.png"
+          alt="Revised transcript review workflow separating preview from claiming"
+        />
+      </div>
+    </section>
+  );
+}
+
+function ReviewStatesStackSection() {
+  return (
+    <section className="case-study-page__review-states-stack" aria-label="Active and completed review states">
+      <article className="case-study-page__review-state">
+        <span>ACTIVE REVIEWS</span>
+        <img
+          alt="Active reviews tab for transcript reviews that require action"
+          src="/assets/case-study-1/in progress.png?v=2"
+        />
+      </article>
+      <article className="case-study-page__review-state">
+        <span>REVIEW HISTORY</span>
+        <img
+          alt="Review history tab for completed and past transcript reviews"
+          src="/assets/case-study-1/completed.png?v=2"
+        />
+      </article>
+    </section>
+  );
+}
+
+function WithdrawSupportRowSection() {
+  return (
+    <section className="case-study-page__withdraw-support-row" aria-label="Withdraw review supporting details">
+      <article>
+        <span>PERSISTENT STATUS BAR</span>
+        <div className="case-study-page__control-comparison">
+          <div>
+            <small>BEFORE</small>
+            <img
+              alt="Original editor controls before simplification"
+              src="/assets/case-study-1/before controls.png"
+            />
+          </div>
+          <div>
+            <small>AFTER</small>
+            <img
+              alt="Updated editor controls after simplification"
+              src="/assets/case-study-1/after controls.png"
+            />
+          </div>
+        </div>
+      </article>
+      <article>
+        <span>KEY ACTIONS IN THE EDITOR</span>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          src="/assets/case-study-1/editing-controls.mp4"
+        />
+      </article>
+    </section>
+  );
+}
+
 const resourceCards = [
   {
     alt: "Saving Satoshi resource card",
@@ -358,12 +518,20 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
   return (
     <main className="case-study-page">
       <ScrollToTopOnMount />
+      <FloatingNavbar
+        autoExpandOnScroll={false}
+        hideOnFirstFold={false}
+        homeHref="/"
+        items={navItems}
+        lockVariant
+        variant="light"
+      />
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
           <HeroContentReveal>
-            <Link className="case-study-page__back-link" href="/#work" scroll={false}>
+            <BackToWorkLink className="case-study-page__back-link">
               Back to work
-            </Link>
+            </BackToWorkLink>
             <div className="case-study-page__meta" aria-label="Case study metadata">
               {page.meta.map((item) => (
                 <span key={item}>{item}</span>
@@ -425,6 +593,22 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               );
             }
 
+            if (section.variant === "audit-artifacts") {
+              return <AuditArtifactsSection items={section.items} key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "audit-findings") {
+              return <AuditFindingsSection items={section.items} key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "butter-container") {
+              return <ButterContainerSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "workflow-comparison") {
+              return <WorkflowComparisonSection key={`${section.variant}-${index}`} />;
+            }
+
             if (section.variant === "logo-grid") {
               return <LogoGridSection key={`${section.variant}-${index}`} />;
             }
@@ -439,6 +623,14 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "portal-comparison-row") {
               return <PortalComparisonRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "withdraw-support-row") {
+              return <WithdrawSupportRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "review-states-stack") {
+              return <ReviewStatesStackSection key={`${section.variant}-${index}`} />;
             }
 
             if (section.variant === "resource-card-stack") {

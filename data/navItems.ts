@@ -4,6 +4,7 @@ export type NavItem = {
   href: string;
   iconSrc: string;
   iconAlt: string;
+  external?: boolean;
 };
 
 export const navItems: NavItem[] = [
@@ -24,8 +25,9 @@ export const navItems: NavItem[] = [
   {
     id: "resume",
     label: "Resume",
-    href: "/resume.pdf",
+    href: "/assets/Sanya-Malhotra-Resume.pdf",
     iconSrc: "/assets/Resume_paper%20(1).svg",
     iconAlt: "",
+    external: true,
   },
 ];

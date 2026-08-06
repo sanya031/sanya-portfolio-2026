@@ -6,6 +6,7 @@ import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { HeroCrossfadeShell } from "./HeroCrossfadeShell";
 import { HeroIntro } from "./HeroIntro";
 import { HomeFooter } from "./HomeFooter";
+import { InstantWorkScroll } from "./InstantWorkScroll";
 import { ScrollStatement } from "./ScrollStatement";
 import { WorkSection } from "./WorkSection";
 
@@ -20,7 +21,8 @@ export function HomePage({
 
   return (
     <main className="home-page">
-      <CaseStudyCursor label="View case study" />
+      <InstantWorkScroll />
+      <CaseStudyCursor />
       <FloatingNavbar items={navItems} variant="dark" />
 
       <HeroCrossfadeShell backgroundImage={heroBackgroundImage}>

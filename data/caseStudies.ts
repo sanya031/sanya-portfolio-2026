@@ -20,7 +20,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: "case-study-template",
-    title: "Redesigning how contributors discover, claim, and complete reviews",
+    title: "Redesigning how contributors discover, claim, and complete transcript reviews",
     subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
@@ -29,9 +29,9 @@ export const caseStudies: CaseStudy[] = [
     tags: ["HANDED-OFF"],
     href: "/work/case-study-template",
     media: {
-      type: "image",
-      src: undefined,
-      alt: "Placeholder preview for an upcoming case study",
+      type: "video",
+      src: "/assets/case-study-1/hero-vid-purple.mp4",
+      alt: "Preview of the Bitcoin Transcript Review case study",
     },
   },
   {

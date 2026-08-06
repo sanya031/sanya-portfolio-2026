@@ -20,7 +20,7 @@ export function CaseStudyMedia({ asset, className = "", layoutId }: CaseStudyMed
         {asset.overlayLabel ? (
           <span className="case-study-page__media-overlay-label">{asset.overlayLabel}</span>
         ) : null}
-        {asset.type === "video" ? (
+        {asset.empty ? null : asset.type === "video" ? (
           <video
             autoPlay
             className="case-study-page__media-asset"

@@ -1,9 +1,18 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { useState } from "react";
+
+const popupDuration = 900;
+
 export type HeroIntroProps = {
   headline?: string;
   supportingText?: string;
   motifs?: {
     label: string;
     iconSrc: string;
+    href?: string;
+    external?: boolean;
   }[];
 };
 
@@ -14,10 +23,22 @@ export function HeroIntro({
   supportingText = "I design intentional, visually polished experiences that bring clarity to complex ideas.",
   motifs = [
     { label: "About", iconSrc: "/assets/about_flower.svg" },
-    { label: "Work", iconSrc: "/assets/work_folder.svg" },
-    { label: "Resume", iconSrc: "/assets/Resume_paper%20(1).svg" },
+    { label: "Work", iconSrc: "/assets/work_folder.svg", href: "#work" },
+    {
+      label: "Resume",
+      iconSrc: "/assets/Resume_paper%20(1).svg",
+      href: "/assets/Sanya-Malhotra-Resume.pdf",
+      external: true,
+    },
   ],
 }: HeroIntroProps) {
+  const [showAboutPopup, setShowAboutPopup] = useState(false);
+
+  const handleAboutClick = () => {
+    setShowAboutPopup(true);
+    window.setTimeout(() => setShowAboutPopup(false), popupDuration);
+  };
+
   return (
     <div className="hero-intro" data-animation="hero-intro-fade-on-scroll">
       <div className="hero-intro__overlay" aria-hidden="true" />
@@ -48,14 +69,25 @@ export function HeroIntro({
         <p className="hero-intro__supporting">{supportingText}</p>
       </div>
 
-      <div className="hero-intro__motifs" aria-hidden="true">
+      <p className="hero-intro__scroll-prompt">Scroll to view selected work...</p>
+
+      <div className="hero-intro__motifs">
         {motifs.map((motif, index) => (
-          <span
+          <HeroMotif
             className="hero-intro__motif"
             data-motif-index={index}
             data-motif-label={motif.label.toLowerCase()}
+            external={motif.external}
+            href={motif.href}
             key={motif.label}
+            onClick={motif.label === "About" ? handleAboutClick : undefined}
           >
+            {motif.label === "About" ? (
+              <UnderConstructionPopup
+                className="under-construction-popup--hero"
+                visible={showAboutPopup}
+              />
+            ) : null}
             {containerCorners.map((corner) => (
               <img
                 className="hero-intro__corner-plus"
@@ -70,9 +102,67 @@ export function HeroIntro({
               <img src={motif.iconSrc} alt="" />
             </span>
             <span className="hero-intro__motif-label">{motif.label}</span>
-          </span>
+          </HeroMotif>
         ))}
       </div>
     </div>
+  );
+}
+
+type HeroMotifProps = {
+  children: ReactNode;
+  className: string;
+  "data-motif-index": number;
+  "data-motif-label": string;
+  external?: boolean;
+  href?: string;
+  onClick?: () => void;
+};
+
+function HeroMotif({ external, href, onClick, ...props }: HeroMotifProps) {
+  if (href) {
+    return (
+      <a
+        href={href}
+        rel={external ? "noreferrer" : undefined}
+        target={external ? "_blank" : undefined}
+        {...props}
+      />
+    );
+  }
+
+  if (onClick) {
+    return <button onClick={onClick} type="button" {...props} />;
+  }
+
+  return <span {...props} />;
+}
+
+type UnderConstructionPopupProps = {
+  className?: string;
+  visible: boolean;
+};
+
+function UnderConstructionPopup({ className = "", visible }: UnderConstructionPopupProps) {
+  return (
+    <span
+      className={`under-construction-popup ${className}`}
+      data-visible={visible}
+      aria-live="polite"
+    >
+      <img
+        className="under-construction-popup__icon"
+        src="/assets/tap-L.svg"
+        alt=""
+        aria-hidden="true"
+      />
+      <span>Under Construction</span>
+      <img
+        className="under-construction-popup__icon"
+        src="/assets/tap-R.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </span>
   );
 }

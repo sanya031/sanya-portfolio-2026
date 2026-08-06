@@ -1,36 +1,90 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 
-export type CaseStudyCursorProps = {
-  label?: string;
+type CursorState = {
+  assetSrc: string;
+  isVisible: boolean;
+  x: number;
+  y: number;
 };
 
-export function CaseStudyCursor({ label = "View case study" }: CaseStudyCursorProps) {
-  const [isVisible, setIsVisible] = useState(false);
+const cursorAssets: Record<string, string> = {
+  "case-study-template": "/assets/case-study-cursor-1.svg",
+  "bitcoin-dev-project": "/assets/case-study-cursor-2.svg",
+};
+
+export function CaseStudyCursor() {
+  const [cursor, setCursor] = useState<CursorState>({
+    assetSrc: cursorAssets["case-study-template"],
+    isVisible: false,
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
-    const showCursor = () => setIsVisible(true);
-    const hideCursor = () => setIsVisible(false);
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    if (!canHover) {
+      return undefined;
+    }
+
+    const moveCursor = (event: Event) => {
+      const pointerEvent = event as PointerEvent;
+
+      setCursor((current) => ({
+        ...current,
+        x: pointerEvent.clientX,
+        y: pointerEvent.clientY,
+      }));
+    };
+
+    const showCursor = (event: Event) => {
+      const target = event.currentTarget as HTMLElement;
+      const caseStudyId =
+        target.closest<HTMLElement>("[data-case-study-id]")?.dataset.caseStudyId ??
+        "case-study-template";
+
+      setCursor((current) => ({
+        ...current,
+        assetSrc: cursorAssets[caseStudyId] ?? cursorAssets["case-study-template"],
+        isVisible: true,
+      }));
+    };
+
+    const hideCursor = () => {
+      setCursor((current) => ({ ...current, isVisible: false }));
+    };
+
     const targets = Array.from(document.querySelectorAll('[data-cursor="case-study"]'));
 
     targets.forEach((target) => {
-      target.addEventListener("mouseenter", showCursor);
-      target.addEventListener("mouseleave", hideCursor);
+      target.addEventListener("pointerenter", showCursor);
+      target.addEventListener("pointerleave", hideCursor);
+      target.addEventListener("pointermove", moveCursor);
     });
 
     return () => {
       targets.forEach((target) => {
-        target.removeEventListener("mouseenter", showCursor);
-        target.removeEventListener("mouseleave", hideCursor);
+        target.removeEventListener("pointerenter", showCursor);
+        target.removeEventListener("pointerleave", hideCursor);
+        target.removeEventListener("pointermove", moveCursor);
       });
     };
   }, []);
 
   return (
-    <div className="case-study-cursor" data-visible={isVisible} aria-hidden="true">
-      {/* TODO: Track pointer position and ease this cursor toward the active case study hover. */}
-      {label}
-    </div>
+    <img
+      className="case-study-cursor"
+      data-visible={cursor.isVisible}
+      src={cursor.assetSrc}
+      alt=""
+      aria-hidden="true"
+      style={{
+        "--case-study-cursor-x": `${cursor.x}px`,
+        "--case-study-cursor-y": `${cursor.y}px`,
+      } as CSSProperties}
+    />
   );
 }
