@@ -3,6 +3,7 @@ import type {
   CaseStudyFinding,
   CaseStudyPage as CaseStudyPageData,
 } from "../../data/caseStudyPages";
+import type { ReactNode } from "react";
 import { navItems } from "../../data/navItems";
 import { HomeFooter } from "../home/HomeFooter";
 import { BackToWorkLink } from "../navigation/BackToWorkLink";
@@ -10,6 +11,10 @@ import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { ButterIssueTabs } from "./ButterIssueTabs";
 import { CaseStudyMedia } from "./CaseStudyMedia";
+import {
+  CaseStudySectionRail,
+  type CaseStudySectionNavItem,
+} from "./CaseStudySectionRail";
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { HeroContentReveal } from "../transitions/HeroContentReveal";
@@ -17,6 +22,71 @@ import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
 export type CaseStudyPageProps = {
   page: CaseStudyPageData;
+};
+
+const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
+  "case-study-template": {
+    0: "overview",
+    1: "audit",
+    3: "mixed-states",
+    4: "solution",
+    5: "workflow-comparison",
+    6: "primary-navigation",
+    8: "transcript-browsing",
+    10: "preview-before-claiming",
+    12: "withdrawing-work",
+    15: "review-states",
+    16: "reflection",
+  },
+  "bitcoin-dev-project": {
+    0: "overview",
+    1: "problem",
+    3: "requirements",
+    4: "design-decisions",
+    5: "why-a-pangolin",
+    6: "flexible-identity",
+    8: "visual-system",
+    10: "homepage-walkthrough",
+    13: "resource-discovery",
+    17: "resource-iterations",
+    22: "impact-learnings",
+    23: "team-perspective",
+    25: "using-ai-as-an-accelerator",
+    27: "explore-next",
+  },
+};
+
+const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
+  "case-study-template": [
+    { id: "overview", label: "Overview" },
+    { id: "audit", label: "Audit" },
+    { id: "mixed-states", label: "Mixed States", secondary: true },
+    { id: "solution", label: "Solution" },
+    { id: "workflow-comparison", label: "Workflow Comparison", secondary: true },
+    { id: "primary-navigation", label: "Key Decisions" },
+    { id: "primary-navigation", label: "Primary Navigation", secondary: true },
+    { id: "transcript-browsing", label: "Transcript Browsing", secondary: true },
+    { id: "preview-before-claiming", label: "Preview Before Claiming", secondary: true },
+    { id: "withdrawing-work", label: "Withdrawing Work", secondary: true },
+    { id: "review-states", label: "Review States", secondary: true },
+    { id: "reflection", label: "Reflection" },
+  ],
+  "bitcoin-dev-project": [
+    { id: "overview", label: "Overview" },
+    { id: "problem", label: "Problem" },
+    { id: "requirements", label: "Requirements" },
+    { id: "design-decisions", label: "Design Decisions" },
+    { id: "why-a-pangolin", label: "Why a Pangolin", secondary: true },
+    { id: "flexible-identity", label: "Flexible Identity", secondary: true },
+    { id: "visual-system", label: "Visual System", secondary: true },
+    { id: "homepage-walkthrough", label: "Homepage Walkthrough", secondary: true },
+    { id: "resource-discovery", label: "Resource Discovery", secondary: true },
+    { id: "resource-iterations", label: "Resource Iterations", secondary: true },
+    { id: "impact-learnings", label: "Impact & Learnings" },
+    { id: "team-perspective", label: "Team Perspective", secondary: true },
+    { id: "using-ai-as-an-accelerator", label: "Using AI as an Accelerator", secondary: true },
+    { id: "explore-next", label: "What I'd Explore Next", secondary: true },
+  ],
 };
 
 function TextSection({
@@ -514,9 +584,11 @@ const resourceCards = [
 
 export function CaseStudyPage({ page }: CaseStudyPageProps) {
   const heroLayoutId = `case-study-media-${page.slug}`;
+  const sectionAnchors = sectionAnchorsBySlug[page.slug] ?? {};
+  const sectionNavItems = navItemsBySlug[page.slug] ?? [];
 
   return (
-    <main className="case-study-page">
+    <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
       <FloatingNavbar
         autoExpandOnScroll={false}
@@ -526,6 +598,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         lockVariant
         variant="light"
       />
+      {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
           <HeroContentReveal>
@@ -561,87 +634,99 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
         <div className="case-study-page__content">
           {page.sections.map((section, index) => {
+            const sectionKey = `${section.variant}-${index}`;
+            const anchorId = sectionAnchors[index];
+            const withAnchor = (content: ReactNode) =>
+              anchorId ? (
+                <div className="case-study-page__section-anchor" id={anchorId} key={sectionKey}>
+                  {content}
+                </div>
+              ) : (
+                <div className="case-study-page__section-anchor" key={sectionKey}>
+                  {content}
+                </div>
+              );
+
             if (section.variant === "text") {
-              return <TextSection {...section} key={`${section.variant}-${index}`} />;
+              return withAnchor(<TextSection {...section} />);
             }
 
             if (section.variant === "split") {
-              return <SplitSection {...section} key={`${section.variant}-${index}`} />;
+              return withAnchor(<SplitSection {...section} />);
             }
 
             if (section.variant === "ordered") {
-              return <OrderedSection {...section} key={`${section.variant}-${index}`} />;
+              return withAnchor(<OrderedSection {...section} />);
             }
 
             if (section.variant === "media") {
-              return (
+              return withAnchor(
                 <CaseStudyMedia
                   asset={section}
                   className="case-study-page__full-media"
-                  key={`${section.variant}-${index}`}
-                />
+                />,
               );
             }
 
             if (section.variant === "media-grid") {
-              return (
-                <section className="case-study-page__media-grid" key={`${section.variant}-${index}`}>
+              return withAnchor(
+                <section className="case-study-page__media-grid">
                   {section.items.map((item) => (
                     <CaseStudyMedia asset={item} key={item.src} />
                   ))}
-                </section>
+                </section>,
               );
             }
 
             if (section.variant === "audit-artifacts") {
-              return <AuditArtifactsSection items={section.items} key={`${section.variant}-${index}`} />;
+              return withAnchor(<AuditArtifactsSection items={section.items} />);
             }
 
             if (section.variant === "audit-findings") {
-              return <AuditFindingsSection items={section.items} key={`${section.variant}-${index}`} />;
+              return withAnchor(<AuditFindingsSection items={section.items} />);
             }
 
             if (section.variant === "butter-container") {
-              return <ButterContainerSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<ButterContainerSection />);
             }
 
             if (section.variant === "workflow-comparison") {
-              return <WorkflowComparisonSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<WorkflowComparisonSection />);
             }
 
             if (section.variant === "logo-grid") {
-              return <LogoGridSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<LogoGridSection />);
             }
 
             if (section.variant === "visual-system-grid") {
-              return <VisualSystemGridSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<VisualSystemGridSection />);
             }
 
             if (section.variant === "two-column-row") {
-              return <TwoColumnRowSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<TwoColumnRowSection />);
             }
 
             if (section.variant === "portal-comparison-row") {
-              return <PortalComparisonRowSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<PortalComparisonRowSection />);
             }
 
             if (section.variant === "withdraw-support-row") {
-              return <WithdrawSupportRowSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<WithdrawSupportRowSection />);
             }
 
             if (section.variant === "review-states-stack") {
-              return <ReviewStatesStackSection key={`${section.variant}-${index}`} />;
+              return withAnchor(<ReviewStatesStackSection />);
             }
 
             if (section.variant === "resource-card-stack") {
-              return <ResourceCardStack cards={resourceCards} key={`${section.variant}-${index}`} />;
+              return withAnchor(<ResourceCardStack cards={resourceCards} />);
             }
 
             if (section.variant === "carousel") {
-              return <AutoScrollCarousel items={section.items} key={`${section.variant}-${index}`} />;
+              return withAnchor(<AutoScrollCarousel items={section.items} />);
             }
 
-            return <QuoteSection {...section} key={`${section.variant}-${index}`} />;
+            return withAnchor(<QuoteSection {...section} />);
           })}
         </div>
       </div>
