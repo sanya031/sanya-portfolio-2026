@@ -1,10 +1,12 @@
-import Link from "next/link";
 import type {
   CaseStudyAsset,
   CaseStudyFinding,
   CaseStudyPage as CaseStudyPageData,
 } from "../../data/caseStudyPages";
+import { navItems } from "../../data/navItems";
 import { HomeFooter } from "../home/HomeFooter";
+import { BackToWorkLink } from "../navigation/BackToWorkLink";
+import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { ButterIssueTabs } from "./ButterIssueTabs";
 import { CaseStudyMedia } from "./CaseStudyMedia";
@@ -23,12 +25,17 @@ function TextSection({
   titleSize,
   body,
   emphasis,
+  decisionNotes,
 }: {
   eyebrow?: string;
   title: string;
   titleSize?: "small" | "medium";
   body: string[];
   emphasis?: string;
+  decisionNotes?: Array<{
+    title: string;
+    body: string;
+  }>;
 }) {
   return (
     <section className="case-study-page__section">
@@ -43,6 +50,16 @@ function TextSection({
               <p key={paragraph}>{paragraph}</p>
             ))}
             {emphasis ? <p className="case-study-page__emphasis">{emphasis}</p> : null}
+          </div>
+        ) : null}
+        {decisionNotes?.length ? (
+          <div className="case-study-page__decision-notes">
+            {decisionNotes.map((note) => (
+              <article key={note.title}>
+                <h3>{note.title}</h3>
+                <p>{note.body}</p>
+              </article>
+            ))}
           </div>
         ) : null}
       </div>
@@ -414,6 +431,64 @@ function WorkflowComparisonSection() {
   );
 }
 
+function ReviewStatesStackSection() {
+  return (
+    <section className="case-study-page__review-states-stack" aria-label="Active and completed review states">
+      <article className="case-study-page__review-state">
+        <span>ACTIVE REVIEWS</span>
+        <img
+          alt="Active reviews tab for transcript reviews that require action"
+          src="/assets/case-study-1/in progress.png?v=2"
+        />
+      </article>
+      <article className="case-study-page__review-state">
+        <span>REVIEW HISTORY</span>
+        <img
+          alt="Review history tab for completed and past transcript reviews"
+          src="/assets/case-study-1/completed.png?v=2"
+        />
+      </article>
+    </section>
+  );
+}
+
+function WithdrawSupportRowSection() {
+  return (
+    <section className="case-study-page__withdraw-support-row" aria-label="Withdraw review supporting details">
+      <article>
+        <span>PERSISTENT STATUS BAR</span>
+        <div className="case-study-page__control-comparison">
+          <div>
+            <small>BEFORE</small>
+            <img
+              alt="Original editor controls before simplification"
+              src="/assets/case-study-1/before controls.png"
+            />
+          </div>
+          <div>
+            <small>AFTER</small>
+            <img
+              alt="Updated editor controls after simplification"
+              src="/assets/case-study-1/after controls.png"
+            />
+          </div>
+        </div>
+      </article>
+      <article>
+        <span>KEY ACTIONS IN THE EDITOR</span>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          src="/assets/case-study-1/editing-controls.mp4"
+        />
+      </article>
+    </section>
+  );
+}
+
 const resourceCards = [
   {
     alt: "Saving Satoshi resource card",
@@ -443,12 +518,20 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
   return (
     <main className="case-study-page">
       <ScrollToTopOnMount />
+      <FloatingNavbar
+        autoExpandOnScroll={false}
+        hideOnFirstFold={false}
+        homeHref="/"
+        items={navItems}
+        lockVariant
+        variant="light"
+      />
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
           <HeroContentReveal>
-            <Link className="case-study-page__back-link" href="/#work" scroll={false}>
+            <BackToWorkLink className="case-study-page__back-link">
               Back to work
-            </Link>
+            </BackToWorkLink>
             <div className="case-study-page__meta" aria-label="Case study metadata">
               {page.meta.map((item) => (
                 <span key={item}>{item}</span>
@@ -540,6 +623,14 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "portal-comparison-row") {
               return <PortalComparisonRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "withdraw-support-row") {
+              return <WithdrawSupportRowSection key={`${section.variant}-${index}`} />;
+            }
+
+            if (section.variant === "review-states-stack") {
+              return <ReviewStatesStackSection key={`${section.variant}-${index}`} />;
             }
 
             if (section.variant === "resource-card-stack") {

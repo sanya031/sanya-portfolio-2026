@@ -12,14 +12,16 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
   const mediaLayoutId = caseStudy.media.src ? `case-study-media-${caseStudy.id}` : undefined;
 
   return (
-    <article className="case-study-card" data-cursor="case-study">
+    <article
+      className="case-study-card"
+      data-case-study-id={caseStudy.id}
+    >
       <Link
         aria-label={`View ${caseStudy.title} case study`}
         className="case-study-card__link"
         href={caseStudy.href}
-        scroll={false}
       >
-        <div className="case-study-card__media-frame">
+        <div className="case-study-card__media-frame" data-cursor="case-study">
           {frameEdges.map((edge) => (
             <img
               className="case-study-card__frame-stroke"
@@ -80,9 +82,9 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
         <div className="case-study-card__body">
           <div className="case-study-card__primary-meta">
             <p className="case-study-card__role">{caseStudy.role}</p>
-            <span aria-hidden="true">*</span>
+            <span className="case-study-card__meta-separator" aria-hidden="true" />
             <p className="case-study-card__year">{caseStudy.year}</p>
-            <span aria-hidden="true">*</span>
+            <span className="case-study-card__meta-separator" aria-hidden="true" />
             <p className="case-study-card__status">{caseStudy.tags.join(", ")}</p>
           </div>
 

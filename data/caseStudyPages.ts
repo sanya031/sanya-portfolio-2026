@@ -4,8 +4,19 @@ export type CaseStudyAsset = {
   alt: string;
   caption?: string;
   overlayLabel?: string;
-  frame?: "hero" | "problem" | "walkthrough" | "resources" | "old-website" | "before-after";
+  frame?:
+    | "hero"
+    | "problem"
+    | "walkthrough"
+    | "resources"
+    | "old-website"
+    | "before-after"
+    | "key-decision-2"
+    | "claim-preview"
+    | "withdraw-transcript"
+    | "placeholder";
   scrollable?: boolean;
+  empty?: boolean;
 };
 
 export type CaseStudyTextBlock = {
@@ -14,6 +25,10 @@ export type CaseStudyTextBlock = {
   titleSize?: "small" | "medium";
   body: string[];
   emphasis?: string;
+  decisionNotes?: Array<{
+    title: string;
+    body: string;
+  }>;
 };
 
 export type CaseStudyFinding = {
@@ -46,6 +61,8 @@ export type CaseStudyPage = {
     | { variant: "visual-system-grid" }
     | { variant: "two-column-row" }
     | { variant: "portal-comparison-row" }
+    | { variant: "withdraw-support-row" }
+    | { variant: "review-states-stack" }
     | { variant: "resource-card-stack" }
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
@@ -163,8 +180,10 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
-        alt: "Placeholder image for available reviews list redesign",
+        src: `${transcriptReviewBasePath}/key-decision-2 (1) 1.png`,
+        alt: "Redesigned transcript browsing view with available reviews",
+        overlayLabel: "REDESIGNED TRANSCRIPT BROWSING",
+        frame: "key-decision-2",
       },
       {
         variant: "text",
@@ -177,22 +196,40 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "media",
         type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
-        alt: "Placeholder image for transcript preview mode",
+        src: `${transcriptReviewBasePath}/claim preview.png`,
+        alt: "Transcript preview mode before a contributor claims a review",
+        overlayLabel: "PREVIEW BEFORE CLAIMING",
+        frame: "claim-preview",
       },
       {
         variant: "text",
         title: "Contributors needed a way to leave work they could not complete.",
-        body: [
-          "After claiming, the preview banner becomes a persistent status bar showing the remaining time and a secondary Withdraw Review action.",
-          "Withdrawing returns the transcript to the available queue, allowing another contributor to claim it instead of waiting for the review to expire.",
+        body: [],
+        decisionNotes: [
+          {
+            title: "Preview before commitment",
+            body: "Contributors can inspect the transcript, source video, speakers, tags, and review details before starting the 24-hour claim window.",
+          },
+          {
+            title: "Focused editing controls",
+            body: "After claiming, the editor surfaces only the most important controls, reducing cognitive load during review.",
+          },
+          {
+            title: "Editing without context switching",
+            body: "Video scrubbing and speaker edits were brought into the editor, helping contributors review transcripts faster.",
+          },
         ],
       },
       {
         variant: "media",
         type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
-        alt: "Placeholder image for withdrawing an active review",
+        src: `${transcriptReviewBasePath}/withdraw transcript.png`,
+        alt: "Withdraw transcript confirmation modal in the editor",
+        overlayLabel: "WITHDRAWING CLAIMED REVIEW",
+        frame: "withdraw-transcript",
+      },
+      {
+        variant: "withdraw-support-row",
       },
       {
         variant: "text",
@@ -203,10 +240,16 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-placeholder.svg`,
-        alt: "Placeholder image for active reviews and review history",
+        variant: "review-states-stack",
+      },
+      {
+        variant: "text",
+        eyebrow: "Reflection",
+        title: "Designing within real product constraints",
+        body: [
+          "The product already worked, but its experience reflected internal logic and developer-first language. Rather than rebuilding it, I focused on making the workflow clearer, more trustworthy, and easier for contributors to navigate.",
+          "Working within technical and stakeholder constraints pushed me to preserve what worked and prioritize changes that meaningfully improved the contributor journey.",
+        ],
       },
     ],
   },
