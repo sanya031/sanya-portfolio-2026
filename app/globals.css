@@ -1182,11 +1182,10 @@ video {
 }
 
 .case-study-page__back-link {
-  margin-bottom: 1rem;
-}
-
-.case-study-page__back-link {
+  display: inline-block;
+  overflow: hidden;
   width: fit-content;
+  margin: 0.55rem 0 0.45rem;
   color: rgba(50, 64, 79, 0.66);
   font-size: 0.875rem;
   font-weight: 500;
@@ -1194,8 +1193,37 @@ video {
   transition: color 140ms ease;
 }
 
+.case-study-page__back-link-track {
+  position: relative;
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  transform: translateX(0);
+  transition: transform 180ms ease;
+}
+
+.case-study-page__back-link svg {
+  width: 1.05rem;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.case-study-page__back-link-next-arrow {
+  position: absolute;
+  left: calc(100% + 0.35rem);
+}
+
 .case-study-page__back-link:hover {
-  color: var(--case-label);
+  color: #000000;
+}
+
+.case-study-page__back-link:hover .case-study-page__back-link-track {
+  transform: translateX(-1.4rem);
 }
 
 .case-study-page__meta {

@@ -597,13 +597,26 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         items={navItems}
         lockVariant
         variant="light"
+        workHref="/#work"
       />
       {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
           <HeroContentReveal>
             <BackToWorkLink className="case-study-page__back-link">
-              Back to work
+              <span className="case-study-page__back-link-track">
+                <svg aria-hidden="true" viewBox="0 0 18 10">
+                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                </svg>
+                Back to work
+                <svg
+                  aria-hidden="true"
+                  className="case-study-page__back-link-next-arrow"
+                  viewBox="0 0 18 10"
+                >
+                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                </svg>
+              </span>
             </BackToWorkLink>
             <div className="case-study-page__meta" aria-label="Case study metadata">
               {page.meta.map((item) => (
