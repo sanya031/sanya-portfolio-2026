@@ -1249,7 +1249,7 @@ video {
 }
 
 .case-study-page__hero h1 {
-  max-width: 43rem;
+  max-width: 100%;
   margin: -0.25rem 0 0;
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
