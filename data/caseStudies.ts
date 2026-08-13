@@ -20,7 +20,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: "case-study-template",
-    title: "Redesigning how contributors discover, claim, and complete transcript reviews",
+    title: "Simplifying the transcript review journey from discovery to reward",
     subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",

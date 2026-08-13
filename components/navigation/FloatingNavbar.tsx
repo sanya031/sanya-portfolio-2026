@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
+import { useRouter } from "next/navigation";
 import type { NavItem } from "../../data/navItems";
 
 export type FloatingNavbarVariant = "dark" | "light";
@@ -14,6 +15,7 @@ export type FloatingNavbarProps = {
   hideOnFirstFold?: boolean;
   homeHref?: string;
   lockVariant?: boolean;
+  workHref?: string;
 };
 
 const popupDuration = 900;
@@ -25,8 +27,10 @@ export function FloatingNavbar({
   items,
   lockVariant = false,
   variant = "dark",
+  workHref,
   activeItemId,
 }: FloatingNavbarProps) {
+  const router = useRouter();
   const [isHiddenOnFirstFold, setIsHiddenOnFirstFold] = useState(hideOnFirstFold);
   const [visualVariant, setVisualVariant] = useState<FloatingNavbarVariant>(variant);
   const [isOverFooter, setIsOverFooter] = useState(false);
@@ -87,7 +91,7 @@ export function FloatingNavbar({
             <a
               className="floating-navbar__link"
               data-active={activeItemId === item.id}
-              href={item.href}
+              href={item.id === "work" && workHref ? workHref : item.href}
               onClick={
                 item.id === "intro"
                   ? (event) => {
@@ -95,6 +99,12 @@ export function FloatingNavbar({
                       setShowAboutPopup(true);
                       window.setTimeout(() => setShowAboutPopup(false), popupDuration);
                     }
+                  : item.id === "work" && workHref === "/#work"
+                    ? (event) => {
+                        event.preventDefault();
+                        window.sessionStorage.setItem("portfolio-instant-work-scroll", "true");
+                        router.push("/", { scroll: false });
+                      }
                   : undefined
               }
               rel={item.external ? "noreferrer" : undefined}

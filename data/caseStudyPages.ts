@@ -85,7 +85,7 @@ export const caseStudyPages: CaseStudyPage[] = [
   {
     slug: "case-study-template",
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
-    title: "Redesigning how contributors discover, claim, and complete transcript reviews",
+    title: "Simplifying the transcript review journey from discovery to reward",
     hero: {
       type: "video",
       src: `${transcriptReviewBasePath}/hero-vid-purple.mp4`,
@@ -108,10 +108,10 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "text",
         eyebrow: "Overview",
-        title: "Helping contributors spend less time navigating and more time reviewing transcripts",
+        title: "Connecting 4 fragmented workflows into a faster, more intuitive review experience",
         body: [
-          "The platform enabled contributors to claim, edit, and submit transcript reviews, but the experience was fragmented across different parts of the product. Discovering new work, continuing active reviews, and tracking completed contributions all required different navigation patterns and mental models.",
-          "This redesign focused on reducing friction across the contributor journey, from discovering work to submitting reviews. The goals were to streamline navigation, surface key actions at the right moments, clarify the scope of a review before commitment, and create a more connected end-to-end experience.",
+          "Bitcoin Dev Project had all the functionality contributors needed to review transcripts, but it was fragmented across the product. I redesigned four core workflows-from discovering available transcripts and managing reviews to editing and tracking rewards-by auditing the existing experience, connecting disconnected screens, and simplifying navigation.",
+          "The redesign also streamlined the editor by removing unnecessary functionality and bringing essential tools directly into the editing workspace. Together, these changes reduced navigation and cognitive overhead, giving contributors a clearer, faster path from finding work to completing a review and tracking their contribution.",
         ],
       },
       {
@@ -284,11 +284,11 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "text",
         eyebrow: "Overview",
-        title: "Creating a clearer and more recognizable home for an evolving developer community",
+        title: "Restructuring resource discovery and building an identity that could scale",
         body: [
-          "Bitcoin Dev Project had grown from a small community initiative into a broader platform for Bitcoin developers. However, its website and visual identity had not evolved at the same pace.",
-          "Visitors had to navigate disconnected pages and long resource lists to understand what BDP offered. The organization also lacked a distinct identity that could represent it consistently across its website, community initiatives, and educational materials.",
-          "Alongside the website redesign, I created a new brand identity and reusable visual system that could grow with the project. Following the launch, the website visits increased by 19% and the bounce rate decreased by 8% during the first month.",
+          "As Bitcoin Dev Project grew from a community initiative into a broader platform for Bitcoin developers, its website and identity hadn't evolved with it. Resources were spread across disconnected pages and long lists, making it difficult for visitors to understand what BDP offered and find the right path for their goals.",
+          "I led the end-to-end website redesign, restructuring the information architecture around user goals, simplifying navigation, and surfacing resources earlier in the journey. Alongside it, I created a new visual identity and reusable design system to give BDP a recognizable, consistent foundation across its website and community initiatives.",
+          "In the first month after launch, site visits increased by 19% and bounce rate decreased by 8% compared with the month before launch.",
         ],
       },
       {
