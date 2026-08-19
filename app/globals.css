@@ -3559,6 +3559,19 @@ video {
     font-size: 0.95rem;
   }
 
+  .case-study-page__media-overlay-label,
+  .case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::before,
+  .case-study-page__media[data-frame="before-after"] .case-study-page__media-surface::after,
+  .case-study-page__withdraw-support-row span,
+  .case-study-page__review-state span,
+  .case-study-page__audit-artifact span,
+  .case-study-page__workflow-row span,
+  .case-study-page__two-column-cell,
+  .case-study-page__portal-cell span,
+  .case-study-page__butter-chip {
+    font-size: 12px;
+  }
+
   .case-study-page__carousel-slide {
     flex-basis: clamp(8.5rem, 58vw, 13.5rem);
   }

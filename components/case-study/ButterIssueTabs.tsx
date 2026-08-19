@@ -33,17 +33,6 @@ const issues = [
     title: "Claiming happened before contributors had enough context.",
     body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit.",
   },
-  {
-    label: "STATIC CONTEXT",
-    media: {
-      type: "image",
-      src: "/assets/case-study-1/key-decision-placeholder.svg",
-      alt: "Placeholder for static context issue",
-      empty: true,
-    },
-    title: "Information remained static even as contributor goals changed.",
-    body: "The same fields appeared across stages, even when contributors needed different cues before claiming, while editing, and after submission.",
-  },
 ];
 
 type Highlight = {
@@ -120,8 +109,8 @@ export function ButterIssueTabs() {
           </button>
         ))}
       </div>
-      <div className="case-study-page__butter-container" data-empty={activeIssue.media.empty}>
-        {activeIssue.media.empty ? null : activeIssue.media.type === "video" ? (
+      <div className="case-study-page__butter-container">
+        {activeIssue.media.type === "video" ? (
           <video
             autoPlay
             key={activeIssue.media.src}
