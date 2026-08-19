@@ -3073,10 +3073,23 @@ video {
 
 @media (max-width: 860px) {
   .home-page__hero-shell {
-    background-attachment: fixed;
+    background-image: none;
+  }
+
+  .home-page__hero-shell::after {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--hero-image);
     background-position: 65% top;
     background-repeat: no-repeat;
     background-size: cover;
+    content: "";
+    pointer-events: none;
+  }
+
+  .home-page__hero-shell::before {
+    z-index: 1;
   }
 
   .hero-intro {
@@ -3085,6 +3098,7 @@ video {
     --hero-cols: 10;
     --hero-rows: 24;
     width: var(--hero-stage-width);
+    z-index: 2;
     overflow: visible;
     padding: 0;
   }
@@ -3466,6 +3480,10 @@ video {
   }
 
   .home-page__hero-shell {
+    background-position: center top;
+  }
+
+  .home-page__hero-shell::after {
     background-position: 65% top;
     background-size: auto 100svh;
   }
