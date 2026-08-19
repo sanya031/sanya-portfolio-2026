@@ -3467,6 +3467,7 @@ video {
 
   .home-page__hero-shell {
     background-position: 65% top;
+    background-size: auto 100svh;
   }
 
   .hero-intro__content {
