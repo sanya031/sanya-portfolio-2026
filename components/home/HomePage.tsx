@@ -10,14 +10,7 @@ import { InstantWorkScroll } from "./InstantWorkScroll";
 import { ScrollStatement } from "./ScrollStatement";
 import { WorkSection } from "./WorkSection";
 
-export type HomePageProps = {
-  heroImageSrc?: string;
-};
-
-export function HomePage({
-  heroImageSrc = "/assets/bachground painting 1.png",
-}: HomePageProps) {
-  const heroBackgroundImage = `url("${heroImageSrc}")`;
+export function HomePage() {
 
   return (
     <main className="home-page">
@@ -25,7 +18,7 @@ export function HomePage({
       <CaseStudyCursor />
       <FloatingNavbar items={navItems} variant="dark" />
 
-      <HeroCrossfadeShell backgroundImage={heroBackgroundImage}>
+      <HeroCrossfadeShell>
         <HeroIntro />
         <ScrollStatement words={statementWords} />
       </HeroCrossfadeShell>

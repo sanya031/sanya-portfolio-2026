@@ -15,6 +15,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          href="/assets/hero-background.webp"
+          as="image"
+          type="image/webp"
+        />
+      </head>
       <body suppressHydrationWarning>
         <TransitionProvider>{children}</TransitionProvider>
       </body>
