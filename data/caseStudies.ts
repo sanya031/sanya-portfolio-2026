@@ -19,7 +19,7 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: "case-study-template",
+    id: "transcript-review-redesign",
     title: "Simplifying the transcript review journey from discovery to reward",
     subtitle: "Bitcoin Transcript Review",
     description:
@@ -27,7 +27,7 @@ export const caseStudies: CaseStudy[] = [
     role: "Bitcoin Transcript Review",
     year: "Jun 2026",
     tags: ["HANDED-OFF"],
-    href: "/work/case-study-template",
+    href: "/work/transcript-review-redesign",
     media: {
       type: "video",
       src: "/assets/case-study-1/hero-vid-purple.mp4",
@@ -35,7 +35,7 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    id: "bitcoin-dev-project",
+    id: "bitcoin-dev-project-redesign",
     title: "Designing a cohesive brand and website for an open-source Bitcoin developer community",
     subtitle: "Bitcoin Dev Project",
     description:
@@ -43,7 +43,7 @@ export const caseStudies: CaseStudy[] = [
     role: "Bitcoin Dev Project",
     year: "DEC 2025",
     tags: ["SHIPPED"],
-    href: "/work/bitcoin-dev-project",
+    href: "/work/bitcoin-dev-project-redesign",
     media: {
       type: "video",
       src: "/assets/case-study-2/hero-media.mp4",

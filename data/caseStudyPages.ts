@@ -46,6 +46,13 @@ export type CaseStudyPage = {
   slug: string;
   meta: string[];
   title: string;
+  seo: {
+    title: string;
+    description: string;
+    ogTitle: string;
+    ogDescription: string;
+    image: string;
+  };
   hero: CaseStudyAsset;
   facts: CaseStudyFact[];
   sections: Array<
@@ -83,9 +90,18 @@ const basePath = "/assets/case-study-2";
 
 export const caseStudyPages: CaseStudyPage[] = [
   {
-    slug: "case-study-template",
+    slug: "transcript-review-redesign",
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
     title: "Simplifying the transcript review journey from discovery to reward",
+    seo: {
+      title: "Transcript Review Redesign | Sanya Malhotra",
+      description:
+        "A product design case study simplifying transcript reviews from discovery and claiming to editing, submission, and reward tracking.",
+      ogTitle: "Simplifying Transcript Reviews from Discovery to Reward",
+      ogDescription:
+        "A case study on redesigning fragmented contributor workflows into a clearer, faster transcript review experience.",
+      image: `${transcriptReviewBasePath}/key-decision-2 (1) 1.png`,
+    },
     hero: {
       type: "video",
       src: `${transcriptReviewBasePath}/hero-vid-purple.mp4`,
@@ -254,9 +270,18 @@ export const caseStudyPages: CaseStudyPage[] = [
     ],
   },
   {
-    slug: "bitcoin-dev-project",
+    slug: "bitcoin-dev-project-redesign",
     meta: ["Bitcoin Dev Project", "Dec 2025", "Shipped"],
     title: "Helping Bitcoin developers find the right resources and opportunities",
+    seo: {
+      title: "Bitcoin Dev Project Website & Brand Redesign | Sanya Malhotra",
+      description:
+        "A product and brand design case study restructuring Bitcoin Dev Project's website, resource discovery, identity, and visual system.",
+      ogTitle: "Bitcoin Dev Project Website & Brand Redesign",
+      ogDescription:
+        "A case study on redesigning a developer community website and creating a scalable visual identity for Bitcoin Dev Project.",
+      image: `${basePath}/problem-img.jpg`,
+    },
     hero: {
       type: "video",
       src: `${basePath}/hero-media.mp4`,

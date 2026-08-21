@@ -25,7 +25,7 @@ export type CaseStudyPageProps = {
 };
 
 const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
-  "case-study-template": {
+  "transcript-review-redesign": {
     0: "overview",
     1: "audit",
     3: "mixed-states",
@@ -38,7 +38,7 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     15: "review-states",
     16: "reflection",
   },
-  "bitcoin-dev-project": {
+  "bitcoin-dev-project-redesign": {
     0: "overview",
     1: "problem",
     3: "requirements",
@@ -57,7 +57,7 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
 };
 
 const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
-  "case-study-template": [
+  "transcript-review-redesign": [
     { id: "overview", label: "Overview" },
     { id: "audit", label: "Audit" },
     { id: "mixed-states", label: "Mixed States", secondary: true },
@@ -71,7 +71,7 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
     { id: "review-states", label: "Review States", secondary: true },
     { id: "reflection", label: "Reflection" },
   ],
-  "bitcoin-dev-project": [
+  "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
     { id: "problem", label: "Problem" },
     { id: "requirements", label: "Requirements" },

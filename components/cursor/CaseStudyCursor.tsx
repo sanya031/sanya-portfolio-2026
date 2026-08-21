@@ -11,13 +11,13 @@ type CursorState = {
 };
 
 const cursorAssets: Record<string, string> = {
-  "case-study-template": "/assets/case-study-cursor-1.svg",
-  "bitcoin-dev-project": "/assets/case-study-cursor-2.svg",
+  "transcript-review-redesign": "/assets/case-study-cursor-1.svg",
+  "bitcoin-dev-project-redesign": "/assets/case-study-cursor-2.svg",
 };
 
 export function CaseStudyCursor() {
   const [cursor, setCursor] = useState<CursorState>({
-    assetSrc: cursorAssets["case-study-template"],
+    assetSrc: cursorAssets["transcript-review-redesign"],
     isVisible: false,
     x: 0,
     y: 0,
@@ -44,11 +44,11 @@ export function CaseStudyCursor() {
       const target = event.currentTarget as HTMLElement;
       const caseStudyId =
         target.closest<HTMLElement>("[data-case-study-id]")?.dataset.caseStudyId ??
-        "case-study-template";
+        "transcript-review-redesign";
 
       setCursor((current) => ({
         ...current,
-        assetSrc: cursorAssets[caseStudyId] ?? cursorAssets["case-study-template"],
+        assetSrc: cursorAssets[caseStudyId] ?? cursorAssets["transcript-review-redesign"],
         isVisible: true,
       }));
     };
