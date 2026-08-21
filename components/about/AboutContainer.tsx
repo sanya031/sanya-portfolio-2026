@@ -73,6 +73,7 @@ export function AboutContainer({
       aria-label={label}
       aria-haspopup={onSpotlight ? "dialog" : undefined}
       className={["about-container", className].filter(Boolean).join(" ")}
+      data-cursor={onSpotlight ? "about-view" : undefined}
       role="group"
       onClick={openSpotlight}
       onKeyDown={openSpotlightFromKeyboard}

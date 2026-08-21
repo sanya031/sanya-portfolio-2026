@@ -56,7 +56,7 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/assets/hero-background.webp"
+          href="/assets/bachground painting 1.webp"
           as="image"
           type="image/webp"
         />
