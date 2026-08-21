@@ -1235,7 +1235,7 @@ video {
 }
 
 .about-spotlight__container[data-spotlight-id="archive"] {
-  width: min(58vw, 680px);
+  width: min(52vw, 620px);
   height: min(84svh, 860px);
 }
 
