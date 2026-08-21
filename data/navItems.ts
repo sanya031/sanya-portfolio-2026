@@ -18,7 +18,7 @@ export const navItems: NavItem[] = [
   {
     id: "intro",
     label: "About",
-    href: "#intro",
+    href: "/about",
     iconSrc: "/assets/about_flower.svg",
     iconAlt: "",
   },

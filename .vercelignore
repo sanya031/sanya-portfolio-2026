@@ -1,0 +1,5 @@
+# Local visual references are not runtime assets.
+public/reference-ss/
+
+# The About page uses the responsive WebP derivatives at runtime.
+public/assets/about/about-bg-image.png

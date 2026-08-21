@@ -18,8 +18,6 @@ export type FloatingNavbarProps = {
   workHref?: string;
 };
 
-const popupDuration = 900;
-
 export function FloatingNavbar({
   autoExpandOnScroll = true,
   hideOnFirstFold = true,
@@ -34,7 +32,6 @@ export function FloatingNavbar({
   const [isHiddenOnFirstFold, setIsHiddenOnFirstFold] = useState(hideOnFirstFold);
   const [visualVariant, setVisualVariant] = useState<FloatingNavbarVariant>(variant);
   const [isOverFooter, setIsOverFooter] = useState(false);
-  const [showAboutPopup, setShowAboutPopup] = useState(false);
 
   useEffect(() => {
     const updateVisibility = () => {
@@ -91,20 +88,16 @@ export function FloatingNavbar({
             <a
               className="floating-navbar__link"
               data-active={activeItemId === item.id}
-              href={item.id === "work" && workHref ? workHref : item.href}
+              href={
+                item.id === "work" && workHref ? workHref : item.href
+              }
               onClick={
-                item.id === "intro"
+                item.id === "work" && workHref === "/#work"
                   ? (event) => {
                       event.preventDefault();
-                      setShowAboutPopup(true);
-                      window.setTimeout(() => setShowAboutPopup(false), popupDuration);
+                      window.sessionStorage.setItem("portfolio-instant-work-scroll", "true");
+                      router.push("/", { scroll: false });
                     }
-                  : item.id === "work" && workHref === "/#work"
-                    ? (event) => {
-                        event.preventDefault();
-                        window.sessionStorage.setItem("portfolio-instant-work-scroll", "true");
-                        router.push("/", { scroll: false });
-                      }
                   : undefined
               }
               rel={item.external ? "noreferrer" : undefined}
@@ -120,25 +113,6 @@ export function FloatingNavbar({
           </li>
         ))}
       </ul>
-      <span
-        className="under-construction-popup under-construction-popup--nav"
-        data-visible={showAboutPopup}
-        aria-live="polite"
-      >
-        <img
-          className="under-construction-popup__icon"
-          src="/assets/tap-L.svg"
-          alt=""
-          aria-hidden="true"
-        />
-        <span>Under Construction</span>
-        <img
-          className="under-construction-popup__icon"
-          src="/assets/tap-R.svg"
-          alt=""
-          aria-hidden="true"
-        />
-      </span>
     </nav>
   );
 }
