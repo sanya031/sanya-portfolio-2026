@@ -22,12 +22,37 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
   if (!page) {
     return {
       title: "Case Study | Sanya Malhotra",
+      description:
+        "Explore product design case studies by Sanya Malhotra across UX, visual systems, and interface design.",
     };
   }
 
   return {
-    title: `${page.title} | Sanya Malhotra`,
-    description: page.meta.join(" * "),
+    title: page.seo.title,
+    description: page.seo.description,
+    alternates: {
+      canonical: `/work/${page.slug}`,
+    },
+    openGraph: {
+      title: page.seo.ogTitle,
+      description: page.seo.ogDescription,
+      url: `/work/${page.slug}`,
+      images: [
+        {
+          url: page.seo.image,
+          width: 1200,
+          height: 630,
+          alt: page.title,
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.seo.ogTitle,
+      description: page.seo.ogDescription,
+      images: [page.seo.image],
+    },
   };
 }
 

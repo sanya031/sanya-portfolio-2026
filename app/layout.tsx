@@ -3,9 +3,40 @@ import { TransitionProvider } from "../components/transitions/TransitionProvider
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sanya Malhotra | Product Designer",
+  metadataBase: new URL("https://www.sanyamalhotra.me"),
+  title: "Sanya Malhotra | Product Designer Portfolio",
   description:
-    "A product design portfolio exploring craft, complexity, systems, and visually polished interfaces.",
+    "Product designer crafting thoughtful, visually polished interfaces across systems, ambiguity, and complex product experiences.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Sanya Malhotra | Product Designer Portfolio",
+    description:
+      "Explore selected product design work across UX, systems thinking, visual craft, and interface design.",
+    url: "/",
+    siteName: "Sanya Malhotra",
+    images: [
+      {
+        url: "/assets/bachground painting 1.webp",
+        width: 1200,
+        height: 630,
+        alt: "Sanya Malhotra product design portfolio homepage",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sanya Malhotra | Product Designer Portfolio",
+    description:
+      "Explore selected product design work across UX, systems thinking, visual craft, and interface design.",
+    images: ["/assets/bachground painting 1.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

@@ -2633,7 +2633,7 @@ video {
   font-family: "Geist", Arial, sans-serif;
 }
 
-.case-study-page[data-case-study-slug="bitcoin-dev-project"] {
+.case-study-page[data-case-study-slug="bitcoin-dev-project-redesign"] {
   --case-label: #cd4429;
   --case-rail-active: var(--case-label);
 }
