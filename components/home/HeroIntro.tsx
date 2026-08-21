@@ -1,9 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState } from "react";
-
-const popupDuration = 900;
 
 export type HeroIntroProps = {
   headline?: string;
@@ -22,7 +19,7 @@ export function HeroIntro({
   headline = "I'm a Product Designer working at the intersection of craft and complexity.",
   supportingText = "I design intentional, visually polished experiences that bring clarity to complex ideas.",
   motifs = [
-    { label: "About", iconSrc: "/assets/about_flower.svg" },
+    { label: "About", iconSrc: "/assets/about_flower.svg", href: "/about" },
     { label: "Work", iconSrc: "/assets/work_folder.svg", href: "#work" },
     {
       label: "Resume",
@@ -32,13 +29,6 @@ export function HeroIntro({
     },
   ],
 }: HeroIntroProps) {
-  const [showAboutPopup, setShowAboutPopup] = useState(false);
-
-  const handleAboutClick = () => {
-    setShowAboutPopup(true);
-    window.setTimeout(() => setShowAboutPopup(false), popupDuration);
-  };
-
   return (
     <div className="hero-intro" data-animation="hero-intro-fade-on-scroll">
       <div className="hero-intro__overlay" aria-hidden="true" />
@@ -80,14 +70,7 @@ export function HeroIntro({
             external={motif.external}
             href={motif.href}
             key={motif.label}
-            onClick={motif.label === "About" ? handleAboutClick : undefined}
           >
-            {motif.label === "About" ? (
-              <UnderConstructionPopup
-                className="under-construction-popup--hero"
-                visible={showAboutPopup}
-              />
-            ) : null}
             {containerCorners.map((corner) => (
               <img
                 className="hero-intro__corner-plus"
@@ -136,33 +119,4 @@ function HeroMotif({ external, href, onClick, ...props }: HeroMotifProps) {
   }
 
   return <span {...props} />;
-}
-
-type UnderConstructionPopupProps = {
-  className?: string;
-  visible: boolean;
-};
-
-function UnderConstructionPopup({ className = "", visible }: UnderConstructionPopupProps) {
-  return (
-    <span
-      className={`under-construction-popup ${className}`}
-      data-visible={visible}
-      aria-live="polite"
-    >
-      <img
-        className="under-construction-popup__icon"
-        src="/assets/tap-L.svg"
-        alt=""
-        aria-hidden="true"
-      />
-      <span>Under Construction</span>
-      <img
-        className="under-construction-popup__icon"
-        src="/assets/tap-R.svg"
-        alt=""
-        aria-hidden="true"
-      />
-    </span>
-  );
 }
