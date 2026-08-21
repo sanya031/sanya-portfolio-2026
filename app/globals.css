@@ -71,6 +71,10 @@ video {
   --hero-container-opacity: 1;
   --hero-overlay-opacity: 0.05;
   --hero-statement-opacity: 0;
+  --hero-image: image-set(
+    url("/assets/bachground painting 1.webp") type("image/webp") 1x,
+    url("/assets/bachground painting 1.png") type("image/png") 1x
+  );
   position: relative;
   min-height: 200vh;
   background-image: var(--hero-image);
@@ -3333,6 +3337,7 @@ video {
     grid-column: var(--hero-content-start) / span 12;
     grid-row: 3 / span 7;
     padding: clamp(0.75rem, 1.5vw, 1rem);
+    height: fit-content;
   }
 
   .hero-intro__headline {
@@ -3348,22 +3353,22 @@ video {
 
   .hero-intro__motif-content img {
     width: clamp(2.75rem, 5vw, 3.55rem);
-    height: clamp(2.75rem, 5vw, 3.55rem);
+    /* height: clamp(2.75rem, 5vw, 3.55rem); */
   }
 
   .hero-intro__motif[data-motif-label="about"] {
     grid-column: 7 / span 2;
-    grid-row: 12 / span 2;
+    grid-row: 14 / span 2;
   }
 
   .hero-intro__motif[data-motif-label="work"] {
     grid-column: 17 / span 2;
-    grid-row: 11 / span 2;
+    grid-row: 13 / span 2;
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
     grid-column: 9 / span 2;
-    grid-row: 14 / span 2;
+    grid-row: 16 / span 2;
   }
 
   .interactive-statement__sentence {
@@ -3569,7 +3574,7 @@ video {
   .case-study-page__two-column-cell,
   .case-study-page__portal-cell span,
   .case-study-page__butter-chip {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .case-study-page__carousel-slide {

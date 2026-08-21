@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 export type HeroCrossfadeShellProps = {
-  backgroundImage: string;
   children: ReactNode;
 };
 
@@ -23,10 +22,7 @@ const smoothstep = (value: number) => {
 const mapRange = (value: number, start: number, end: number) =>
   smoothstep((value - start) / (end - start));
 
-export function HeroCrossfadeShell({
-  backgroundImage,
-  children,
-}: HeroCrossfadeShellProps) {
+export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
   const shellRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -74,7 +70,6 @@ export function HeroCrossfadeShell({
       id="intro"
       className="home-page__hero-shell"
       ref={shellRef}
-      style={{ "--hero-image": backgroundImage } as HeroCrossfadeStyle}
     >
       {children}
     </section>
