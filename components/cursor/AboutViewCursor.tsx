@@ -1,47 +1,60 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 
-type CursorState = {
-  isVisible: boolean;
-  x: number;
-  y: number;
-};
+const CURSOR_OFFSET = 14;
 
 export function AboutViewCursor() {
-  const [cursor, setCursor] = useState<CursorState>({
-    isVisible: false,
-    x: 0,
-    y: 0,
-  });
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+  const frameRef = useRef<number | null>(null);
+  const latestPosition = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const cursorElement = cursorRef.current;
 
-    if (!canHover) {
+    if (!canHover || !cursorElement) {
       return undefined;
     }
+
+    const paintCursor = () => {
+      frameRef.current = null;
+
+      const { x, y } = latestPosition.current;
+      const scale = cursorElement.dataset.visible === "true" ? 1 : 0.98;
+
+      cursorElement.style.transform = `translate3d(${x + CURSOR_OFFSET}px, ${
+        y + CURSOR_OFFSET
+      }px, 0) scale(${scale})`;
+    };
+
+    const schedulePaint = () => {
+      if (frameRef.current !== null) {
+        return;
+      }
+
+      frameRef.current = window.requestAnimationFrame(paintCursor);
+    };
 
     const moveCursor = (event: Event) => {
       const pointerEvent = event as PointerEvent;
 
-      setCursor((current) => ({
-        ...current,
+      latestPosition.current = {
         x: pointerEvent.clientX,
         y: pointerEvent.clientY,
-      }));
+      };
+
+      schedulePaint();
     };
 
-    const showCursor = () => {
-      setCursor((current) => ({
-        ...current,
-        isVisible: true,
-      }));
+    const showCursor = (event: Event) => {
+      cursorElement.dataset.visible = "true";
+      moveCursor(event);
     };
 
     const hideCursor = () => {
-      setCursor((current) => ({ ...current, isVisible: false }));
+      cursorElement.dataset.visible = "false";
+      schedulePaint();
     };
 
     const targets = Array.from(document.querySelectorAll('[data-cursor="about-view"]'));
@@ -53,6 +66,10 @@ export function AboutViewCursor() {
     });
 
     return () => {
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+
       targets.forEach((target) => {
         target.removeEventListener("pointerenter", showCursor);
         target.removeEventListener("pointerleave", hideCursor);
@@ -63,29 +80,17 @@ export function AboutViewCursor() {
 
   return (
     <div
+      ref={cursorRef}
       className="about-view-cursor"
-      data-visible={cursor.isVisible}
+      data-visible="false"
       aria-hidden="true"
-      style={{
-        "--about-view-cursor-x": `${cursor.x}px`,
-        "--about-view-cursor-y": `${cursor.y}px`,
-      } as CSSProperties}
     >
-      <svg
+      <img
         className="about-view-cursor__icon"
-        viewBox="0 0 18 12"
-        fill="none"
-        focusable="false"
-      >
-        <path
-          d="M1.35 6C3.1 2.95 5.62 1.43 8.9 1.43S14.69 2.95 16.45 6c-1.76 3.05-4.28 4.57-7.55 4.57S3.1 9.05 1.35 6Z"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="8.9" cy="6" r="1.75" stroke="currentColor" strokeWidth="1.2" />
-      </svg>
+        src="/assets/about-view-eye.svg"
+        alt=""
+        draggable={false}
+      />
       <span>VIEW</span>
     </div>
   );

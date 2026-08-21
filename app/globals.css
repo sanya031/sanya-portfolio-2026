@@ -1181,47 +1181,53 @@ video {
   z-index: 90;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.55rem 0.7rem;
-  border: 1px solid rgba(253, 249, 237, 0.5);
-  background: rgba(35, 34, 9, 0.58);
+  justify-content: center;
+  gap: 6px;
+  min-width: 4.6rem;
+  height: 25px;
+  padding: 3px 8px;
+  border: 1px solid rgba(253, 249, 237, 0.22);
+  background: rgba(37, 37, 37, 0.6);
   color: #fdf9ed;
   font-family: var(--mono);
-  font-size: 0.875rem;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: -0.154px;
-  line-height: 1;
+  letter-spacing: -0.143px;
+  line-height: 1.5;
   text-transform: uppercase;
   opacity: 0;
   pointer-events: none;
-  transform: translate3d(
-      calc(var(--about-view-cursor-x, 0px) + 14px),
-      calc(var(--about-view-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(0.98);
-  transition:
-    opacity 120ms ease,
-    transform 120ms ease;
+  transform: translate3d(-999px, -999px, 0) scale(0.98);
+  transition: opacity 90ms ease;
   user-select: none;
+  will-change: transform;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    calc(100% - 3px) 3px,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    3px calc(100% - 3px),
+    0 calc(100% - 3px),
+    0 3px,
+    3px 3px
+  );
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
 .about-view-cursor[data-visible="true"] {
   opacity: 1;
-  transform: translate3d(
-      calc(var(--about-view-cursor-x, 0px) + 14px),
-      calc(var(--about-view-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(1);
 }
 
 .about-view-cursor__icon {
-  width: 1.05rem;
-  height: auto;
+  width: 18.2px;
+  height: 14px;
   flex: 0 0 auto;
+  object-fit: contain;
 }
 
 @media (hover: none), (pointer: coarse) {
