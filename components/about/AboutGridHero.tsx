@@ -8,6 +8,7 @@ import {
 } from "react";
 import { AboutContainer } from "./AboutContainer";
 import { HomeFooter } from "../home/HomeFooter";
+import { AboutViewCursor } from "../cursor/AboutViewCursor";
 import { aboutContainers } from "../../data/aboutContainers";
 import { navItems } from "../../data/navItems";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
@@ -172,6 +173,7 @@ export function AboutGridHero() {
           ))}
         </div>
       </section>
+      <AboutViewCursor />
       {spotlightContainer ? (
         <div
           className="about-spotlight"
