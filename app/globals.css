@@ -1190,6 +1190,7 @@ video {
 }
 
 .about-spotlight__container.about-container {
+  --spotlight-drag-x: 0px;
   position: relative;
   inset: auto;
   top: auto;
@@ -1205,8 +1206,16 @@ video {
   justify-self: center;
   margin: auto;
   cursor: default;
+  touch-action: pan-y;
+  translate: var(--spotlight-drag-x) 0;
+  transition: translate 180ms ease-out;
   animation: about-spotlight-container-in 320ms cubic-bezier(0.22, 1, 0.36, 1)
     both;
+}
+
+.about-spotlight__container.about-container[data-dragging="true"] {
+  cursor: grabbing;
+  transition: none;
 }
 
 .about-spotlight__container .about-container__surface {

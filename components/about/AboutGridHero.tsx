@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { AboutContainer } from "./AboutContainer";
 import { HomeFooter } from "../home/HomeFooter";
 import { aboutContainers } from "../../data/aboutContainers";
@@ -17,6 +22,12 @@ export function AboutGridHero() {
     null,
   );
   const [spotlightId, setSpotlightId] = useState<string | null>(null);
+  const dragStartRef = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     const shuffledIds = aboutContainers
@@ -48,6 +59,72 @@ export function AboutGridHero() {
   const spotlightContainer = aboutContainers.find(
     (container) => container.id === spotlightId,
   );
+
+  const showAdjacentSpotlight = (direction: -1 | 1) => {
+    const currentIndex = aboutContainers.findIndex(
+      (container) => container.id === spotlightId,
+    );
+    if (currentIndex < 0) return;
+
+    const nextIndex =
+      (currentIndex + direction + aboutContainers.length) %
+      aboutContainers.length;
+    setSpotlightId(aboutContainers[nextIndex].id);
+  };
+
+  const startSpotlightDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary) return;
+    dragStartRef.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const moveSpotlightDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = dragStartRef.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) <= Math.abs(deltaY) || Math.abs(deltaX) < 6) return;
+
+    event.preventDefault();
+    event.currentTarget.dataset.dragging = "true";
+    event.currentTarget.style.setProperty(
+      "--spotlight-drag-x",
+      `${deltaX * 0.32}px`,
+    );
+  };
+
+  const finishSpotlightDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = dragStartRef.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    const threshold = Math.min(80, event.currentTarget.clientWidth * 0.14);
+    const isSwipe =
+      Math.abs(deltaX) > threshold && Math.abs(deltaX) > Math.abs(deltaY);
+
+    dragStartRef.current = null;
+    event.currentTarget.removeAttribute("data-dragging");
+    event.currentTarget.style.removeProperty("--spotlight-drag-x");
+
+    if (!isSwipe) return;
+    suppressClickRef.current = true;
+    showAdjacentSpotlight(deltaX < 0 ? 1 : -1);
+    window.setTimeout(() => {
+      suppressClickRef.current = false;
+    }, 0);
+  };
+
+  const cancelSpotlightDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    dragStartRef.current = null;
+    event.currentTarget.removeAttribute("data-dragging");
+    event.currentTarget.style.removeProperty("--spotlight-drag-x");
+  };
 
   const renderMedia = (id: string) => {
     if (id === "archive") return <ArchiveReceipt />;
@@ -116,6 +193,16 @@ export function AboutGridHero() {
           <div
             className={`about-container about-container--${spotlightContainer.id} about-spotlight__container`}
             data-spotlight-id={spotlightContainer.id}
+            key={spotlightContainer.id}
+            onClickCapture={(event) => {
+              if (!suppressClickRef.current) return;
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            onPointerCancel={cancelSpotlightDrag}
+            onPointerDown={startSpotlightDrag}
+            onPointerMove={moveSpotlightDrag}
+            onPointerUp={finishSpotlightDrag}
           >
             <div className="about-container__label">
               {spotlightContainer.label}
