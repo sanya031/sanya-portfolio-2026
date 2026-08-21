@@ -1183,9 +1183,9 @@ video {
   place-items: center;
   gap: 18px;
   padding: clamp(28px, 5vh, 56px) clamp(20px, 4vw, 56px) 22px;
-  background: rgba(7, 8, 5, 0.7);
-  backdrop-filter: blur(14px) saturate(0.82);
-  -webkit-backdrop-filter: blur(14px) saturate(0.82);
+  background: rgba(7, 8, 5, 0.8);
+  backdrop-filter: blur(20px) saturate(0.76);
+  -webkit-backdrop-filter: blur(20px) saturate(0.76);
   animation: about-spotlight-in 220ms ease-out both;
 }
 
