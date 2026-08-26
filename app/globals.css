@@ -1904,6 +1904,12 @@ video {
   display: none;
 }
 
+@media (min-width: 1081px) {
+  .hero-intro__motif[data-motif-label="work"] .hero-intro__corner-plus[data-corner="top-left"] {
+    display: none;
+  }
+}
+
 @media (max-width: 1320px) {
   .hero-intro {
     --hero-cols: 30;
