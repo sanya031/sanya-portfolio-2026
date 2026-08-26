@@ -1671,6 +1671,10 @@ video {
   grid-column: var(--hero-content-start) / span 16;
   grid-row: 5 / span 6;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
   border: 1px solid rgba(239, 232, 213, 0.05);
   background: rgba(16, 15, 13, 0.58);
   box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.2);
