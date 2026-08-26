@@ -17,7 +17,7 @@ const containerCorners = ["top-left", "top-right", "bottom-left", "bottom-right"
 
 export function HeroIntro({
   headline = "I'm a Product Designer working at the intersection of craft and complexity.",
-  supportingText = "I design intentional, visually polished experiences that bring clarity to complex ideas.",
+  supportingText = "I work through messy workflows, systems, and interactions to make complex products easier to understand and use.",
   motifs = [
     { label: "About", iconSrc: "/assets/about_flower.svg", href: "/about" },
     { label: "Work", iconSrc: "/assets/work_folder.svg", href: "#work" },
