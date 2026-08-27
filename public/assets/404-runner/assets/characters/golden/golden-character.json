@@ -1,0 +1,28 @@
+{
+  "id": "golden-character-v1",
+  "status": "game-scale-proof",
+  "visualSize": { "width": 18, "height": 36 },
+  "frameCanvas": { "width": 36, "height": 36 },
+  "anchor": { "footX": 9, "footY": 36 },
+  "hitbox": {
+    "standing": { "x": 2, "y": 2, "width": 14, "height": 33 },
+    "ducking": { "x": 2, "y": 17, "width": 14, "height": 19 }
+  },
+  "states": ["idle", "run-a", "run-b", "jump", "duck", "game-over"],
+  "palette": {
+    "outline": "#292929",
+    "hair": "#342d29",
+    "hairHighlight": "#553b31",
+    "skin": "#b98164",
+    "clothing": "#242627",
+    "shoeAndLensHighlight": "#f2f0e8"
+  },
+  "traits": {
+    "hair": "long-voluminous-dark",
+    "glasses": "large-dark",
+    "complexion": "warm-medium-brown",
+    "clothing": "restrained-black",
+    "shoeAccent": "white"
+  },
+  "runtime": "approved-reference-sprite-sheet"
+}

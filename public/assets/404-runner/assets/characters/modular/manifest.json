@@ -1,0 +1,75 @@
+{
+  "frameSize": {
+    "width": 36,
+    "height": 36
+  },
+  "states": [
+    "idle",
+    "run-a",
+    "run-b",
+    "jump",
+    "duck",
+    "game-over"
+  ],
+  "layers": [
+    "layers/body.png",
+    "layers/complexion.png",
+    "layers/face.png",
+    "layers/hair.png",
+    "layers/glasses.png",
+    "layers/accessories.png"
+  ],
+  "variants": {
+    "golden": {
+      "label": "Golden",
+      "hairStyle": "long",
+      "hair": "#35231f",
+      "complexion": "#c88d67",
+      "clothing": "#252729",
+      "sheet": "variants/golden.png"
+    },
+    "auburn": {
+      "label": "Auburn",
+      "hairStyle": "long",
+      "hair": "#743e2d",
+      "complexion": "#a96546",
+      "clothing": "#26384a",
+      "sheet": "variants/auburn.png"
+    },
+    "bob": {
+      "label": "Short bob",
+      "hairStyle": "bob",
+      "hair": "#241c1a",
+      "complexion": "#e0aa7d",
+      "clothing": "#536149",
+      "sheet": "variants/bob.png"
+    },
+    "silver": {
+      "label": "Silver curls",
+      "hairStyle": "bob",
+      "hair": "#77736f",
+      "complexion": "#784b3b",
+      "clothing": "#593744",
+      "sheet": "variants/silver.png"
+    }
+  },
+  "shared": {
+    "baseline": 36,
+    "anchor": {
+      "x": 18,
+      "y": 36
+    },
+    "standingHitbox": {
+      "x": 2,
+      "y": 2,
+      "width": 14,
+      "height": 33
+    },
+    "duckingHitbox": {
+      "x": 2,
+      "y": 17,
+      "width": 14,
+      "height": 19
+    }
+  }
+}

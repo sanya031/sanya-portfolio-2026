@@ -1,0 +1,106 @@
+{
+  "source": "toronto-approved-reference.png",
+  "assets": {
+    "raccoon": {
+      "file": "raccoon.png",
+      "coloredFile": "color/raccoon.png",
+      "size": {
+        "width": 32,
+        "height": 22
+      },
+      "hitbox": {
+        "x": 4,
+        "y": 4,
+        "width": 25,
+        "height": 17
+      },
+      "role": "small-ground-obstacle"
+    },
+    "streetcar": {
+      "file": "streetcar.png",
+      "coloredFile": "color/streetcar.png",
+      "size": {
+        "width": 58,
+        "height": 40
+      },
+      "hitbox": {
+        "x": 4,
+        "y": 7,
+        "width": 50,
+        "height": 32
+      },
+      "role": "large-ground-obstacle"
+    },
+    "blue-jay": {
+      "file": "blue-jay-sheet.png",
+      "coloredFile": "color/blue-jay-sheet.png",
+      "frameSize": {
+        "width": 32,
+        "height": 28
+      },
+      "frames": 6,
+      "hitbox": {
+        "x": 5,
+        "y": 7,
+        "width": 23,
+        "height": 14
+      },
+      "role": "flying-duck-obstacle"
+    },
+    "cn-tower": {
+      "file": "cn-tower.png",
+      "coloredFile": "color/cn-tower.png",
+      "size": {
+        "width": 20,
+        "height": 64
+      },
+      "role": "non-colliding-background-landmark"
+    },
+    "bike-dock-1": {
+      "file": "bike-dock-1.png",
+      "coloredFile": "color/bike-dock-1.png",
+      "size": {
+        "width": 38,
+        "height": 30
+      },
+      "hitbox": {
+        "x": 2,
+        "y": 4,
+        "width": 34,
+        "height": 25
+      },
+      "role": "easy-variable-width-ground-obstacle"
+    },
+    "bike-dock-2": {
+      "file": "bike-dock-2.png",
+      "coloredFile": "color/bike-dock-2.png",
+      "size": {
+        "width": 50,
+        "height": 30
+      },
+      "hitbox": {
+        "x": 2,
+        "y": 4,
+        "width": 46,
+        "height": 25
+      },
+      "role": "medium-variable-width-ground-obstacle"
+    },
+    "bike-dock-3": {
+      "file": "bike-dock-3.png",
+      "coloredFile": "color/bike-dock-3.png",
+      "size": {
+        "width": 60,
+        "height": 30
+      },
+      "hitbox": {
+        "x": 2,
+        "y": 4,
+        "width": 56,
+        "height": 25
+      },
+      "role": "hard-variable-width-ground-obstacle"
+    }
+  },
+  "resampling": "nearest-neighbor"
+}

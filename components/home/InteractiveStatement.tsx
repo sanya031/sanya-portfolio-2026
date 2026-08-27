@@ -54,18 +54,15 @@ export function InteractiveStatement({
       </p>
 
       {activeWord ? (
-        <aside className="interactive-statement__preview" data-word-id={activeWord.id}>
-          {/* TODO: Position this card near the hovered word once motion/layout tooling is added. */}
+        <p className="interactive-statement__preview-line" data-word-id={activeWord.id}>
           <img
-            className="interactive-statement__preview-image"
-            src={activeWord.image.src}
-            alt={activeWord.image.alt}
+            className="interactive-statement__preview-line-icon"
+            src={activeWord.motifSrc}
+            alt=""
+            aria-hidden="true"
           />
-          <div className="interactive-statement__preview-copy">
-            <h2 className="interactive-statement__preview-title">{activeWord.title}</h2>
-            <p className="interactive-statement__preview-caption">{activeWord.caption}</p>
-          </div>
-        </aside>
+          <span>{activeWord.caption}</span>
+        </p>
       ) : null}
     </div>
   );
