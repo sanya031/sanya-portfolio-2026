@@ -67,7 +67,7 @@ video {
   --about-media-padding-block-end: 20px;
   --about-media-padding-block-start: 30px;
   --about-media-padding-inline: 20px;
-  --about-footer-tear-height: clamp(6rem, 12.1vw, 22rem);
+  --about-footer-tear-height: clamp(8rem, 12.8vw, 24rem);
   --about-grid-cell: min(40px, calc(100vw / 36));
   --about-grid-columns: 36;
   --about-content-grid-rows: 24;
@@ -962,26 +962,12 @@ video {
   z-index: 3;
   width: 100%;
   height: var(--about-footer-tear-height);
-  margin-top: calc(var(--about-footer-tear-height) * -0.58);
-  margin-bottom: calc(var(--about-footer-tear-height) * -0.42);
-  background-image: var(--about-background-image);
-  background-position:
-    center
-    calc(
-      (var(--about-hero-height) * -1) +
-        (var(--about-footer-tear-height) * 0.58)
-    );
+  margin-top: calc(var(--about-footer-tear-height) * -0.46);
+  margin-bottom: calc(var(--about-footer-tear-height) * -0.22);
+  background-image: url("/assets/bottom%20tear.png");
+  background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: auto var(--about-rendered-image-height);
-  mask-image: url("/assets/bottom%20tear.png");
-  mask-position: center bottom;
-  mask-repeat: no-repeat;
-  mask-size: cover;
-  mask-mode: alpha;
-  -webkit-mask-image: url("/assets/bottom%20tear.png");
-  -webkit-mask-position: center bottom;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: cover;
+  background-size: 100% auto;
   pointer-events: none;
 }
 
@@ -2379,14 +2365,14 @@ video {
 
 .work-section {
   --paper-tear-height: clamp(7.75rem, 12.7vw, 12rem);
-  --paper-bottom-height: clamp(7.25rem, 12.1vw, 22rem);
+  --paper-bottom-height: clamp(8rem, 12.8vw, 24rem);
   --paper-top-overlap: calc(var(--paper-tear-height) * 0.72);
   position: relative;
   z-index: 2;
   margin-top: calc(var(--paper-tear-height) * -0.52);
   background: transparent;
   color: var(--ink);
-  padding-bottom: calc(var(--paper-bottom-height) * 0.24);
+  padding-bottom: calc(var(--paper-bottom-height) * 0.72);
 }
 
 .work-section__tear {
@@ -2407,11 +2393,11 @@ video {
 }
 
 .work-section__tear--bottom {
-  bottom: calc(var(--paper-bottom-height) * -0.42);
+  bottom: calc(var(--paper-bottom-height) * -0.22);
   height: var(--paper-bottom-height);
   background-image: url("/assets/bottom%20tear.png");
   background-position: center bottom;
-  background-size: cover;
+  background-size: 100% auto;
 }
 
 .work-section__paper {
@@ -2667,15 +2653,15 @@ video {
 }
 
 .case-study-page__footer-tear {
-  --case-study-footer-tear-height: clamp(6rem, 11.9vw, 22rem);
+  --case-study-footer-tear-height: clamp(8rem, 12.8vw, 24rem);
   position: relative;
   z-index: 2;
   height: var(--case-study-footer-tear-height);
-  margin-bottom: calc(var(--case-study-footer-tear-height) * -0.46);
+  margin-bottom: calc(var(--case-study-footer-tear-height) * -0.22);
   background-image: url("/assets/case-study-2/bottom-case-study-tear.png");
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% auto;
   pointer-events: none;
 }
 
@@ -4682,7 +4668,7 @@ video {
 
   .work-section {
     --paper-tear-height: 6.7rem;
-    --paper-bottom-height: 6.2rem;
+    --paper-bottom-height: 9.4rem;
   }
 
   .case-study-card {
@@ -5102,7 +5088,7 @@ video {
 
   .work-section__tear--bottom {
     background-position: center bottom;
-    background-size: cover;
+    background-size: 100% auto;
   }
 
   .work-section__paper {
