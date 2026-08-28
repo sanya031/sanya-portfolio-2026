@@ -38,6 +38,16 @@ body {
   text-rendering: geometricPrecision;
 }
 
+::selection {
+  background: #ac9b29;
+  color: #16130f;
+}
+
+::-moz-selection {
+  background: #ac9b29;
+  color: #16130f;
+}
+
 .route-transition-shell {
   min-height: 100vh;
 }
