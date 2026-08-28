@@ -59,7 +59,7 @@ export function HeroIntro({
         <p className="hero-intro__supporting">{supportingText}</p>
       </div>
 
-      <p className="hero-intro__scroll-prompt">Scroll to view selected work...</p>
+      {/* <p className="hero-intro__scroll-prompt"> Scroll to view selected work...</p> */}
 
       <div className="hero-intro__motifs">
         {motifs.map((motif, index) => (
