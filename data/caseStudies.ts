@@ -30,7 +30,7 @@ export const caseStudies: CaseStudy[] = [
     href: "/work/transcript-review-redesign",
     media: {
       type: "video",
-      src: "/assets/case-study-1/hero-vid-purple.mp4",
+      src: "/assets/case-study-1/hero-scene-1.mp4",
       alt: "Preview of the Bitcoin Transcript Review case study",
     },
   },
