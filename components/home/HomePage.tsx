@@ -20,7 +20,7 @@ export function HomePage() {
 
       <HeroCrossfadeShell>
         <HeroIntro />
-        <ScrollStatement words={statementWords} />
+       {/* <ScrollStatement words={statementWords} /> */}
       </HeroCrossfadeShell>
 
       <WorkSection caseStudies={caseStudies} />
