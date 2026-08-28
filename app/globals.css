@@ -986,12 +986,12 @@ video {
   mask-image: url("/assets/bottom%20tear.png");
   mask-position: center bottom;
   mask-repeat: no-repeat;
-  mask-size: cover;
+  mask-size: 100% 100%;
   mask-mode: alpha;
   -webkit-mask-image: url("/assets/bottom%20tear.png");
   -webkit-mask-position: center bottom;
   -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: cover;
+  -webkit-mask-size: 100% 100%;
   pointer-events: none;
 }
 
@@ -2421,7 +2421,7 @@ video {
   height: var(--paper-bottom-height);
   background-image: url("/assets/bottom%20tear.png");
   background-position: center bottom;
-  background-size: cover;
+  background-size: 100% 100%;
 }
 
 .work-section__paper {
@@ -2685,7 +2685,7 @@ video {
   background-image: url("/assets/case-study-2/bottom-case-study-tear.png");
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   pointer-events: none;
 }
 
@@ -5112,7 +5112,7 @@ video {
 
   .work-section__tear--bottom {
     background-position: center bottom;
-    background-size: cover;
+    background-size: auto 100%;
   }
 
   .work-section__paper {
