@@ -104,7 +104,7 @@ export const caseStudyPages: CaseStudyPage[] = [
     },
     hero: {
       type: "video",
-      src: `${transcriptReviewBasePath}/hero-vid-purple.mp4`,
+      src: `${transcriptReviewBasePath}/hero-scene-1.mp4`,
       alt: "Animated hero preview of the Bitcoin Transcript Review redesign",
       frame: "hero",
     },
