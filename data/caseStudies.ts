@@ -20,7 +20,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: "transcript-review-redesign",
-    title: "Simplifying the transcript review journey from discovery to reward",
+    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
     subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
@@ -36,7 +36,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "bitcoin-dev-project-redesign",
-    title: "Designing a cohesive brand and website for an open-source Bitcoin developer community",
+    title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
     subtitle: "Bitcoin Dev Project",
     description:
       "A visual system and site direction for making an open-source developer community feel more legible, credible, and alive.",

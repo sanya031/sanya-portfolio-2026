@@ -92,7 +92,7 @@ export const caseStudyPages: CaseStudyPage[] = [
   {
     slug: "transcript-review-redesign",
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
-    title: "Simplifying the transcript review journey from discovery to reward",
+    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
     seo: {
       title: "Transcript Review Redesign | Sanya Malhotra",
       description:
@@ -272,7 +272,7 @@ export const caseStudyPages: CaseStudyPage[] = [
   {
     slug: "bitcoin-dev-project-redesign",
     meta: ["Bitcoin Dev Project", "Dec 2025", "Shipped"],
-    title: "Helping Bitcoin developers find the right resources and opportunities",
+    title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
     seo: {
       title: "Bitcoin Dev Project Website & Brand Redesign | Sanya Malhotra",
       description:
