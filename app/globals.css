@@ -1589,7 +1589,7 @@ video {
     url("/assets/bachground painting 1.png") type("image/png") 1x
   );
   position: relative;
-  min-height: 200vh;
+  min-height: 120vh;
   background-image: var(--hero-image);
   background-attachment: fixed;
   background-position: center top;
