@@ -46,6 +46,7 @@ export type CaseStudyPage = {
   slug: string;
   meta: string[];
   title: string;
+  subtitle?: string;
   seo: {
     title: string;
     description: string;
@@ -71,6 +72,7 @@ export type CaseStudyPage = {
     | { variant: "withdraw-support-row" }
     | { variant: "review-states-stack" }
     | { variant: "resource-card-stack" }
+    | ({ variant: "graphic"; label?: string })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
     | ({
@@ -93,6 +95,8 @@ export const caseStudyPages: CaseStudyPage[] = [
     slug: "transcript-review-redesign",
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
     title: "Redesigning a fragmented contributor workflow from discovery to reward.",
+    subtitle:
+      "Bitcoin Transcript Review is an open-source product where contributors review and correct transcripts of Bitcoin educational content in exchange for project rewards.",
     seo: {
       title: "Transcript Review Redesign | Sanya Malhotra",
       description:
@@ -113,46 +117,40 @@ export const caseStudyPages: CaseStudyPage[] = [
         label: "Organisation",
         value: ["Bitcoin Dev Project", "Bitcoin Transcript Review (Product)"],
       },
-      { label: "Collaborators", value: ["1 Developer", "1 Designer"] },
+      { label: "Collaborators", value: ["Team Lead", "1 Developer"] },
+      { label: "Role", value: ["Product Designer"] },
       { label: "Timeline", value: ["1 Month"] },
       {
-        label: "Skills",
-        value: ["UX Audit", "Information Architecture", "Visual Design"],
+        label: "Responsibilities",
+        value: [
+          "UX audit",
+          "Information architecture",
+          "Interaction and visual design",
+          "Developer handoff",
+        ],
       },
     ],
     sections: [
       {
         variant: "text",
         eyebrow: "Overview",
-        title: "Connecting 4 fragmented workflows into a faster, more intuitive review experience",
+        title: "Connecting 4 fragmented workflows into a clearer review experience.",
         body: [
-          "Bitcoin Dev Project had all the functionality contributors needed to review transcripts, but it was fragmented across the product. I redesigned four core workflows-from discovering available transcripts and managing reviews to editing and tracking rewards-by auditing the existing experience, connecting disconnected screens, and simplifying navigation.",
-          "The redesign also streamlined the editor by removing unnecessary functionality and bringing essential tools directly into the editing workspace. Together, these changes reduced navigation and cognitive overhead, giving contributors a clearer, faster path from finding work to completing a review and tracking their contribution.",
+          "The product split transcript discovery, claiming, editing and rewards across disconnected workflows, making it difficult for contributors to understand what to do next and leaving incomplete work locked for 24 hours.",
+          "I audited the end-to-end journey and reorganized it around clearer stages. Contributors could preview a transcript before claiming it, manage active and completed reviews separately, and withdraw work they could not complete.",
+          "The redesigned workflow was approved and handed off for development, while preserving the existing claim and reward logic.",
         ],
+      },
+      {
+        variant: "graphic",
       },
       {
         variant: "text",
         eyebrow: "Audit",
         title: "Each screen worked independently, but the journey between them did not.",
         body: [
-          "I audited the experience from discovering transcripts to tracking completed work. Questions and observations were documented in FigJam and grouped by stage of the contributor journey. The audit showed that the friction was not caused by one broken screen. It came from how contributors moved between disconnected parts of the product.",
-        ],
-      },
-      {
-        variant: "audit-artifacts",
-        items: [
-          {
-            type: "image",
-            src: `${transcriptReviewBasePath}/figjam.png`,
-            alt: "FigJam audit notes grouped by contributor journey stage",
-            overlayLabel: "SNIPPET FROM FIGJAM",
-          },
-          {
-            type: "image",
-            src: `${transcriptReviewBasePath}/dsgn_evol.png`,
-            alt: "Design evolution from the transcript review redesign process",
-            overlayLabel: "DESIGN EVOLUTION",
-          },
+          "I walked through the live product as both a new and returning contributor, documenting friction across discovery, claiming, editing and review history.",
+          "I reviewed the findings with the Team Lead and developer to distinguish usability problems from intentional product rules and backend constraints.",
         ],
       },
       {
@@ -160,11 +158,22 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
+        eyebrow: "Mixed States",
+        title: "Active work and review history supported different goals but shared the same structure.",
+        body: [
+          "Active reviews needed deadlines and continuation actions, while completed reviews needed submission, publishing and payment status. Presenting both together made reference information compete with work that required attention.",
+        ],
+      },
+      {
+        variant: "graphic",
+      },
+      {
+        variant: "text",
         eyebrow: "Solution",
         title: "Separating exploration from commitment reshaped the contributor journey.",
         body: [
-          "The audit showed that the largest source of friction was not one interface, it was the transition from browsing to claiming. Contributors were expected to commit before they had enough information to make that decision.",
-          "I separated evaluating a review from accepting responsibility for it. Browsing, previewing, claiming, editing, and tracking reviews became distinct but connected stages.",
+          "The original experience asked contributors to claim a transcript before they could evaluate the work. I separated browsing, previewing, claiming, editing and tracking into distinct but connected stages.",
+          "The redesign preserved the existing 24-hour claim rule while giving contributors more context before accepting responsibility.",
         ],
       },
       {
@@ -172,41 +181,62 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Key Decisions",
+        eyebrow: "Constraints & Trade-offs",
+        title: "Improving the workflow meant changing the experience without changing the rules underneath.",
+        body: [
+          "The redesign had to preserve the existing claim and reward logic, use the established design system and minimize backend development. I prioritized changes to navigation, hierarchy and interaction while adapting or deferring ideas that required additional product logic.",
+        ],
+      },
+      {
+        variant: "graphic",
+      },
+      {
+        variant: "text",
+        eyebrow: "Key Design Decision 01 · Navigation",
         title: "Primary contributor tasks should remain accessible at every stage.",
         body: [
-          "Available Reviews and My Reviews were moved into the main navigation. This removed the dependency on the profile drawer and kept finding work and continuing work accessible regardless of the contributor's current state.",
+          "Available Reviews and My Reviews represented the product's two primary contributor goals: finding new work and continuing existing work.",
+          "I moved both out of the profile drawer and into the primary navigation so contributors could access them throughout the review journey.",
         ],
       },
       {
         variant: "media",
         type: "image",
         src: `${transcriptReviewBasePath}/key-1.png`,
-        alt: "Placeholder image for main navigation key decision",
+        alt: "Before and after of moving primary contributor tasks into the main navigation",
         frame: "before-after",
       },
       {
         variant: "text",
+        eyebrow: "Key Design Decision 02 · Browsing",
         title: "Choosing work should feel like browsing opportunities, not scanning a database.",
         body: [
-          "The original table spread related information across distant columns and treated Claim as the first action. I redesigned it as a compact list that groups each transcript's title, source, speakers, labels, duration, and reward.",
-          "Rows open a transcript preview, while hover feedback communicates that each item is interactive.",
+          "The original table separated related information across distant columns and repeated Claim on every row. I regrouped each transcript's title, source, speakers, labels, duration and reward into one selectable item that opened a preview.",
+          "This shifted the first action from accepting work to evaluating it.",
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/key-decision-2 (1) 1.png`,
-        alt: "Redesigned transcript browsing view with available reviews",
-        overlayLabel: "REDESIGNED TRANSCRIPT BROWSING",
-        frame: "key-decision-2",
+        variant: "graphic",
       },
       {
         variant: "text",
+        titleSize: "small",
+        title: "Simplifying reward without making payout the primary choice.",
+        body: [
+          "The original reward indicator used both colour and coin quantity, making its levels harder to decode. I proposed displaying exact sats, but the team did not want payout to become the primary selection criterion.",
+          "I retained three relative reward levels while simplifying them into monochrome coin stacks.",
+        ],
+      },
+      {
+        variant: "graphic",
+      },
+      {
+        variant: "text",
+        eyebrow: "Key Decision 03 · Claiming",
         title: "Contributors should understand a review before starting the timer.",
         body: [
-          "Selecting a transcript now opens the editor in preview mode. Contributors can inspect the transcript, source video, speakers, tags, and review details before claiming it.",
-          "Editing tools and submission remain unavailable until the review is claimed. Claiming assigns the transcript and begins the 24-hour editing window.",
+          "Selecting a transcript now opens the editor in read-only preview mode. Contributors can inspect the source video, transcript, speakers, labels and review details before claiming it.",
+          "Claiming unlocks the editing controls and begins the existing 24-hour review window.",
         ],
       },
       {
@@ -219,21 +249,10 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
+        eyebrow: "Key Design Decision 04 · Editor",
         title: "Contributors needed a way to leave work they could not complete.",
-        body: [],
-        decisionNotes: [
-          {
-            title: "Preview before commitment",
-            body: "Contributors can inspect the transcript, source video, speakers, tags, and review details before starting the 24-hour claim window.",
-          },
-          {
-            title: "Focused editing controls",
-            body: "After claiming, the editor surfaces only the most important controls, reducing cognitive load during review.",
-          },
-          {
-            title: "Editing without context switching",
-            body: "Video scrubbing and speaker edits were brought into the editor, helping contributors review transcripts faster.",
-          },
+        body: [
+          "The editor now keeps claim status and its primary actions visible throughout the review. Contributors can withdraw work they cannot complete, allowing the transcript to return to the available pool instead of remaining unavailable until the claim expires.",
         ],
       },
       {
@@ -245,26 +264,46 @@ export const caseStudyPages: CaseStudyPage[] = [
         frame: "withdraw-transcript",
       },
       {
+        variant: "text",
+        titleSize: "small",
+        title: "The editor should support review work without unnecessary context switching.",
+        body: [
+          "I brought video navigation, timestamp controls and speaker management into the editing workspace. I also reduced competing toolbar actions, collapsed secondary transcript details and clarified the deadline treatment.",
+        ],
+      },
+      {
         variant: "withdraw-support-row",
       },
       {
         variant: "text",
+        eyebrow: "Key Decision 05 · Review States",
         title: "Active work should take priority over reference information.",
         body: [
-          "The My Reviews page focuses on reviews that require action. Historical reviews remain persistently accessible through a click of a tab change without competing with active work.",
-          "The two views now show information suited to their purpose.",
+          "I proposed separating active work from review history because the two views supported different decisions. Active reviews prioritize deadlines and continuation actions, while history tracks pending, published, expired and rewarded work.",
+          "After reviewing alternative structures with the team, we moved forward with this direction.",
         ],
       },
       {
-        variant: "review-states-stack",
+        variant: "graphic",
+      },
+      {
+        variant: "text",
+        eyebrow: "Outcome",
+        title: "The approved redesign connected the contributor journey without rebuilding the product.",
+        body: [
+          "I delivered the redesigned discovery, claiming, editing, withdrawal, history and reward states as a connected interface and reviewed the final direction with the Team Lead and developer.",
+          "The workflows were approved and handed off for development. Because the redesign had not launched, production impact was not yet available.",
+        ],
+      },
+      {
+        variant: "graphic",
       },
       {
         variant: "text",
         eyebrow: "Reflection",
-        title: "Designing within real product constraints",
+        title: "Designing within real product constraints.",
         body: [
-          "The product already worked, but its experience reflected internal logic and developer-first language. Rather than rebuilding it, I focused on making the workflow clearer, more trustworthy, and easier for contributors to navigate.",
-          "Working within technical and stakeholder constraints pushed me to preserve what worked and prioritize changes that meaningfully improved the contributor journey.",
+          "Working within a constrained product taught me to distinguish between changes that required new functionality and changes that could improve the experience through clearer structure. By preserving the underlying system, I could focus the available development effort on the moments that most affected the contributor journey.",
         ],
       },
     ],

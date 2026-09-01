@@ -27,16 +27,18 @@ export type CaseStudyPageProps = {
 const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
   "transcript-review-redesign": {
     0: "overview",
-    1: "audit",
-    3: "mixed-states",
-    4: "solution",
-    5: "workflow-comparison",
-    6: "primary-navigation",
-    8: "transcript-browsing",
-    10: "preview-before-claiming",
-    12: "withdrawing-work",
-    15: "review-states",
-    16: "reflection",
+    2: "audit",
+    4: "mixed-states",
+    6: "solution",
+    7: "workflow-comparison",
+    8: "constraints",
+    10: "primary-navigation",
+    12: "transcript-browsing",
+    16: "preview-before-claiming",
+    18: "withdrawing-work",
+    22: "review-states",
+    24: "outcome",
+    26: "reflection",
   },
   "bitcoin-dev-project-redesign": {
     0: "overview",
@@ -63,12 +65,14 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
     { id: "mixed-states", label: "Mixed States", secondary: true },
     { id: "solution", label: "Solution" },
     { id: "workflow-comparison", label: "Workflow Comparison", secondary: true },
+    { id: "constraints", label: "Constraints & Trade-offs", secondary: true },
     { id: "primary-navigation", label: "Key Decisions" },
-    { id: "primary-navigation", label: "Primary Navigation", secondary: true },
-    { id: "transcript-browsing", label: "Transcript Browsing", secondary: true },
-    { id: "preview-before-claiming", label: "Preview Before Claiming", secondary: true },
-    { id: "withdrawing-work", label: "Withdrawing Work", secondary: true },
+    { id: "primary-navigation", label: "Navigation", secondary: true },
+    { id: "transcript-browsing", label: "Browsing", secondary: true },
+    { id: "preview-before-claiming", label: "Claiming", secondary: true },
+    { id: "withdrawing-work", label: "Editor", secondary: true },
     { id: "review-states", label: "Review States", secondary: true },
+    { id: "outcome", label: "Outcome" },
     { id: "reflection", label: "Reflection" },
   ],
   "bitcoin-dev-project-redesign": [
@@ -468,6 +472,14 @@ function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
   );
 }
 
+function GraphicPlaceholderSection({ label }: { label?: string }) {
+  return (
+    <section className="case-study-page__graphic-placeholder" aria-hidden="true">
+      <span>{label ?? "GRAPHIC"}</span>
+    </section>
+  );
+}
+
 function ButterContainerSection() {
   return (
     <section className="case-study-page__butter-block" aria-label="Audit summary">
@@ -624,6 +636,9 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               ))}
             </div>
             <h1>{page.title}</h1>
+            {page.subtitle ? (
+              <p className="case-study-page__subtitle">{page.subtitle}</p>
+            ) : null}
           </HeroContentReveal>
           <CaseStudyMedia
             asset={page.hero}
@@ -697,6 +712,10 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "audit-findings") {
               return withAnchor(<AuditFindingsSection items={section.items} />);
+            }
+
+            if (section.variant === "graphic") {
+              return withAnchor(<GraphicPlaceholderSection label={section.label} />);
             }
 
             if (section.variant === "butter-container") {
