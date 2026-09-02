@@ -472,10 +472,23 @@ function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
   );
 }
 
-function GraphicPlaceholderSection({ label }: { label?: string }) {
+function GraphicPlaceholderSection({
+  label,
+  src,
+  alt,
+}: {
+  label?: string;
+  src?: string;
+  alt?: string;
+}) {
   return (
-    <section className="case-study-page__graphic-placeholder" aria-hidden="true">
+    <section
+      className="case-study-page__graphic-placeholder"
+      data-filled={src ? "true" : undefined}
+      aria-hidden={src ? undefined : "true"}
+    >
       <span>{label ?? "GRAPHIC"}</span>
+      {src ? <img alt={alt ?? ""} src={src} /> : null}
     </section>
   );
 }
@@ -715,7 +728,13 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
             }
 
             if (section.variant === "graphic") {
-              return withAnchor(<GraphicPlaceholderSection label={section.label} />);
+              return withAnchor(
+                <GraphicPlaceholderSection
+                  alt={section.alt}
+                  label={section.label}
+                  src={section.src}
+                />,
+              );
             }
 
             if (section.variant === "butter-container") {

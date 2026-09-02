@@ -72,7 +72,7 @@ export type CaseStudyPage = {
     | { variant: "withdraw-support-row" }
     | { variant: "review-states-stack" }
     | { variant: "resource-card-stack" }
-    | ({ variant: "graphic"; label?: string })
+    | ({ variant: "graphic"; label?: string; src?: string; alt?: string })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
     | ({
@@ -183,6 +183,9 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "graphic",
+        label: "MIXED STATES",
+        src: `${transcriptReviewBasePath}/Mixed-layout.png`,
+        alt: "Mixed state layout showing current and past transcript review jobs together",
       },
       {
         variant: "text",
