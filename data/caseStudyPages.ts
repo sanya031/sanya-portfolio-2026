@@ -176,9 +176,9 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "text",
         eyebrow: "Mixed States",
-        title: "Active work and review history supported different goals but shared the same structure.",
+        title: "Current jobs and past jobs supported different goals but shared the same structure.",
         body: [
-          "Active reviews needed deadlines and continuation actions, while completed reviews needed submission, publishing and payment status. Presenting both together made reference information compete with work that required attention.",
+          "Current jobs needed deadlines and continuation actions, while past jobs needed submission, publishing and payment status. Presenting both together made reference information compete with work that required attention.",
         ],
       },
       {
