@@ -154,6 +154,23 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
+        variant: "audit-artifacts",
+        items: [
+          {
+            type: "image",
+            src: `${transcriptReviewBasePath}/figjam.png`,
+            alt: "FigJam audit notes grouped by contributor journey stage",
+            overlayLabel: "SNIPPET FROM FIGJAM",
+          },
+          {
+            type: "image",
+            src: `${transcriptReviewBasePath}/dsgn_evol.png`,
+            alt: "Design evolution from the transcript review redesign process",
+            overlayLabel: "DESIGN EVOLUTION",
+          },
+        ],
+      },
+      {
         variant: "butter-container",
       },
       {
