@@ -247,7 +247,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         label: "SIMPLIFYING THE REWARD INDICATOR",
         src: `${transcriptReviewBasePath}/Stacked_PNG_Icons.png`,
         alt: "The original reward indicator using colour and coin count, and the redesigned monochrome coin stacks",
-        note: "The original indicator encoded reward level twice, through colour and coin count. The redesign keeps three relative levels but reads them from stack height alone.",
       },
       {
         variant: "text",
