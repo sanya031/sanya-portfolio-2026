@@ -499,23 +499,21 @@ function BrowsingComparisonSection() {
       className="case-study-page__browsing-comparison"
       aria-label="Original table and redesigned list, with a row-level comparison"
     >
-      <div className="case-study-page__browsing-compare-row">
-        <figure>
-          <span>BEFORE · ORIGINAL TABLE</span>
-          <img
-            alt="The original transcript table spreading related information across separate columns"
-            src="/assets/case-study-1/before_key_1.png"
-          />
-        </figure>
-        <figure>
-          <span>AFTER · COMPACT LIST</span>
-          <img
-            alt="The redesigned list grouping each transcript into one selectable item"
-            src="/assets/case-study-1/after_key_2.png"
-          />
-        </figure>
-      </div>
-      <figure className="case-study-page__browsing-compare-detail">
+      <figure>
+        <span>BEFORE · ORIGINAL TABLE</span>
+        <img
+          alt="The original transcript table spreading related information across separate columns"
+          src="/assets/case-study-1/before_key_1.png"
+        />
+      </figure>
+      <figure>
+        <span>AFTER · COMPACT LIST</span>
+        <img
+          alt="The redesigned list grouping each transcript into one selectable item"
+          src="/assets/case-study-1/after_key_2.png"
+        />
+      </figure>
+      <figure>
         <span>ROW-LEVEL COMPARISON</span>
         <img
           alt="A single transcript shown as an old table row above and the redesigned list rows below"

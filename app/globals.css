@@ -2848,32 +2848,21 @@ video {
 
 .case-study-page__browsing-comparison {
   display: grid;
-  gap: 20px;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
   width: 100%;
   max-width: var(--case-column-width);
-}
-
-.case-study-page__browsing-compare-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.case-study-page__browsing-comparison figure {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: clamp(2.75rem, 6vw, 3.25rem) clamp(0.75rem, 2vw, 1.25rem) clamp(0.75rem, 2vw, 1.25rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
   border: 1px solid #e0e0e0;
   background: #f3f3f3;
 }
 
+.case-study-page__browsing-comparison figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
 .case-study-page__browsing-comparison figure span {
-  position: absolute;
-  top: 16px;
-  left: 16px;
   color: #7a7a7a;
   font-family: "Departure Mono", "Courier New", monospace;
   font-size: 14px;
@@ -2885,13 +2874,8 @@ video {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: contain;
-}
-
-@media (max-width: 640px) {
-  .case-study-page__browsing-compare-row {
-    grid-template-columns: 1fr;
-  }
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
 }
 
 .case-study-page__media-surface {
