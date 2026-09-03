@@ -2835,6 +2835,27 @@ video {
   left: 20px;
 }
 
+.case-study-page__graphic-placeholder[data-noted="true"] {
+  align-content: start;
+  justify-items: center;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.case-study-page__graphic-placeholder[data-noted="true"] span {
+  position: static;
+  justify-self: start;
+}
+
+.case-study-page__graphic-placeholder-note {
+  max-width: 44rem;
+  margin: 0;
+  justify-self: start;
+  color: var(--case-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
 .case-study-page__graphic-placeholder img {
   width: min(100%, 46rem);
   height: auto;

@@ -476,18 +476,22 @@ function GraphicPlaceholderSection({
   label,
   src,
   alt,
+  note,
 }: {
   label?: string;
   src?: string;
   alt?: string;
+  note?: string;
 }) {
   return (
     <section
       className="case-study-page__graphic-placeholder"
       data-filled={src ? "true" : undefined}
+      data-noted={note ? "true" : undefined}
       aria-hidden={src ? undefined : "true"}
     >
       <span>{label ?? "GRAPHIC"}</span>
+      {note ? <p className="case-study-page__graphic-placeholder-note">{note}</p> : null}
       {src ? <img alt={alt ?? ""} src={src} /> : null}
     </section>
   );
@@ -763,6 +767,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
                 <GraphicPlaceholderSection
                   alt={section.alt}
                   label={section.label}
+                  note={section.note}
                   src={section.src}
                 />,
               );

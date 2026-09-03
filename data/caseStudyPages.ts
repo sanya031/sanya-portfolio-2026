@@ -73,7 +73,7 @@ export type CaseStudyPage = {
     | { variant: "review-states-stack" }
     | { variant: "browsing-comparison" }
     | { variant: "resource-card-stack" }
-    | ({ variant: "graphic"; label?: string; src?: string; alt?: string })
+    | ({ variant: "graphic"; label?: string; src?: string; alt?: string; note?: string })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
     | ({
@@ -247,6 +247,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         label: "SIMPLIFYING THE REWARD INDICATOR",
         src: `${transcriptReviewBasePath}/Stacked_PNG_Icons.png`,
         alt: "The original reward indicator using colour and coin count, and the redesigned monochrome coin stacks",
+        note: "The original indicator encoded reward level twice, through colour and coin count. The redesign keeps three relative levels but reads them from stack height alone.",
       },
       {
         variant: "text",
