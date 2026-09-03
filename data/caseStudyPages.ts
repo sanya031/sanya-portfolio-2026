@@ -244,6 +244,9 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "graphic",
+        label: "SIMPLIFYING THE REWARD INDICATOR",
+        src: `${transcriptReviewBasePath}/Stacked_PNG_Icons.png`,
+        alt: "The original reward indicator using colour and coin count, and the redesigned monochrome coin stacks",
       },
       {
         variant: "text",

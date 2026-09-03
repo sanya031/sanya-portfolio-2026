@@ -2823,6 +2823,7 @@ video {
 
 .case-study-page__graphic-placeholder[data-filled="true"] {
   position: relative;
+  aspect-ratio: auto;
   align-content: center;
   justify-items: center;
   padding: clamp(3rem, 7vw, 4.25rem) clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
@@ -2841,7 +2842,7 @@ video {
 }
 
 @media (max-width: 520px) {
-  .case-study-page__graphic-placeholder {
+  .case-study-page__graphic-placeholder:not([data-filled="true"]) {
     aspect-ratio: 4 / 3;
   }
 }
