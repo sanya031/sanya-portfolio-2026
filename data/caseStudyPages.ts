@@ -171,29 +171,23 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
+        variant: "text",
+        eyebrow: "Audit Findings",
+        title: "The audit surfaced three recurring problems.",
+        body: [
+          "Each appeared at a different point in the journey: finding work, committing to it, and tracking it. All three came from the same disconnect between screens.",
+        ],
+      },
+      {
         variant: "butter-container",
       },
       {
         variant: "text",
-        eyebrow: "Mixed States",
-        title: "Current jobs and past jobs supported different goals but shared the same structure.",
-        body: [
-          "Current jobs needed deadlines and continuation actions, while past jobs needed submission, publishing and payment status. Presenting both together made reference information compete with work that required attention.",
-        ],
-      },
-      {
-        variant: "graphic",
-        label: "MIXED STATES",
-        src: `${transcriptReviewBasePath}/Mixed-layout.png`,
-        alt: "Mixed state layout showing current and past transcript review jobs together",
-      },
-      {
-        variant: "text",
         eyebrow: "Solution",
-        title: "Separating exploration from commitment reshaped the contributor journey.",
+        title: "Turning disconnected screens into a connected sequence of stages.",
         body: [
-          "The original experience asked contributors to claim a transcript before they could evaluate the work. I separated browsing, previewing, claiming, editing and tracking into distinct but connected stages.",
-          "The redesign preserved the existing 24-hour claim rule while giving contributors more context before accepting responsibility.",
+          "The three problems shared one root cause, so I addressed them together. I reorganized the workflow into clear stages for browsing, previewing, claiming, editing and tracking, and kept those stages connected as contributors moved through them.",
+          "Finding work stayed available at every stage, contributors gained enough context to judge a review before claiming it, and active work was separated from completed work. The existing 24-hour claim and reward logic was preserved.",
         ],
       },
       {
@@ -305,6 +299,9 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "graphic",
+        label: "ORIGINAL MIXED LAYOUT",
+        src: `${transcriptReviewBasePath}/Mixed-layout.png`,
+        alt: "The original layout showing current and past transcript review jobs together",
       },
       {
         variant: "text",

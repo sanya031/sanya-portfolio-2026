@@ -4,16 +4,6 @@ import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
 const issues = [
   {
-    label: "MIXED STATES",
-    media: {
-      type: "image",
-      src: "/assets/case-study-1/Mixed-layout.png",
-      alt: "Mixed state layout showing current and past transcript review jobs",
-    },
-    title: "Active work and review history supported different goals but shared the same structure.",
-    body: "Active reviews needed deadline-focused actions, while history needed completion and payment status. The shared layout blurred those priorities.",
-  },
-  {
     label: "HIDDEN DISCOVERY",
     media: {
       type: "video",
@@ -32,6 +22,16 @@ const issues = [
     },
     title: "Claiming happened before contributors had enough context.",
     body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit.",
+  },
+  {
+    label: "MIXED STATES",
+    media: {
+      type: "image",
+      src: "/assets/case-study-1/Mixed-layout.png",
+      alt: "Mixed state layout showing current and past transcript review jobs together",
+    },
+    title: "Current jobs and past jobs supported different goals but shared the same structure.",
+    body: "Current jobs needed deadlines and continuation actions, while past jobs needed submission, publishing and payment status. Presenting both together made reference information compete with work that required attention.",
   },
 ];
 
