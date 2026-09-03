@@ -71,6 +71,7 @@ export type CaseStudyPage = {
     | { variant: "portal-comparison-row" }
     | { variant: "withdraw-support-row" }
     | { variant: "review-states-stack" }
+    | { variant: "browsing-comparison" }
     | { variant: "resource-card-stack" }
     | ({ variant: "graphic"; label?: string; src?: string; alt?: string })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
@@ -230,7 +231,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "graphic",
+        variant: "browsing-comparison",
       },
       {
         variant: "text",
