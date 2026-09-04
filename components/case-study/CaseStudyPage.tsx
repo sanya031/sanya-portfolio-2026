@@ -28,15 +28,16 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
   "transcript-review-redesign": {
     0: "overview",
     1: "audit",
-    3: "mixed-states",
-    4: "solution",
-    5: "workflow-comparison",
-    6: "primary-navigation",
-    8: "transcript-browsing",
-    10: "preview-before-claiming",
-    12: "withdrawing-work",
-    15: "review-states",
-    16: "reflection",
+    3: "audit-findings",
+    5: "solution",
+    6: "workflow-comparison",
+    7: "constraints",
+    8: "primary-navigation",
+    10: "transcript-browsing",
+    14: "preview-before-claiming",
+    16: "withdrawing-work",
+    20: "review-states",
+    22: "reflection",
   },
   "bitcoin-dev-project-redesign": {
     0: "overview",
@@ -60,14 +61,15 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "transcript-review-redesign": [
     { id: "overview", label: "Overview" },
     { id: "audit", label: "Audit" },
-    { id: "mixed-states", label: "Mixed States", secondary: true },
-    { id: "solution", label: "Solution" },
+    { id: "audit-findings", label: "Problems", secondary: true },
+    { id: "solution", label: "Approach" },
     { id: "workflow-comparison", label: "Workflow Comparison", secondary: true },
+    { id: "constraints", label: "Constraints & Trade-offs", secondary: true },
     { id: "primary-navigation", label: "Key Decisions" },
-    { id: "primary-navigation", label: "Primary Navigation", secondary: true },
-    { id: "transcript-browsing", label: "Transcript Browsing", secondary: true },
-    { id: "preview-before-claiming", label: "Preview Before Claiming", secondary: true },
-    { id: "withdrawing-work", label: "Withdrawing Work", secondary: true },
+    { id: "primary-navigation", label: "Navigation", secondary: true },
+    { id: "transcript-browsing", label: "Browsing", secondary: true },
+    { id: "preview-before-claiming", label: "Claiming", secondary: true },
+    { id: "withdrawing-work", label: "Editor", secondary: true },
     { id: "review-states", label: "Review States", secondary: true },
     { id: "reflection", label: "Reflection" },
   ],
@@ -91,6 +93,7 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
 
 function TextSection({
   eyebrow,
+  subLabel,
   title,
   titleSize,
   body,
@@ -98,6 +101,7 @@ function TextSection({
   decisionNotes,
 }: {
   eyebrow?: string;
+  subLabel?: string;
   title: string;
   titleSize?: "small" | "medium";
   body: string[];
@@ -110,6 +114,7 @@ function TextSection({
   return (
     <section className="case-study-page__section">
       {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
+      {subLabel ? <p className="case-study-page__sub-label">{subLabel}</p> : null}
       <div className="case-study-page__text-stack">
         <h2 className="case-study-page__section-title" data-title-size={titleSize}>
           {title}
@@ -468,6 +473,105 @@ function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
   );
 }
 
+type GraphicStackItem = {
+  label?: string;
+  src: string;
+  alt?: string;
+  type?: "image" | "video";
+};
+
+function GraphicMedia({
+  src,
+  alt,
+  type = "image",
+}: {
+  src: string;
+  alt?: string;
+  type?: "image" | "video";
+}) {
+  return type === "video" ? (
+    <video aria-label={alt} autoPlay loop muted playsInline preload="metadata" src={src} />
+  ) : (
+    <img alt={alt ?? ""} src={src} />
+  );
+}
+
+function GraphicPlaceholderSection({
+  label,
+  src,
+  alt,
+  note,
+  type = "image",
+  items,
+}: {
+  label?: string;
+  src?: string;
+  alt?: string;
+  note?: string;
+  type?: "image" | "video";
+  items?: GraphicStackItem[];
+}) {
+  if (items?.length) {
+    return (
+      <section
+        className="case-study-page__graphic-placeholder case-study-page__graphic-placeholder--stack"
+        aria-label="Before and after comparison"
+      >
+        {items.map((item, index) => (
+          <figure key={`${item.src}-${index}`}>
+            {item.label ? <span>{item.label}</span> : null}
+            <GraphicMedia alt={item.alt} src={item.src} type={item.type} />
+          </figure>
+        ))}
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className="case-study-page__graphic-placeholder"
+      data-filled={src ? "true" : undefined}
+      data-noted={note ? "true" : undefined}
+      aria-hidden={src ? undefined : "true"}
+    >
+      <span>{label ?? "GRAPHIC"}</span>
+      {note ? <p className="case-study-page__graphic-placeholder-note">{note}</p> : null}
+      {src ? <GraphicMedia alt={alt} src={src} type={type} /> : null}
+    </section>
+  );
+}
+
+function BrowsingComparisonSection() {
+  return (
+    <section
+      className="case-study-page__browsing-comparison"
+      aria-label="Original table and redesigned list, with a row-level comparison"
+    >
+      <figure>
+        <span>BEFORE · ORIGINAL TABLE</span>
+        <img
+          alt="The original transcript table spreading related information across separate columns"
+          src="/assets/case-study-1/before_key_1.png"
+        />
+      </figure>
+      <figure>
+        <span>AFTER · COMPACT LIST</span>
+        <img
+          alt="The redesigned list grouping each transcript into one selectable item"
+          src="/assets/case-study-1/after_key_2.png"
+        />
+      </figure>
+      <figure>
+        <span>ROW-LEVEL COMPARISON</span>
+        <img
+          alt="A single transcript shown as an old table row above and the redesigned list rows below"
+          src="/assets/case-study-1/list.png"
+        />
+      </figure>
+    </section>
+  );
+}
+
 function ButterContainerSection() {
   return (
     <section className="case-study-page__butter-block" aria-label="Audit summary">
@@ -624,6 +728,9 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               ))}
             </div>
             <h1>{page.title}</h1>
+            {page.subtitle ? (
+              <p className="case-study-page__subtitle">{page.subtitle}</p>
+            ) : null}
           </HeroContentReveal>
           <CaseStudyMedia
             asset={page.hero}
@@ -699,12 +806,29 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               return withAnchor(<AuditFindingsSection items={section.items} />);
             }
 
+            if (section.variant === "graphic") {
+              return withAnchor(
+                <GraphicPlaceholderSection
+                  alt={section.alt}
+                  items={section.items}
+                  label={section.label}
+                  note={section.note}
+                  src={section.src}
+                  type={section.type}
+                />,
+              );
+            }
+
             if (section.variant === "butter-container") {
               return withAnchor(<ButterContainerSection />);
             }
 
             if (section.variant === "workflow-comparison") {
               return withAnchor(<WorkflowComparisonSection />);
+            }
+
+            if (section.variant === "browsing-comparison") {
+              return withAnchor(<BrowsingComparisonSection />);
             }
 
             if (section.variant === "logo-grid") {

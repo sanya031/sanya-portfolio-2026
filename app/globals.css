@@ -2784,6 +2784,15 @@ video {
   line-height: 1.18;
 }
 
+.case-study-page__subtitle {
+  max-width: 44rem;
+  margin: 0.9rem 0 0;
+  color: var(--case-body);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
 .case-study-page__media {
   display: grid;
   gap: 0;
@@ -2791,6 +2800,140 @@ video {
   max-width: var(--case-column-width);
   margin: 0;
   overflow: hidden;
+}
+
+.case-study-page__graphic-placeholder {
+  display: grid;
+  align-content: start;
+  width: 100%;
+  max-width: var(--case-column-width);
+  aspect-ratio: 814 / 431;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  background: #f3f3f3;
+}
+
+.case-study-page__graphic-placeholder span {
+  color: #7a7a7a;
+  font-family: "Departure Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.case-study-page__graphic-placeholder[data-filled="true"] {
+  position: relative;
+  aspect-ratio: auto;
+  align-content: center;
+  justify-items: center;
+  padding: clamp(3rem, 7vw, 4.25rem) clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
+}
+
+.case-study-page__graphic-placeholder[data-filled="true"] span {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.case-study-page__graphic-placeholder[data-noted="true"] {
+  align-content: start;
+  justify-items: center;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.case-study-page__graphic-placeholder[data-noted="true"] span {
+  position: static;
+  justify-self: start;
+}
+
+.case-study-page__graphic-placeholder-note {
+  max-width: 44rem;
+  margin: 0;
+  justify-self: start;
+  color: var(--case-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.case-study-page__graphic-placeholder img,
+.case-study-page__graphic-placeholder video {
+  width: min(100%, 46rem);
+  height: auto;
+  object-fit: contain;
+}
+
+.case-study-page__graphic-placeholder--stack {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  aspect-ratio: auto;
+  align-content: start;
+  justify-items: stretch;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.case-study-page__graphic-placeholder--stack figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.case-study-page__graphic-placeholder--stack span {
+  position: static;
+  color: #7a7a7a;
+  font-family: "Departure Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.case-study-page__graphic-placeholder--stack img,
+.case-study-page__graphic-placeholder--stack video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+}
+
+@media (max-width: 520px) {
+  .case-study-page__graphic-placeholder:not(
+      [data-filled="true"]
+    ):not(.case-study-page__graphic-placeholder--stack) {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+.case-study-page__browsing-comparison {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  width: 100%;
+  max-width: var(--case-column-width);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #e0e0e0;
+  background: #f3f3f3;
+}
+
+.case-study-page__browsing-comparison figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.case-study-page__browsing-comparison figure span {
+  color: #7a7a7a;
+  font-family: "Departure Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.case-study-page__browsing-comparison figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
 }
 
 .case-study-page__media-surface {
@@ -2872,8 +3015,8 @@ video {
 
 .case-study-page__facts {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.5rem, 3.6vw, 4.75rem);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 2.25rem);
   margin-top: 1.875rem;
   padding: 0;
 }
@@ -2892,6 +3035,15 @@ video {
   letter-spacing: -0.01em;
   line-height: 1.3;
   text-transform: uppercase;
+}
+
+.case-study-page__sub-label {
+  margin: 0;
+  color: rgba(50, 64, 79, 0.5);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 
 .case-study-page__fact dd {
@@ -4831,6 +4983,10 @@ video {
 }
 
 @media (max-width: 1080px) {
+  .case-study-page__facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .home-footer {
     display: grid;
     min-height: clamp(31rem, 72vh, 42rem);
