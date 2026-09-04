@@ -156,9 +156,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "graphic",
-      },
-      {
         variant: "text",
         eyebrow: "Audit",
         title: "Each screen worked independently, but the journey between them did not.",
