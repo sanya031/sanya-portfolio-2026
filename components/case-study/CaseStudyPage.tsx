@@ -95,6 +95,7 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
 
 function TextSection({
   eyebrow,
+  subLabel,
   title,
   titleSize,
   body,
@@ -102,6 +103,7 @@ function TextSection({
   decisionNotes,
 }: {
   eyebrow?: string;
+  subLabel?: string;
   title: string;
   titleSize?: "small" | "medium";
   body: string[];
@@ -114,6 +116,7 @@ function TextSection({
   return (
     <section className="case-study-page__section">
       {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
+      {subLabel ? <p className="case-study-page__sub-label">{subLabel}</p> : null}
       <div className="case-study-page__text-stack">
         <h2 className="case-study-page__section-title" data-title-size={titleSize}>
           {title}

@@ -20,8 +20,8 @@ const issues = [
       src: "/assets/case-study-1/early-commit.png",
       alt: "Editor screen showing a review already claimed before context is evaluated",
     },
-    title: "Claiming happened before contributors had enough context.",
-    body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit.",
+    title: "Contributors were locked into a claim before they had enough context, with no way back out.",
+    body: "The 24-hour editing window started immediately, before contributors could judge transcript length, complexity, or fit, and there was no way to release a review that turned out to be the wrong fit.",
   },
   {
     label: "MIXED STATES",

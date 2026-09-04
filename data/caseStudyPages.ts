@@ -21,6 +21,7 @@ export type CaseStudyAsset = {
 
 export type CaseStudyTextBlock = {
   eyebrow?: string;
+  subLabel?: string;
   title: string;
   titleSize?: "small" | "medium";
   body: string[];
@@ -152,7 +153,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         body: [
           "The product split transcript discovery, claiming, editing and rewards across disconnected workflows, making it difficult for contributors to understand what to do next and leaving incomplete work locked for 24 hours.",
           "I audited the end-to-end journey and reorganized it around clearer stages. Contributors could preview a transcript before claiming it, manage active and completed reviews separately, and withdraw work they could not complete.",
-          "The redesigned workflow was approved and handed off for development, while preserving the existing claim and reward logic.",
+          "The redesigned workflow was approved and handed off for development.",
         ],
       },
       {
@@ -161,7 +162,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         title: "Each screen worked independently, but the journey between them did not.",
         body: [
           "I walked through the live product as both a new and returning contributor, documenting friction across discovery, claiming, editing and review history.",
-          "I reviewed the findings with the Team Lead and developer to distinguish usability problems from intentional product rules and backend constraints.",
+          "I reviewed the findings with the team lead and developer to distinguish usability problems from intentional product rules and backend constraints.",
         ],
       },
       {
@@ -194,11 +195,11 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Solution",
+        eyebrow: "Approach",
         title: "Turning disconnected screens into a connected sequence of stages.",
         body: [
-          "The three problems shared one root cause, so I addressed them together. I reorganized the workflow into clear stages for browsing, previewing, claiming, editing and tracking, and kept those stages connected as contributors moved through them.",
-          "Finding work stayed available at every stage, contributors gained enough context to judge a review before claiming it, and active work was separated from completed work. The existing 24-hour claim and reward logic was preserved.",
+          "The three problems shared one root cause: the product had the right pieces, but nothing connecting them. Instead of fixing each screen on its own, I reorganized the workflow into a sequence of stages-browsing, previewing, claiming, editing and tracking-that stayed connected as contributors moved through them.",
+          "The decisions below show how each stage was resolved.",
         ],
       },
       {
@@ -245,6 +246,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
+        subLabel: "Within Key Design Decision 02",
         titleSize: "small",
         title: "Simplifying reward without making payout the primary choice.",
         body: [
@@ -260,7 +262,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Key Decision 03 · Claiming",
+        eyebrow: "Key Design Decision 03 · Claiming",
         title: "Contributors should understand a review before starting the timer.",
         body: [
           "Selecting a transcript now opens the editor in read-only preview mode. Contributors can inspect the source video, transcript, speakers, labels and review details before claiming it.",
@@ -293,6 +295,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
+        subLabel: "Within Key Design Decision 04",
         titleSize: "small",
         title: "The editor should support review work without unnecessary context switching.",
         body: [
@@ -304,7 +307,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Key Decision 05 · Review States",
+        eyebrow: "Key Design Decision 05 · Review States",
         title: "Active work should take priority over reference information.",
         body: [
           "I proposed separating active work from review history because the two views supported different decisions. Active reviews prioritize deadlines and continuation actions, while history tracks pending, published, expired and rewarded work.",
@@ -332,7 +335,7 @@ export const caseStudyPages: CaseStudyPage[] = [
         eyebrow: "Outcome",
         title: "The approved redesign connected the contributor journey without rebuilding the product.",
         body: [
-          "I delivered the redesigned discovery, claiming, editing, withdrawal, history and reward states as a connected interface and reviewed the final direction with the Team Lead and developer.",
+          "I delivered the redesigned discovery, claiming, editing, withdrawal, history and reward states as a connected interface and reviewed the final direction with the team lead and developer.",
           "The workflows were approved and handed off for development. Because the redesign had not launched, production impact was not yet available.",
         ],
       },
