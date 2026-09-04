@@ -214,9 +214,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "graphic",
-      },
-      {
         variant: "text",
         eyebrow: "Key Design Decision 01 · Navigation",
         title: "Primary contributor tasks should remain accessible at every stage.",
@@ -329,9 +326,6 @@ export const caseStudyPages: CaseStudyPage[] = [
             alt: "The redesigned tabs separating active reviews from past reviews",
           },
         ],
-      },
-      {
-        variant: "graphic",
       },
       {
         variant: "text",
