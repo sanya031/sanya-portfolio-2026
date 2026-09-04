@@ -338,8 +338,8 @@ export const caseStudyPages: CaseStudyPage[] = [
         eyebrow: "Reflection",
         title: "Designing within real product constraints.",
         body: [
-          "The redesign was approved and handed off for development. Working inside a live product meant most of my decisions were about restraint, not new ideas. Take the reward indicator: I wanted to show the exact number of sats, but the team didn't want payout to be the main reason someone picks a review, so I kept it relative instead. The real skill here was telling the difference between friction I could fix and rules that were there for a reason.",
-          "Because this was based on a self-run audit rather than contributor interviews, I'd want to follow up with real usability testing once the redesign ships.",
+          "The redesign was approved and handed off for development. Working inside a live product, most of my decisions were about restraint, not new ideas: I wanted the reward indicator to show exact sats, but the team didn't want payout to be the main reason someone picks a review, so I kept it relative. A lot of this project was telling apart what was broken from what was just a rule I had to work around.",
+          "The audit was based on my own walkthrough, not contributor interviews. Once this ships, I'd want to time how long reviews take in the new editor versus the old one, and check in with contributors on two things: whether the controls I brought into the editor actually made editing feel faster, and whether moving between stages felt smooth.",
         ],
       },
     ],
