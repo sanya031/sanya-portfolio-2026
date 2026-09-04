@@ -37,8 +37,8 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     16: "preview-before-claiming",
     18: "withdrawing-work",
     22: "review-states",
-    25: "outcome",
-    27: "reflection",
+    24: "outcome",
+    26: "reflection",
   },
   "bitcoin-dev-project-redesign": {
     0: "overview",
@@ -472,19 +472,60 @@ function AuditFindingsSection({ items }: { items: CaseStudyFinding[] }) {
   );
 }
 
+type GraphicStackItem = {
+  label?: string;
+  src: string;
+  alt?: string;
+  type?: "image" | "video";
+};
+
+function GraphicMedia({
+  src,
+  alt,
+  type = "image",
+}: {
+  src: string;
+  alt?: string;
+  type?: "image" | "video";
+}) {
+  return type === "video" ? (
+    <video aria-label={alt} autoPlay loop muted playsInline preload="metadata" src={src} />
+  ) : (
+    <img alt={alt ?? ""} src={src} />
+  );
+}
+
 function GraphicPlaceholderSection({
   label,
   src,
   alt,
   note,
   type = "image",
+  items,
 }: {
   label?: string;
   src?: string;
   alt?: string;
   note?: string;
   type?: "image" | "video";
+  items?: GraphicStackItem[];
 }) {
+  if (items?.length) {
+    return (
+      <section
+        className="case-study-page__graphic-placeholder case-study-page__graphic-placeholder--stack"
+        aria-label="Before and after comparison"
+      >
+        {items.map((item, index) => (
+          <figure key={`${item.src}-${index}`}>
+            {item.label ? <span>{item.label}</span> : null}
+            <GraphicMedia alt={item.alt} src={item.src} type={item.type} />
+          </figure>
+        ))}
+      </section>
+    );
+  }
+
   return (
     <section
       className="case-study-page__graphic-placeholder"
@@ -494,21 +535,7 @@ function GraphicPlaceholderSection({
     >
       <span>{label ?? "GRAPHIC"}</span>
       {note ? <p className="case-study-page__graphic-placeholder-note">{note}</p> : null}
-      {src ? (
-        type === "video" ? (
-          <video
-            aria-label={alt}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            src={src}
-          />
-        ) : (
-          <img alt={alt ?? ""} src={src} />
-        )
-      ) : null}
+      {src ? <GraphicMedia alt={alt} src={src} type={type} /> : null}
     </section>
   );
 }
@@ -782,6 +809,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               return withAnchor(
                 <GraphicPlaceholderSection
                   alt={section.alt}
+                  items={section.items}
                   label={section.label}
                   note={section.note}
                   src={section.src}
