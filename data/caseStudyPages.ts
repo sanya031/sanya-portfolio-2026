@@ -331,15 +331,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "text",
-        eyebrow: "Outcome",
-        title: "The approved redesign connected the contributor journey without rebuilding the product.",
-        body: [
-          "I delivered the redesigned discovery, claiming, editing, withdrawal, history and reward states as a connected interface and reviewed the final direction with the team lead and developer.",
-          "The workflows were approved and handed off for development. Because the redesign had not launched, production impact was not yet available.",
-        ],
-      },
-      {
         variant: "graphic",
       },
       {

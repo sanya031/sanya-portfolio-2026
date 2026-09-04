@@ -37,8 +37,7 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     15: "preview-before-claiming",
     17: "withdrawing-work",
     21: "review-states",
-    23: "outcome",
-    25: "reflection",
+    24: "reflection",
   },
   "bitcoin-dev-project-redesign": {
     0: "overview",
@@ -72,7 +71,6 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
     { id: "preview-before-claiming", label: "Claiming", secondary: true },
     { id: "withdrawing-work", label: "Editor", secondary: true },
     { id: "review-states", label: "Review States", secondary: true },
-    { id: "outcome", label: "Outcome" },
     { id: "reflection", label: "Reflection" },
   ],
   "bitcoin-dev-project-redesign": [
