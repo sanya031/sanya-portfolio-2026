@@ -73,7 +73,14 @@ export type CaseStudyPage = {
     | { variant: "review-states-stack" }
     | { variant: "browsing-comparison" }
     | { variant: "resource-card-stack" }
-    | ({ variant: "graphic"; label?: string; src?: string; alt?: string; note?: string })
+    | ({
+        variant: "graphic";
+        label?: string;
+        src?: string;
+        alt?: string;
+        note?: string;
+        type?: "image" | "video";
+      })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
     | ({
@@ -306,6 +313,13 @@ export const caseStudyPages: CaseStudyPage[] = [
         label: "ORIGINAL MIXED LAYOUT",
         src: `${transcriptReviewBasePath}/Mixed-layout.png`,
         alt: "The original layout showing current and past transcript review jobs together",
+      },
+      {
+        variant: "graphic",
+        label: "REDESIGNED ACTIVE & PAST REVIEWS",
+        type: "video",
+        src: `${transcriptReviewBasePath}/Active_Past_Reviews.mp4`,
+        alt: "The redesigned tabs separating active reviews from past reviews",
       },
       {
         variant: "text",

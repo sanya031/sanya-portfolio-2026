@@ -2856,7 +2856,8 @@ video {
   line-height: 1.55;
 }
 
-.case-study-page__graphic-placeholder img {
+.case-study-page__graphic-placeholder img,
+.case-study-page__graphic-placeholder video {
   width: min(100%, 46rem);
   height: auto;
   object-fit: contain;

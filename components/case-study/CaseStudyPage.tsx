@@ -37,8 +37,8 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     16: "preview-before-claiming",
     18: "withdrawing-work",
     22: "review-states",
-    24: "outcome",
-    26: "reflection",
+    25: "outcome",
+    27: "reflection",
   },
   "bitcoin-dev-project-redesign": {
     0: "overview",
@@ -477,11 +477,13 @@ function GraphicPlaceholderSection({
   src,
   alt,
   note,
+  type = "image",
 }: {
   label?: string;
   src?: string;
   alt?: string;
   note?: string;
+  type?: "image" | "video";
 }) {
   return (
     <section
@@ -492,7 +494,21 @@ function GraphicPlaceholderSection({
     >
       <span>{label ?? "GRAPHIC"}</span>
       {note ? <p className="case-study-page__graphic-placeholder-note">{note}</p> : null}
-      {src ? <img alt={alt ?? ""} src={src} /> : null}
+      {src ? (
+        type === "video" ? (
+          <video
+            aria-label={alt}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            src={src}
+          />
+        ) : (
+          <img alt={alt ?? ""} src={src} />
+        )
+      ) : null}
     </section>
   );
 }
@@ -769,6 +785,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
                   label={section.label}
                   note={section.note}
                   src={section.src}
+                  type={section.type}
                 />,
               );
             }
