@@ -338,7 +338,8 @@ export const caseStudyPages: CaseStudyPage[] = [
         eyebrow: "Reflection",
         title: "Designing within real product constraints.",
         body: [
-          "Working within a constrained product taught me to distinguish between changes that required new functionality and changes that could improve the experience through clearer structure. By preserving the underlying system, I could focus the available development effort on the moments that most affected the contributor journey.",
+          "The redesign was approved and handed off for development. Working inside a live product meant most of my decisions were about restraint, not new ideas. Take the reward indicator: I wanted to show the exact number of sats, but the team didn't want payout to be the main reason someone picks a review, so I kept it relative instead. The real skill here was telling the difference between friction I could fix and rules that were there for a reason.",
+          "Because this was based on a self-run audit rather than contributor interviews, I'd want to follow up with real usability testing once the redesign ships.",
         ],
       },
     ],
