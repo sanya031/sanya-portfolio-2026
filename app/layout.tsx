@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TransitionProvider } from "../components/transitions/TransitionProvider";
 import "./globals.css";
 
@@ -63,6 +65,8 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <TransitionProvider>{children}</TransitionProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
