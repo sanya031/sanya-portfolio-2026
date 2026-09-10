@@ -623,7 +623,12 @@ const THEME_KEY = "sanya-runner-theme-v1";
 let holdTimer = null;
 let holdActivated = false;
 
+let currentTheme = "light";
+
 function preferredTheme() {
+  // When embedded (e.g. a host 404 page) the host controls the theme via data-theme.
+  const hosted = document.documentElement.dataset.theme;
+  if (hosted === "light" || hosted === "dark") return hosted;
   try {
     const saved = window.localStorage.getItem(THEME_KEY);
     if (saved === "light" || saved === "dark") return saved;
@@ -635,10 +640,14 @@ function preferredTheme() {
 
 function applyTheme(theme, persist = true) {
   const dark = theme === "dark";
+  currentTheme = theme;
   document.documentElement.dataset.theme = theme;
-  themeToggle.setAttribute("aria-pressed", String(dark));
-  themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-  themeColor.content = dark ? "#171918" : "#fafafa";
+  // These nodes only exist in the standalone page; an embed may omit them.
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-pressed", String(dark));
+    themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
+  if (themeColor) themeColor.content = dark ? "#171918" : "#fafafa";
   game.setTheme(theme);
   if (!persist) return;
   try { window.localStorage.setItem(THEME_KEY, theme); } catch { /* Theme still works for this visit. */ }
@@ -683,7 +692,12 @@ canvas.addEventListener("pointercancel", () => {
 });
 window.addEventListener("keydown", activate);
 window.addEventListener("keyup", activate);
-themeToggle.addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
+themeToggle?.addEventListener("click", () => applyTheme(currentTheme === "dark" ? "light" : "dark"));
+// Keep the canvas in sync when a host page flips its own data-theme.
+new MutationObserver(() => {
+  const hosted = document.documentElement.dataset.theme;
+  if ((hosted === "light" || hosted === "dark") && hosted !== currentTheme) applyTheme(hosted, false);
+}).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 document.addEventListener("visibilitychange", () => {
   game.lastTime = 0;
   game.accumulator = 0;
