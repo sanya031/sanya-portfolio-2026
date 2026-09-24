@@ -68,6 +68,8 @@ export type CaseStudyPage = {
     | { variant: "workflow-comparison" }
     | { variant: "logo-grid" }
     | { variant: "visual-system-grid" }
+    | { variant: "identity-grid" }
+    | { variant: "testing-infographic" }
     | { variant: "two-column-row" }
     | { variant: "portal-comparison-row" }
     | { variant: "withdraw-support-row" }
@@ -81,6 +83,9 @@ export type CaseStudyPage = {
         alt?: string;
         note?: string;
         type?: "image" | "video";
+        layout?: "row";
+        bare?: boolean;
+        tint?: string;
         items?: Array<{
           label?: string;
           src: string;
@@ -89,7 +94,7 @@ export type CaseStudyPage = {
         }>;
       })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
-    | ({ variant: "quote"; quote: string; highlight?: string; author: string; role: string })
+    | ({ variant: "quote"; quote: string; highlight?: string; author?: string; role?: string })
     | ({
         variant: "ordered";
         eyebrow?: string;
@@ -98,6 +103,18 @@ export type CaseStudyPage = {
         intro: string;
         items: string[];
         columns?: boolean;
+      })
+    | ({
+        variant: "summary-banner";
+        statement?: string;
+        stats?: Array<{ value: string; label: string; icon?: "people" | "up" | "down" }>;
+        heading?: string;
+        subheading?: string;
+        media?: { type: "image" | "video"; src: string; alt?: string };
+        href?: string;
+        characterSrc?: string;
+        characterHoverSrc?: string;
+        speechBubbleText?: string;
       })
   >;
 };
@@ -342,6 +359,8 @@ export const caseStudyPages: CaseStudyPage[] = [
     slug: "bitcoin-dev-project-redesign",
     meta: ["Bitcoin Dev Project", "Dec 2025", "Shipped"],
     title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
+    subtitle:
+      "Bitcoin Dev Project helps developers learn Bitcoin open source, contribute to real projects, and find funding opportunities.",
     seo: {
       title: "Bitcoin Dev Project Website & Brand Redesign | Sanya Malhotra",
       description:
@@ -359,9 +378,10 @@ export const caseStudyPages: CaseStudyPage[] = [
     },
     facts: [
       { label: "Organisation", value: ["Bitcoin Dev Project"] },
+      { label: "My Role", value: ["Product Designer"] },
       {
         label: "Collaborators",
-        value: ["2 Developers", "Open-source developers", "1 PM", "1 Designer (me)"],
+        value: ["1 Team Lead", "2 Developers", "Open-source developers"],
       },
       { label: "Timeline", value: ["4 Months", "Shipped Dec 2025"] },
       {
@@ -376,6 +396,16 @@ export const caseStudyPages: CaseStudyPage[] = [
     ],
     sections: [
       {
+        variant: "summary-banner",
+        statement:
+          "I redesigned BDP's 30+ resources around how developers learn, contribute, and find funding, then tested the shipped experience and worked with developers and open-source contributors to iterate on what we learned.",
+        stats: [
+          { value: "6", label: "User Testing Sessions", icon: "people" },
+          { value: "+19%", label: "Site Visits", icon: "up" },
+          { value: "−8%", label: "Bounce Rate", icon: "down" },
+        ],
+      },
+      {
         variant: "text",
         eyebrow: "Overview",
         title: "Restructuring resource discovery and building an identity that could scale",
@@ -386,99 +416,37 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
       },
       {
-        variant: "split",
+        variant: "text",
         eyebrow: "Problem",
-        title: "As the project grew, its website no longer reflected its scale or purpose",
+        title: "More resources created more opportunities and more places to get lost",
         body: [
-          "Bitcoin Dev Project offered valuable resources for developers, but the website made it difficult to understand the full ecosystem or decide where to begin. The experience presented two connected challenges:",
+          "BDP had grown to more than 30 learning resources alongside projects and funding opportunities. But those paths were spread across long lists and disconnected pages, making it difficult for someone new to understand what BDP offered or where to begin.",
+          "At the same time, the visual identity hadn't grown with the product. BDP needed to become easier to navigate and easier to recognize.",
         ],
-        cards: [
+      },
+      {
+        variant: "graphic",
+        items: [
           {
-            title: "Resource discovery was fragmented",
-            body: [
-              "Resources were spread across separate pages and presented through long, disconnected lists. This required visitors to understand BDP's internal structure before they could find something relevant to their goals.",
-            ],
+            label: "SNIPPET FROM THE OLD WEBSITE",
+            src: `${basePath}/old-website-snippet.png`,
+            alt: "Snippet from the old Bitcoin Dev Project website's tools and resources section",
           },
           {
-            title: "BDP lacked a recognisable identity",
-            body: [
-              "The organisation's visual identity no longer reflected the maturity of the project. The experience felt inconsistent across the website and community materials, making it harder to build recognition and trust.",
-            ],
+            label: "OLD HOMEPAGE AND LOGO",
+            src: `${basePath}/problem-img.jpg`,
+            alt: "The previous Bitcoin Dev Project homepage and logo",
           },
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/problem-img.jpg`,
-        alt: "Scrollable view of the previous Bitcoin Dev Project website",
-        overlayLabel: "OLD HOMEPAGE AND LOGO",
-        frame: "problem",
-      },
-      {
-        variant: "ordered",
-        eyebrow: "Requirements",
-        title: "The new website and identity needed to grow with the project",
-        intro:
-          "This was not simply a visual refresh. The redesign needed to make the organization clearer today while creating a flexible foundation for future resources and initiatives.",
-        items: [
-          "1. Explain BDP quickly",
-          "2. Organise resources around user goals",
-          "3. Make resources easier to browse",
-          "4. Create a recognisable identity",
-          "5. Support future growth",
-        ],
-        columns: true,
-      },
-      {
         variant: "text",
-        eyebrow: "Design Decisions",
-        title: "Building an identity that makes a technical project feel more human",
+        eyebrow: "Scope",
+        title: "My role covered the system people used and the identity they saw",
         body: [
-          "Bitcoin organizations often rely on abstract, geometric, or finance-focused visual identities. We wanted BDP to feel different: technical and credible, but also curious, welcoming, and community-led.",
-          "We explored more organic, character-driven identity directions and selected the pangolin as BDP's central symbol.",
+          "Rather than treating the work as a single-page redesign, I worked across the main surfaces developers encountered: the homepage, learning resources, contribution opportunities, and funding.",
+          "In parallel, I developed a new visual system around BDP's pangolin mascot, typography, color, and illustration.",
         ],
-      },
-      {
-        variant: "text",
-        title: "Why a pangolin?",
-        body: [
-          "Pangolins are curious, resilient animals that move quietly and deliberately through their environment. These qualities felt connected to the open-source Bitcoin developer community: people doing complex, important work that may not always be visible to the wider public. The pangolin also gave BDP a distinctive and ownable symbol without relying on familiar Bitcoin imagery.",
-        ],
-      },
-      {
-        variant: "text",
-        title: "From exploration to a flexible identity",
-        body: [
-          "The early logo explorations focused on finding a silhouette that remained recognizable at different sizes. The selected direction simplified the pangolin into a compact logomark that could work independently or alongside the Bitcoin Dev Project wordmark.",
-        ],
-      },
-      {
-        variant: "logo-grid",
-      },
-      {
-        variant: "text",
-        title: "Designing a visual system that balances warmth and credibility",
-        body: [
-          "The visual system needed to welcome developers who were new to Bitcoin without feeling overly casual to experienced contributors.",
-        ],
-      },
-      {
-        variant: "visual-system-grid",
-      },
-      {
-        variant: "ordered",
-        title: "Organizing the homepage around what visitors came to do",
-        intro:
-          "Instead of expecting visitors to understand how the organization was structured, the homepage presented clear actions based on what they wanted to accomplish. The new homepage helps visitors:",
-        items: [
-          "1. Understand BDP's mission",
-          "2. See who the community supports",
-          "3. Choose a pathway based on their goal",
-          "4. Discover featured resources and opportunities",
-          "5. Build familiarity with the new identity",
-        ],
-        columns: true,
       },
       {
         variant: "media",
@@ -497,27 +465,86 @@ export const caseStudyPages: CaseStudyPage[] = [
         })),
       },
       {
-        variant: "split",
-        title: "Reorganizing the website around user intent",
+        variant: "text",
+        eyebrow: "Structure",
+        title: "I reorganized the experience around what developers came to do",
         body: [
-          "Previously, resources lived across separate pages and were presented as long lists. There was no central place to understand what was available or compare different options. The redesign organized the experience around three user intentions:",
+          "The previous structure required visitors to understand how BDP organized its programs and resources. I shifted the hierarchy toward three goals a developer could recognize immediately: learn something, contribute to something, or get support to build something.",
+          "Those goals became the organizing principle for the homepage, navigation, and the three core pathways.",
         ],
-        cards: [
+      },
+      {
+        variant: "graphic",
+        layout: "row",
+        items: [
           {
-            title: "Learn",
-            body: [
-              "Resources for understanding Bitcoin development and building technical knowledge.",
-            ],
+            label: "BEFORE — SITEMAP SHAPED BY BDP'S INTERNAL STRUCTURE",
+            src: `${basePath}/old-sitemap.jpg`,
+            alt: "Sitemap of the previous Bitcoin Dev Project website structure",
           },
           {
-            title: "Contribute",
-            body: ["Guidance and opportunities for contributing to open-source Bitcoin projects."],
-          },
-          {
-            title: "Get Funded",
-            body: ["Information about grants, fellowships, and funding opportunities."],
+            label: "AFTER — REORGANIZED AROUND THE THREE GOALS DEVELOPERS CAME WITH",
+            src: `${basePath}/new-sitemap.jpg`,
+            alt: "Sitemap of the redesigned Bitcoin Dev Project website structure",
           },
         ],
+      },
+      {
+        variant: "text",
+        eyebrow: "Identity",
+        title: "A new structure also needed a more recognizable BDP",
+        body: [
+          "I worked on the visual identity alongside the product redesign rather than treating branding as a layer added at the end. The goal was to give BDP a consistent personality across the website, community, and future resources while keeping a technical project approachable.",
+          "The pangolin became the foundation for a system of illustrations, typography, color, and reusable visual assets.",
+        ],
+      },
+      {
+        variant: "identity-grid",
+      },
+      {
+        variant: "text",
+        eyebrow: "Discovery",
+        title: "Putting all the resources in one place didn't automatically make them easier to find",
+        body: [
+          "Centralizing the library removed the fragmentation of the old experience, but it introduced a different question: how much should we show at once?",
+        ],
+        emphasis: "I tested three ways to balance visibility with control",
+      },
+      {
+        variant: "text",
+        title: "Grouping resources strictly by difficulty",
+        titleSize: "small",
+        body: [
+          "Organizing resources by difficulty gave the library a clear hierarchy, but some groups became much longer than others as resources accumulated.",
+        ],
+      },
+      {
+        variant: "text",
+        title: "Collapsing sections behind \"View more\"",
+        titleSize: "small",
+        body: [
+          "Collapsing those groups shortened the page, but solved scrolling by hiding resources behind another interaction.",
+        ],
+      },
+      {
+        variant: "two-column-row",
+      },
+      {
+        variant: "text",
+        title: "A mixed layout with visible difficulty",
+        titleSize: "small",
+        body: [
+          "The final direction kept the library visible by default and let developers narrow it by the attributes that mattered to them.",
+        ],
+      },
+      {
+        variant: "graphic",
+        bare: true,
+        src: `${basePath}/mixed_difficulty.png`,
+        alt: "Selected iteration: mixed layout with visible difficulty, showing resource cards with difficulty indicators",
+      },
+      {
+        variant: "resource-card-stack",
       },
       {
         variant: "media",
@@ -529,101 +556,146 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        title: "Reimagining how developers discover resources",
+        eyebrow: "Testing",
+        title: "Once it shipped, I wanted to know where the structure still broke down",
         body: [
-          "The original website presented resources through long, disconnected lists. This made it difficult to compare options, understand their level, or quickly find something relevant.",
-          "The redesigned experience centralized resources into a dedicated discovery system.",
-          "Each resource was presented as a reusable card with clear information about its format and difficulty. This made the content easier to scan while giving visitors more control over how they explored it.",
+          "I ran six moderated usability sessions with developers who were unfamiliar or only slightly familiar with BDP. I asked them to understand what BDP offered, move between the three pathways, find a resource, and work out how they would pursue funding.",
+          "The goal wasn't to validate the redesign. It was to see where people hesitated, made an unexpected choice, or needed more information than the interface gave them. The research plan explicitly focused on navigation, content understanding and task flow.",
         ],
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${basePath}/old-website-snippet.png`,
-        alt: "Snippet from the old Bitcoin Dev Project website",
-        frame: "old-website",
-        scrollable: true,
+        variant: "testing-infographic",
       },
       {
         variant: "text",
-        title: "Iteration 1: Grouping resources strictly by difficulty",
-        titleSize: "small",
+        eyebrow: "Finding — 01",
+        title: "Testing revealed an extra step between developers and what they came to find",
         body: [
-          "The first direction divided resources into beginner, intermediate, and advanced sections.",
-          "This created a clear hierarchy, but the number of beginner resources made the page unbalanced. The long beginner section pushed intermediate and advanced content much further down the page. As the resource library grew, this structure would make certain categories increasingly difficult to reach.",
+          "Some users weren't sure where to go from the homepage. And when they chose Start Exploring, they expected to begin exploring resources, not make another choice.",
         ],
-      },
-      {
-        variant: "text",
-        title: "Iteration 2: Collapsing sections behind \"View more\"",
-        titleSize: "small",
-        body: [
-          "The second direction shortened the page by initially hiding some resources behind \"View more\" controls.",
-          "Although this reduced scrolling, it also reduced visibility. Visitors had to repeatedly open sections to understand what was available, adding effort to a task that should support quick exploration. Important resources could remain hidden simply because a visitor did not expand the correct section.",
-        ],
-      },
-      {
-        variant: "two-column-row",
-      },
-      {
-        variant: "text",
-        title: "Final iteration: A mixed layout with visible difficulty",
-        titleSize: "small",
-        body: [
-          "The selected direction surfaced resources together while showing difficulty directly on each card. This allowed visitors to scan the full collection without moving through several separate sections. Filters provided additional control without hiding resources by default.",
-        ],
-      },
-      {
-        variant: "resource-card-stack",
-      },
-      {
-        variant: "text",
-        eyebrow: "Impact & Learnings",
-        title: "Improving resource discovery and strengthening recognition",
-        body: [
-          "The redesigned website launched in December 2025 and is actively used by the Bitcoin Dev Project community.",
-          "The final website reflected significant changes informed by usability testing, including a revised information architecture, clearer navigation, more direct copy, and improved page hierarchy. During the first month after launch, website visits increased by 19% and bounce rate decreased by 8%.",
-        ],
-      },
-      {
-        variant: "text",
-        title: "Team Perspective",
-        titleSize: "medium",
-        body: [],
       },
       {
         variant: "quote",
-        quote:
-          "Her illustration and visual design work is particularly strong. She redesigned our website with original hand-drawn illustrations that gave the brand a warm, playful feel, exactly the tone we were going for. She also has a good eye for user flows and thinks carefully about the full experience. She is no stranger to going past the visuals and digging into the \"why\" behind design decisions.",
-        highlight:
-          "She is no stranger to going past the visuals and digging into the \"why\" behind design decisions.",
-        author: "Stacie Waleyko",
-        role: "Team Lead, Bitcoin Dev Project",
+        quote: "I would wanna view the resources directly.",
+      },
+      {
+        variant: "quote",
+        quote: "Anticipating the resources and not a menu.",
       },
       {
         variant: "text",
-        title: "Using AI as an accelerator",
+        title: "",
         body: [
-          "AI-assisted image generation helped speed up early illustration exploration.",
-          "However, the generated images were not consistent enough to function as final brand assets. I manually redrew and refined the selected directions to match the visual system and maintain consistency across different applications.",
-          "This process reinforced the importance of using AI to accelerate exploration while retaining human judgment over the final design.",
+          "So I removed the separate Explore page and brought its content onto the homepage, surfacing Learn, Contribute, and Get Funded immediately after the first fold.",
         ],
       },
       {
-        variant: "portal-comparison-row",
-      },
-      {
-        variant: "ordered",
-        title: "What I would explore next",
-        intro:
-          "If I continued developing the website, I would conduct more structured usability testing with developers at different experience levels.",
+        variant: "graphic",
+        tint: "#e1dbd0",
         items: [
-          "1. Whether first-time visitors understand BDP's purpose",
-          "2. How quickly developers can find a relevant resource",
-          "3. Whether the difficulty labels match user expectations",
-          "4. Which filters are most useful as the resource library grows",
-          "5. How often visitors move between Learn, Contribute, and Get Funded",
+          {
+            label: "BEFORE — STANDALONE PAGE BEHIND A CTA",
+            src: `${basePath}/Before_Explore.png`,
+            alt: "Explore page before the redesign, with a separate menu choice before reaching resources",
+          },
+          {
+            label: "AFTER — SURFACED AS A SECTION AFTER THE FIRST FOLD",
+            src: `${basePath}/explore-after.png`,
+            alt: "Homepage after the redesign, surfacing Learn, Contribute, and Get Funded directly",
+          },
         ],
+      },
+      {
+        variant: "text",
+        eyebrow: "Finding — 02",
+        title:
+          "Developers could find the Get Funded page, but the process on how to get funded was buried in the explanation",
+        body: [
+          "Participants generally knew where to go when asked to find funding. The problem appeared after they arrived. The page relied heavily on written information to explain funding, which made the next step harder to understand at a glance.",
+        ],
+      },
+      {
+        variant: "quote",
+        quote: "Feels like a lot of info to go through.",
+      },
+      {
+        variant: "text",
+        title: "",
+        body: ["When asked if they felt confident about what to do next:"],
+      },
+      {
+        variant: "quote",
+        quote: "Not while skimming. Have to read more.",
+      },
+      {
+        variant: "text",
+        title: "I made the funding process visible",
+        titleSize: "small",
+        body: [
+          "Instead of relying on paragraphs to explain how funding worked, I redesigned the page around the process of getting funded, showing how developers could move from understanding their options to applying through different funding organizations.",
+        ],
+      },
+      {
+        variant: "graphic",
+        tint: "#e1dbd0",
+        items: [
+          {
+            label: "BEFORE — LONG BLOCKS OF TEXT MADE THE PAGE HARD TO SKIM",
+            src: `${basePath}/get-funded-before.png`,
+            alt: "The original Get Funded page, explaining funding through paragraphs of text and a simple list of organizations",
+          },
+          {
+            label: "AFTER — ORG PROFILES, A FUNDING CHECKLIST, AND CONTRIBUTOR STORIES",
+            src: `${basePath}/get-funded-walkthrough.mp4`,
+            type: "video",
+            alt: "Walkthrough of the redesigned Get Funded page, showing organization profiles, a funding checklist, and contributor stories",
+          },
+        ],
+      },
+      {
+        variant: "text",
+        eyebrow: "Finding — 03",
+        title: "The remaining issues were smaller, but easier to act on",
+        body: [
+          "Not every finding called for a larger redesign. I clarified confusing copy, made difficulty labels easier to understand, added multi-select filtering, and improved interaction feedback on resource cards. These became smaller improvements alongside the larger changes to Explore and Get Funded.",
+        ],
+      },
+      {
+        variant: "text",
+        eyebrow: "Collaboration",
+        title: "Async collaboration meant the work had to make sense without me in the room",
+        body: [
+          "I worked with the Project Lead and two developers to ship the initial redesign, then continued working with developers and open-source contributors as the product evolved.",
+          "With contributors working asynchronously, there wasn't always a meeting where I could walk someone through a Figma file. I documented decisions, expected behaviour, edge cases, and usability findings, then translated follow-up work into GitHub issues developers could pick up independently.",
+        ],
+      },
+      {
+        variant: "graphic",
+        tint: "#e1dbd0",
+        items: [
+          {
+            label: "EXAMPLE OF DOCUMENTATION",
+            src: `${basePath}/async2.png`,
+            alt: "Documentation example specifying card measurements, states, and content rules for developers",
+          },
+          {
+            label: "GITHUB ISSUES — PICKED UP BY VARIOUS CONTRIBUTORS",
+            src: `${basePath}/async1.png`,
+            alt: "Screenshot of closed GitHub issues created and picked up by various contributors",
+          },
+        ],
+      },
+      {
+        variant: "summary-banner",
+        heading: "Redesigning a fragmented contributor workflow from discovery to reward.",
+        subheading:
+          "Bitcoin Transcript Review is an open-source product where contributors review and correct transcripts of Bitcoin educational content in exchange for project rewards.",
+        media: {
+          type: "video",
+          src: `${transcriptReviewBasePath}/hero-scene-1.mp4`,
+          alt: "Animated preview of the Bitcoin Transcript Review redesign",
+        },
+        href: "/work/transcript-review-redesign",
       },
     ],
   },

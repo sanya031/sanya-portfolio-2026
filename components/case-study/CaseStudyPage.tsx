@@ -3,11 +3,13 @@ import type {
   CaseStudyFinding,
   CaseStudyPage as CaseStudyPageData,
 } from "../../data/caseStudyPages";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { navItems } from "../../data/navItems";
 import { HomeFooter } from "../home/HomeFooter";
 import { BackToWorkLink } from "../navigation/BackToWorkLink";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
+import { CaseStudyTeaserCursor } from "../cursor/CaseStudyTeaserCursor";
 import { AutoScrollCarousel } from "./AutoScrollCarousel";
 import { ButterIssueTabs } from "./ButterIssueTabs";
 import { CaseStudyMedia } from "./CaseStudyMedia";
@@ -17,6 +19,7 @@ import {
 } from "./CaseStudySectionRail";
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
+import { TestingInfographic } from "./TestingInfographic";
 import { HeroContentReveal } from "../transitions/HeroContentReveal";
 import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
@@ -40,20 +43,15 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     22: "reflection",
   },
   "bitcoin-dev-project-redesign": {
-    0: "overview",
-    1: "problem",
-    3: "requirements",
-    4: "design-decisions",
-    5: "why-a-pangolin",
-    6: "flexible-identity",
-    8: "visual-system",
-    10: "homepage-walkthrough",
-    13: "resource-discovery",
-    17: "resource-iterations",
-    22: "impact-learnings",
-    23: "team-perspective",
-    25: "using-ai-as-an-accelerator",
-    27: "explore-next",
+    1: "overview",
+    2: "problem",
+    4: "scope",
+    7: "structure",
+    9: "identity",
+    11: "discovery",
+    19: "testing",
+    21: "findings",
+    33: "collaboration",
   },
 };
 
@@ -76,18 +74,13 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
     { id: "problem", label: "Problem" },
-    { id: "requirements", label: "Requirements" },
-    { id: "design-decisions", label: "Design Decisions" },
-    { id: "why-a-pangolin", label: "Why a Pangolin", secondary: true },
-    { id: "flexible-identity", label: "Flexible Identity", secondary: true },
-    { id: "visual-system", label: "Visual System", secondary: true },
-    { id: "homepage-walkthrough", label: "Homepage Walkthrough", secondary: true },
-    { id: "resource-discovery", label: "Resource Discovery", secondary: true },
-    { id: "resource-iterations", label: "Resource Iterations", secondary: true },
-    { id: "impact-learnings", label: "Impact & Learnings" },
-    { id: "team-perspective", label: "Team Perspective", secondary: true },
-    { id: "using-ai-as-an-accelerator", label: "Using AI as an Accelerator", secondary: true },
-    { id: "explore-next", label: "What I'd Explore Next", secondary: true },
+    { id: "scope", label: "Scope" },
+    { id: "structure", label: "Structure" },
+    { id: "identity", label: "Identity" },
+    { id: "discovery", label: "Discovery" },
+    { id: "testing", label: "Testing" },
+    { id: "findings", label: "Findings" },
+    { id: "collaboration", label: "Collaboration" },
   ],
 };
 
@@ -116,9 +109,11 @@ function TextSection({
       {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
       {subLabel ? <p className="case-study-page__sub-label">{subLabel}</p> : null}
       <div className="case-study-page__text-stack">
-        <h2 className="case-study-page__section-title" data-title-size={titleSize}>
-          {title}
-        </h2>
+        {title ? (
+          <h2 className="case-study-page__section-title" data-title-size={titleSize}>
+            {title}
+          </h2>
+        ) : null}
         {body.length > 0 || emphasis ? (
           <div className="case-study-page__body-copy">
             {body.map((paragraph) => (
@@ -219,8 +214,8 @@ function QuoteSection({
 }: {
   quote: string;
   highlight?: string;
-  author: string;
-  role: string;
+  author?: string;
+  role?: string;
 }) {
   const highlightIndex = highlight ? quote.indexOf(highlight) : -1;
   const hasHighlight = highlight && highlightIndex >= 0;
@@ -244,10 +239,184 @@ function QuoteSection({
           quote
         )}
       </blockquote>
-      <p>
-        <strong>{author}</strong>
-        <span>{role}</span>
-      </p>
+      {author ? (
+        <p>
+          <strong>{author}</strong>
+          {role ? <span>{role}</span> : null}
+        </p>
+      ) : null}
+    </section>
+  );
+}
+
+function SummaryBannerStatIcon({ icon }: { icon?: "people" | "up" | "down" }) {
+  if (icon === "people") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="7" cy="6.5" r="2.5" stroke="currentColor" strokeWidth="1.4" />
+        <circle cx="14" cy="7.5" r="2" stroke="currentColor" strokeWidth="1.4" />
+        <path
+          d="M2.5 16c0-2.76 2.02-5 4.5-5s4.5 2.24 4.5 5"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+        <path
+          d="M12.5 12c2.2 0 4 1.8 4 4.5"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
+  if (icon === "up") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path
+          d="M4 13.5 9 8.5l3 3 4.5-5.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M12.5 6h4v4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (icon === "down") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path
+          d="M4 6.5 9 11.5l3-3 4.5 5.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M12.5 14h4v-4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  return null;
+}
+
+function SummaryBannerSection({
+  statement,
+  stats,
+  heading,
+  subheading,
+  media,
+  href,
+  characterSrc = "/assets/case-study-2/peeking-character.png",
+  characterHoverSrc = "/assets/case-study-2/peeking-character-hover.png",
+  speechBubbleText,
+}: {
+  statement?: string;
+  stats?: Array<{ value: string; label: string; icon?: "people" | "up" | "down" }>;
+  heading?: string;
+  subheading?: string;
+  media?: { type: "image" | "video"; src: string; alt?: string };
+  href?: string;
+  characterSrc?: string;
+  characterHoverSrc?: string;
+  speechBubbleText?: string;
+}) {
+  const character = (
+    <span className="case-study-page__summary-banner-character" aria-hidden="true">
+      <img
+        className="case-study-page__summary-banner-character-frame"
+        src={characterSrc}
+        alt=""
+        data-frame="default"
+      />
+      <img
+        className="case-study-page__summary-banner-character-frame"
+        src={characterHoverSrc}
+        alt=""
+        data-frame="hover"
+      />
+    </span>
+  );
+
+  if (heading) {
+    const body = (
+      <>
+        {character}
+        <div className="case-study-page__summary-banner-teaser">
+          <div className="case-study-page__summary-banner-teaser-text">
+            {speechBubbleText !== "" ? (
+              <span className="case-study-page__summary-banner-teaser-label">
+                {speechBubbleText ?? "Next Up"}
+              </span>
+            ) : null}
+            <h3 className="case-study-page__summary-banner-teaser-heading">{heading}</h3>
+            {subheading ? (
+              <p className="case-study-page__summary-banner-teaser-subheading">{subheading}</p>
+            ) : null}
+          </div>
+          {media ? (
+            <div className="case-study-page__summary-banner-teaser-media">
+              <GraphicMedia alt={media.alt} src={media.src} type={media.type} />
+            </div>
+          ) : null}
+        </div>
+      </>
+    );
+
+    return href ? (
+      <Link
+        aria-label={heading}
+        className="case-study-page__summary-banner case-study-page__summary-banner--teaser"
+        data-cursor="case-study-teaser"
+        href={href}
+      >
+        {body}
+      </Link>
+    ) : (
+      <section
+        aria-label={heading}
+        className="case-study-page__summary-banner case-study-page__summary-banner--teaser"
+      >
+        {body}
+      </section>
+    );
+  }
+
+  return (
+    <section className="case-study-page__summary-banner" aria-label="Project summary">
+      {character}
+      {statement ? <p className="case-study-page__summary-banner-statement">{statement}</p> : null}
+      {stats?.length ? (
+        <div className="case-study-page__summary-banner-stats">
+          {stats.map((stat) => (
+            <div className="case-study-page__summary-banner-stat" key={stat.label}>
+              <span className="case-study-page__summary-banner-stat-icon">
+                <SummaryBannerStatIcon icon={stat.icon} />
+              </span>
+              <div className="case-study-page__summary-banner-stat-text">
+                <span className="case-study-page__summary-banner-stat-value">{stat.value}</span>
+                <span className="case-study-page__summary-banner-stat-label">{stat.label}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -369,6 +538,84 @@ function VisualSystemGridSection() {
           playbackRate={1.5}
           src="/assets/case-study-2/character-design-decisions-2.mp4"
         />
+      </div>
+    </section>
+  );
+}
+
+function IdentityGridSection() {
+  return (
+    <section className="case-study-page__identity-grid" aria-label="Visual identity system">
+      <div className="case-study-page__identity-cell" data-cell="logomark-iteration">
+        <span>LOGOMARK ITERATION</span>
+        <video
+          aria-label="Logomark iteration animation"
+          autoPlay
+          className="case-study-page__identity-media"
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          src="/assets/case-study-2/design-decision-logomark-iterations.mp4"
+        />
+      </div>
+      <div className="case-study-page__identity-cell" data-cell="logotype">
+        <span>LOGOTYPE</span>
+        <img
+          alt="Bitcoin Dev Project logotype"
+          className="case-study-page__identity-media"
+          src="/assets/case-study-2/BDP logotype.png"
+        />
+      </div>
+      <div className="case-study-page__identity-cell" data-cell="logo">
+        <span>LOGO</span>
+        <img
+          alt="Bitcoin Dev Project logo"
+          className="case-study-page__identity-media"
+          src="/assets/case-study-2/BDP logo.png"
+        />
+      </div>
+      <div className="case-study-page__identity-cell" data-cell="colors">
+        <span>PRIMARY COLOURS</span>
+        <div className="case-study-page__identity-colors">
+          <img
+            alt="Primary Bitcoin Dev Project brand colors"
+            src="/assets/case-study-2/PRIMARY COLORS .png"
+          />
+          <div className="case-study-page__accent-colors-stack">
+            <span>ACCENT COLOURS</span>
+            <img
+              alt="Accent Bitcoin Dev Project brand colors"
+              src="/assets/case-study-2/ACCENT COLORS .png"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="case-study-page__identity-cell" data-cell="type">
+        <div className="case-study-page__font-sample-group">
+          <span>HEADING FONT</span>
+          <p className="case-study-page__font-sample-heading">Montserrat</p>
+        </div>
+        <div className="case-study-page__font-sample-group">
+          <span>BODY FONT</span>
+          <div className="case-study-page__font-sample-body">
+            <p>Quicksand</p>
+            <p>Hi, this is the body font. How sleek does it look ?</p>
+          </div>
+        </div>
+      </div>
+      <div className="case-study-page__identity-cell" data-cell="illustration">
+        <div className="case-study-page__identity-illustration-media">
+          <span className="case-study-page__identity-illustration-media-label">
+            Custom character illustration
+          </span>
+          <PlaybackVideo
+            ariaLabel="Customisable character illustration animation"
+            className="case-study-page__identity-illustration-media-video"
+            playbackRate={1.5}
+            src="/assets/case-study-2/character-design-decisions-2.mp4"
+          />
+        </div>
       </div>
     </section>
   );
@@ -503,6 +750,9 @@ function GraphicPlaceholderSection({
   note,
   type = "image",
   items,
+  layout,
+  bare,
+  tint,
 }: {
   label?: string;
   src?: string;
@@ -510,11 +760,41 @@ function GraphicPlaceholderSection({
   note?: string;
   type?: "image" | "video";
   items?: GraphicStackItem[];
+  layout?: "row";
+  bare?: boolean;
+  tint?: string;
 }) {
+  if (bare && src) {
+    return (
+      <section className="case-study-page__graphic-bare" aria-label={alt || "Graphic"}>
+        <GraphicMedia alt={alt} src={src} type={type} />
+      </section>
+    );
+  }
+
+  if (bare && items?.length) {
+    return (
+      <section
+        className="case-study-page__graphic-bare case-study-page__graphic-bare--stack"
+        data-layout={layout}
+        aria-label="Before and after comparison"
+      >
+        {items.map((item, index) => (
+          <figure key={`${item.src}-${index}`}>
+            {item.label ? <span>{item.label}</span> : null}
+            <GraphicMedia alt={item.alt} src={item.src} type={item.type} />
+          </figure>
+        ))}
+      </section>
+    );
+  }
+
   if (items?.length) {
     return (
       <section
         className="case-study-page__graphic-placeholder case-study-page__graphic-placeholder--stack"
+        data-layout={layout}
+        style={tint ? { background: tint, borderColor: "#cabeab" } : undefined}
         aria-label="Before and after comparison"
       >
         {items.map((item, index) => (
@@ -810,10 +1090,13 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               return withAnchor(
                 <GraphicPlaceholderSection
                   alt={section.alt}
+                  bare={section.bare}
                   items={section.items}
                   label={section.label}
+                  layout={section.layout}
                   note={section.note}
                   src={section.src}
+                  tint={section.tint}
                   type={section.type}
                 />,
               );
@@ -837,6 +1120,14 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "visual-system-grid") {
               return withAnchor(<VisualSystemGridSection />);
+            }
+
+            if (section.variant === "identity-grid") {
+              return withAnchor(<IdentityGridSection />);
+            }
+
+            if (section.variant === "testing-infographic") {
+              return withAnchor(<TestingInfographic />);
             }
 
             if (section.variant === "two-column-row") {
@@ -863,6 +1154,22 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
               return withAnchor(<AutoScrollCarousel items={section.items} />);
             }
 
+            if (section.variant === "summary-banner") {
+              return withAnchor(
+                <SummaryBannerSection
+                  characterHoverSrc={section.characterHoverSrc}
+                  characterSrc={section.characterSrc}
+                  heading={section.heading}
+                  href={section.href}
+                  media={section.media}
+                  speechBubbleText={section.speechBubbleText}
+                  statement={section.statement}
+                  stats={section.stats}
+                  subheading={section.subheading}
+                />,
+              );
+            }
+
             return withAnchor(<QuoteSection {...section} />);
           })}
         </div>
@@ -870,6 +1177,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
       <div className="case-study-page__footer-tear" aria-hidden="true" />
       <HomeFooter />
+      <CaseStudyTeaserCursor />
     </main>
   );
 }
