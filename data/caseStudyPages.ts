@@ -164,6 +164,11 @@ export const caseStudyPages: CaseStudyPage[] = [
     ],
     sections: [
       {
+        variant: "summary-banner",
+        statement:
+          "I reorganized Bitcoin Transcript Review's fragmented workflow into one connected sequence of stages, redesigned in a month, then handed it off for development with the reasoning behind each decision documented.",
+      },
+      {
         variant: "text",
         eyebrow: "Overview",
         title: "Connecting 4 fragmented workflows into a clearer review experience.",
@@ -352,6 +357,18 @@ export const caseStudyPages: CaseStudyPage[] = [
           "The redesign was approved and handed off for development. Working inside a live product, most of my decisions were about restraint, not new ideas: I wanted the reward indicator to show exact sats, but the team didn't want payout to be the main reason someone picks a review, so I kept it relative. A lot of this project was telling apart what was broken from what was just a rule I had to work around.",
           "The audit was based on my own walkthrough, not contributor interviews. Once this ships, I'd want to time how long reviews take in the new editor versus the old one, and check in with contributors on two things: whether the controls I brought into the editor actually made editing feel faster, and whether moving between stages felt smooth.",
         ],
+      },
+      {
+        variant: "summary-banner",
+        heading: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
+        subheading:
+          "Bitcoin Dev Project helps developers learn Bitcoin open source, contribute to real projects, and find funding opportunities.",
+        media: {
+          type: "video",
+          src: `${basePath}/hero-media.mp4`,
+          alt: "Animated preview of the Bitcoin Dev Project website redesign",
+        },
+        href: "/work/bitcoin-dev-project-redesign",
       },
     ],
   },
