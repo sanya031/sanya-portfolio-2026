@@ -5092,6 +5092,90 @@ video {
   font-weight: 400;
 }
 
+.hanging-chip {
+  position: absolute;
+  top: 0;
+  right: clamp(1.25rem, 4vw, 3rem);
+  z-index: 7;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.hanging-chip__center {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(50%);
+}
+
+.hanging-chip__rotator {
+  position: relative;
+  transform-origin: top center;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  will-change: transform;
+}
+
+.hanging-chip__rotator:active {
+  cursor: grabbing;
+}
+
+.hanging-chip__ropes {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.hanging-chip__rope {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 2px;
+  transform-origin: top center;
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 238, 228, 0.75),
+    rgba(242, 238, 228, 0.3)
+  );
+}
+
+.hanging-chip__chip {
+  position: relative;
+  width: clamp(88px, 9vw, 112px);
+  margin: var(--rope-length, 120px) auto 0;
+}
+
+.hanging-chip__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hanging-chip__screen {
+  position: absolute;
+  top: 30.05%;
+  left: 14.62%;
+  width: 69.6%;
+  height: 62.06%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hanging-chip__rotator {
+    cursor: default;
+    pointer-events: none;
+    touch-action: auto;
+  }
+}
+
 .home-footer {
   position: relative;
   z-index: 5;
