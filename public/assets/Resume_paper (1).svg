@@ -304,8 +304,31 @@
 <path d="M45.1988 43.9004L46.5848 45.2675L47.9707 43.9004L48.6637 44.5839L47.2778 45.951L48.6637 47.318L47.9707 48.0017L46.5848 46.6345L45.1988 48.0017L44.5059 47.318L45.8918 45.951L44.5059 44.5839L45.1988 43.9004Z" fill="#FDF9ED" fill-opacity="1"/>
 </g>
 </g>
+<g fill="#FDF9ED" fill-opacity="0.64">
+<use href="#resume-cross" transform="translate(9 12)"/>
+<use href="#resume-cross" transform="translate(17 12)"/>
+<use href="#resume-cross" transform="translate(25 12)"/>
+<use href="#resume-cross" transform="translate(33 12)"/>
+<use href="#resume-cross" transform="translate(9 20)"/>
+<use href="#resume-cross" transform="translate(17 20)"/>
+<use href="#resume-cross" transform="translate(25 20)"/>
+<use href="#resume-cross" transform="translate(33 20)"/>
+<use href="#resume-cross" transform="translate(9 28)"/>
+<use href="#resume-cross" transform="translate(17 28)"/>
+<use href="#resume-cross" transform="translate(25 28)"/>
+<use href="#resume-cross" transform="translate(33 28)"/>
+<use href="#resume-cross" transform="translate(9 36)"/>
+<use href="#resume-cross" transform="translate(17 36)"/>
+<use href="#resume-cross" transform="translate(25 36)"/>
+<use href="#resume-cross" transform="translate(33 36)"/>
+<use href="#resume-cross" transform="translate(9 44)"/>
+<use href="#resume-cross" transform="translate(17 44)"/>
+<use href="#resume-cross" transform="translate(25 44)"/>
+<use href="#resume-cross" transform="translate(33 44)"/>
+</g>
 </g>
 <defs>
+<path id="resume-cross" d="M0 0L1.25 1.25L2.5 0L3.125 0.625L1.875 1.875L3.125 3.125L2.5 3.75L1.25 2.5L0 3.75L-0.625 3.125L0.625 1.875L-0.625 0.625Z"/>
 <filter id="filter0_d_500_10934" x="31.4059" y="2.80039" width="30.3582" height="30.3016" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>

@@ -26,7 +26,7 @@ export const navItems: NavItem[] = [
     id: "resume",
     label: "Resume",
     href: "/assets/Sanya-Malhotra-Resume.pdf",
-    iconSrc: "/assets/Resume_paper%20(1).svg",
+    iconSrc: "/assets/Resume_paper.svg",
     iconAlt: "",
     external: true,
   },
