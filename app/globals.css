@@ -1788,9 +1788,9 @@ video {
 
 .hero-intro__playground-arrow {
   display: inline-block;
-  width: 0.82em;
-  height: 0.82em;
-  margin-left: 4px;
+  width: 0.72em;
+  height: 0.72em;
+  margin-left: 8px;
   vertical-align: -0.04em;
 }
 
