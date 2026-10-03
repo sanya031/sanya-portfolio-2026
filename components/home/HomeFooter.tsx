@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { HangingChip } from "./HangingChip";
+//import { HangingChip } from "./HangingChip";
 
 export type FooterLink = {
   label: string;
