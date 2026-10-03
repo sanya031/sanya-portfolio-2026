@@ -18,7 +18,7 @@ const SCALES = Object.freeze({
 
 const PHYSICS = Object.freeze({
   gravity: 3700,
-  jumpVelocity: -1000,
+  jumpVelocity: -1040,
   initialSpeed: 420,
   maxSpeed: 720,
   speedGainPerSecond: 5,
@@ -115,7 +115,7 @@ const OBSTACLES = [
   { type: "bike-dock-1", width: 76, height: 60, hitbox: { x: 4, y: 8, width: 68, height: 50 } },
   { type: "bike-dock-2", width: 100, height: 60, hitbox: { x: 4, y: 8, width: 92, height: 50 } },
   { type: "bike-dock-3", width: 120, height: 60, hitbox: { x: 4, y: 8, width: 112, height: 50 } },
-  { type: "streetcar", width: 116, height: 80, hitbox: { x: 8, y: 14, width: 100, height: 64 } },
+  { type: "streetcar", width: 100, height: 80, hitbox: { x: 8, y: 14, width: 84, height: 64 } },
   { type: "jay", width: 64, height: 56, frames: 6, flying: true, hitbox: { x: 10, y: 14, width: 46, height: 28 } },
 ];
 
@@ -601,6 +601,13 @@ class PixelRunnerGame {
       ctx.drawImage(asset, frame * 32, 0, 32, 28, x, y, obstacle.width, obstacle.height);
       return;
     }
+    if (obstacle.type.startsWith("bike-dock-")) {
+      ctx.save();
+      ctx.filter = "hue-rotate(-88deg) saturate(1.15)";
+      ctx.drawImage(asset, x, y, obstacle.width, obstacle.height);
+      ctx.restore();
+      return;
+    }
     ctx.drawImage(asset, x, y, obstacle.width, obstacle.height);
   }
 }
@@ -616,7 +623,12 @@ const THEME_KEY = "sanya-runner-theme-v1";
 let holdTimer = null;
 let holdActivated = false;
 
+let currentTheme = "light";
+
 function preferredTheme() {
+  // When embedded (e.g. a host 404 page) the host controls the theme via data-theme.
+  const hosted = document.documentElement.dataset.theme;
+  if (hosted === "light" || hosted === "dark") return hosted;
   try {
     const saved = window.localStorage.getItem(THEME_KEY);
     if (saved === "light" || saved === "dark") return saved;
@@ -628,9 +640,13 @@ function preferredTheme() {
 
 function applyTheme(theme, persist = true) {
   const dark = theme === "dark";
+  currentTheme = theme;
   document.documentElement.dataset.theme = theme;
-  themeToggle.setAttribute("aria-pressed", String(dark));
-  themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  // These nodes only exist in the standalone page; an embed may omit them.
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-pressed", String(dark));
+    themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
   if (themeColor) themeColor.content = dark ? "#171918" : "#fafafa";
   game.setTheme(theme);
   if (!persist) return;
@@ -676,7 +692,12 @@ canvas.addEventListener("pointercancel", () => {
 });
 window.addEventListener("keydown", activate);
 window.addEventListener("keyup", activate);
-themeToggle.addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
+themeToggle?.addEventListener("click", () => applyTheme(currentTheme === "dark" ? "light" : "dark"));
+// Keep the canvas in sync when a host page flips its own data-theme.
+new MutationObserver(() => {
+  const hosted = document.documentElement.dataset.theme;
+  if ((hosted === "light" || hosted === "dark") && hosted !== currentTheme) applyTheme(hosted, false);
+}).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 document.addEventListener("visibilitychange", () => {
   game.lastTime = 0;
   game.accumulator = 0;
