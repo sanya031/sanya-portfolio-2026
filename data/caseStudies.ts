@@ -19,22 +19,6 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: "transcript-review-redesign",
-    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
-    subtitle: "Bitcoin Transcript Review",
-    description:
-      "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
-    role: "Bitcoin Transcript Review",
-    year: "Jun 2026",
-    tags: ["HANDED-OFF"],
-    href: "/work/transcript-review-redesign",
-    media: {
-      type: "video",
-      src: "/assets/case-study-1/hero-scene-1.mp4",
-      alt: "Preview of the Bitcoin Transcript Review case study",
-    },
-  },
-  {
     id: "bitcoin-dev-project-redesign",
     title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
     subtitle: "Bitcoin Dev Project",
@@ -48,6 +32,22 @@ export const caseStudies: CaseStudy[] = [
       type: "video",
       src: "/assets/case-study-2/hero-media.mp4",
       alt: "Preview of the Bitcoin Dev Project case study",
+    },
+  },
+  {
+    id: "transcript-review-redesign",
+    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
+    subtitle: "Bitcoin Transcript Review",
+    description:
+      "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
+    role: "Bitcoin Transcript Review",
+    year: "Jun 2026",
+    tags: ["HANDED-OFF"],
+    href: "/work/transcript-review-redesign",
+    media: {
+      type: "video",
+      src: "/assets/case-study-1/hero-scene-1.mp4",
+      alt: "Preview of the Bitcoin Transcript Review case study",
     },
   },
 ];

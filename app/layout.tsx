@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AgentationDevtools } from "../components/Agentation";
 import { TransitionProvider } from "../components/transitions/TransitionProvider";
 import "./globals.css";
 
@@ -63,6 +64,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <TransitionProvider>{children}</TransitionProvider>
+        {process.env.NODE_ENV === "development" ? <AgentationDevtools /> : null}
       </body>
     </html>
   );
