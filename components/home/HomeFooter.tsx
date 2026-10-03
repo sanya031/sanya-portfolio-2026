@@ -33,7 +33,7 @@ export function HomeFooter({
 
   return (
     <footer id="contact" className="home-footer" data-nav-theme="dark">
-      <HangingChip />
+      {/* <HangingChip /> */}
       <div className="home-footer__content">
         <h2 className="home-footer__title">Get in touch</h2>
 
