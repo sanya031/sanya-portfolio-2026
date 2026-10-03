@@ -12,6 +12,14 @@ export function WorkSection({ caseStudies }: WorkSectionProps) {
 
       <div className="work-section__paper">
         <div className="work-section__inner">
+          <h2 className="work-section__heading">
+            <img
+              className="work-section__heading-image"
+              src="/assets/selected%20work.png"
+              alt="Selected work"
+            />
+          </h2>
+
           <div className="work-section__grid">
             {caseStudies.map((caseStudy) => (
               <CaseStudyCard caseStudy={caseStudy} key={caseStudy.id} />
