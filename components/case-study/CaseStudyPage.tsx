@@ -975,7 +975,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
     <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
       <FloatingNavbar
-        autoExpandOnScroll={false}
+        autoExpandOnScroll
         hideOnFirstFold={false}
         homeHref="/"
         items={navItems}
