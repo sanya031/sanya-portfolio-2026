@@ -2693,7 +2693,7 @@ video {
 }
 
 .case-study-card__org {
-  margin: 0;
+  margin: 0 0 4px;
   color: #4a4a4a;
   font-family: "Geist", Arial, sans-serif;
   font-size: 14px;
