@@ -80,6 +80,7 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
         {caseStudy.summary || caseStudy.labels ? (
           <div className="case-study-card__body case-study-card__body--detailed">
             <div className="case-study-card__headline">
+              <p className="case-study-card__org">{caseStudy.subtitle}</p>
               <h3 className="case-study-card__heading">{caseStudy.title}</h3>
               {caseStudy.summary ? (
                 <p className="case-study-card__summary">{caseStudy.summary}</p>
