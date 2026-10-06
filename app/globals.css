@@ -2683,6 +2683,57 @@ video {
   line-height: 1.34;
 }
 
+.case-study-card__body--detailed {
+  gap: 8px;
+}
+
+.case-study-card__headline {
+  display: grid;
+  gap: 0;
+}
+
+.case-study-card__heading {
+  margin: 0;
+  color: #000;
+  font-family: "Geist", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.case-study-card__summary {
+  margin: 0;
+  color: #4a4a4a;
+  font-family: "Geist", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.case-study-card__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-study-card__label {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 8%);
+  color: #4a4a4a;
+  font-family: "Geist", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .case-study-cursor {
   position: fixed;
   top: 0;

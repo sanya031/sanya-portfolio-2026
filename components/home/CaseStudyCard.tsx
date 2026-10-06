@@ -77,19 +77,40 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
           </SharedMediaSurface>
         </div>
 
-        <div className="case-study-card__body">
-          <div className="case-study-card__primary-meta">
-            <p className="case-study-card__role">{caseStudy.role}</p>
-            <span className="case-study-card__meta-separator" aria-hidden="true" />
-            <p className="case-study-card__year">{caseStudy.year}</p>
-            <span className="case-study-card__meta-separator" aria-hidden="true" />
-            <p className="case-study-card__status">{caseStudy.tags.join(", ")}</p>
-          </div>
+        {caseStudy.summary || caseStudy.labels ? (
+          <div className="case-study-card__body case-study-card__body--detailed">
+            <div className="case-study-card__headline">
+              <h3 className="case-study-card__heading">{caseStudy.title}</h3>
+              {caseStudy.summary ? (
+                <p className="case-study-card__summary">{caseStudy.summary}</p>
+              ) : null}
+            </div>
 
-          <div className="case-study-card__copy">
-            <h3 className="case-study-card__title">{caseStudy.title}</h3>
+            {caseStudy.labels?.length ? (
+              <ul className="case-study-card__labels" aria-label="Disciplines">
+                {caseStudy.labels.map((label) => (
+                  <li className="case-study-card__label" key={label}>
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
-        </div>
+        ) : (
+          <div className="case-study-card__body">
+            <div className="case-study-card__primary-meta">
+              <p className="case-study-card__role">{caseStudy.role}</p>
+              <span className="case-study-card__meta-separator" aria-hidden="true" />
+              <p className="case-study-card__year">{caseStudy.year}</p>
+              <span className="case-study-card__meta-separator" aria-hidden="true" />
+              <p className="case-study-card__status">{caseStudy.tags.join(", ")}</p>
+            </div>
+
+            <div className="case-study-card__copy">
+              <h3 className="case-study-card__title">{caseStudy.title}</h3>
+            </div>
+          </div>
+        )}
       </Link>
     </article>
   );
