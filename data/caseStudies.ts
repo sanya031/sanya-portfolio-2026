@@ -8,6 +8,8 @@ export type CaseStudy = {
   role: string;
   year: string;
   tags: string[];
+  summary?: string;
+  labels?: string[];
   href: string;
   media: {
     type: CaseStudyMediaType;
@@ -20,13 +22,23 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: "bitcoin-dev-project-redesign",
-    title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
+    title: "Increasing visits by 19% by redesigning how developers discover Bitcoin resources",
     subtitle: "Bitcoin Dev Project",
     description:
       "A visual system and site direction for making an open-source developer community feel more legible, credible, and alive.",
     role: "Bitcoin Dev Project",
     year: "DEC 2025",
     tags: ["SHIPPED"],
+    summary:
+      "Simplified how developers navigate resources and opportunities, from information architecture to visual identity.",
+    labels: [
+      "Usability Testing",
+      "IA",
+      "Product Design",
+      "Visual Identity",
+      "Illustration",
+      "Open Source Collaboration",
+    ],
     href: "/work/bitcoin-dev-project-redesign",
     media: {
       type: "video",
@@ -36,13 +48,16 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "transcript-review-redesign",
-    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
+    title: "Helping contributors understand the work before committing to it",
     subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
     role: "Bitcoin Transcript Review",
     year: "Jun 2026",
     tags: ["HANDED-OFF"],
+    summary:
+      "Redesigned the end-to-end transcript review workflow while working within existing technical constraints.",
+    labels: ["UX Audit", "IA", "Interaction Design", "Visual Identity", "Developer Handoff"],
     href: "/work/transcript-review-redesign",
     media: {
       type: "video",

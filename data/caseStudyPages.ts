@@ -126,7 +126,7 @@ export const caseStudyPages: CaseStudyPage[] = [
   {
     slug: "transcript-review-redesign",
     meta: ["Bitcoin Transcript Review", "Jun 2026", "Handed-off"],
-    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
+    title: "Helping contributors understand the work before committing to it",
     subtitle:
       "Bitcoin Transcript Review is an open-source product where contributors review and correct transcripts of Bitcoin educational content in exchange for project rewards.",
     seo: {
@@ -360,7 +360,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "summary-banner",
-        heading: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
+        heading: "Increasing visits by 19% by redesigning how developers discover Bitcoin resources",
         subheading:
           "Bitcoin Dev Project helps developers learn Bitcoin open source, contribute to real projects, and find funding opportunities.",
         media: {
@@ -375,7 +375,7 @@ export const caseStudyPages: CaseStudyPage[] = [
   {
     slug: "bitcoin-dev-project-redesign",
     meta: ["Bitcoin Dev Project", "Dec 2025", "Shipped"],
-    title: "Restructuring how developers discover resources across an open-source Bitcoin platform.",
+    title: "Increasing visits by 19% by redesigning how developers discover Bitcoin resources",
     subtitle:
       "Bitcoin Dev Project helps developers learn Bitcoin open source, contribute to real projects, and find funding opportunities.",
     seo: {
@@ -704,7 +704,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "summary-banner",
-        heading: "Redesigning a fragmented contributor workflow from discovery to reward.",
+        heading: "Helping contributors understand the work before committing to it",
         subheading:
           "Bitcoin Transcript Review is an open-source product where contributors review and correct transcripts of Bitcoin educational content in exchange for project rewards.",
         media: {
