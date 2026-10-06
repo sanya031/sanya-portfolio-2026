@@ -48,13 +48,16 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: "transcript-review-redesign",
-    title: "Redesigning a fragmented contributor workflow from discovery to reward.",
+    title: "Helping contributors understand the work before committing to it",
     subtitle: "Bitcoin Transcript Review",
     description:
       "A reusable placeholder for adding the next project preview, metadata, and case-study route.",
     role: "Bitcoin Transcript Review",
     year: "Jun 2026",
     tags: ["HANDED-OFF"],
+    summary:
+      "Redesigned the end-to-end transcript review workflow while working within existing technical constraints.",
+    labels: ["UX Audit", "IA", "Interaction Design", "Visual Identity", "Developer Handoff"],
     href: "/work/transcript-review-redesign",
     media: {
       type: "video",
