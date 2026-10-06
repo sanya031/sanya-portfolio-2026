@@ -2699,6 +2699,7 @@ video {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .case-study-card__heading {
