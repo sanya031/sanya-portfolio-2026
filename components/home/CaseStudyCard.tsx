@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CaseStudy } from "../../data/caseStudies";
+import { PlaybackVideo } from "../case-study/PlaybackVideo";
 import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
 
 export type CaseStudyCardProps = {
@@ -53,14 +54,11 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
             data-media-type={caseStudy.media.type}
           >
             {caseStudy.media.type === "video" && caseStudy.media.src ? (
-              <video
-                autoPlay
+              <PlaybackVideo
+                ariaLabel={caseStudy.media.alt}
                 className="case-study-card__video"
-                loop
-                muted
-                playsInline
+                playbackRate={0.7}
                 poster={caseStudy.media.poster}
-                preload="metadata"
                 src={caseStudy.media.src}
               />
             ) : caseStudy.media.src ? (

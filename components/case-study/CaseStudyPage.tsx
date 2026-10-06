@@ -1016,6 +1016,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
             asset={page.hero}
             className="case-study-page__hero-media"
             layoutId={heroLayoutId}
+            playbackRate={0.7}
           />
         </header>
 

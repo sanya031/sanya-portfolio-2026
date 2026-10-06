@@ -1,13 +1,20 @@
 import type { CaseStudyAsset } from "../../data/caseStudyPages";
 import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
+import { PlaybackVideo } from "./PlaybackVideo";
 
 export type CaseStudyMediaProps = {
   asset: CaseStudyAsset;
   className?: string;
   layoutId?: string;
+  playbackRate?: number;
 };
 
-export function CaseStudyMedia({ asset, className = "", layoutId }: CaseStudyMediaProps) {
+export function CaseStudyMedia({
+  asset,
+  className = "",
+  layoutId,
+  playbackRate,
+}: CaseStudyMediaProps) {
   const mediaClassName = ["case-study-page__media", className].filter(Boolean).join(" ");
   const isProblemFrame = asset.frame === "problem" && asset.type === "image" && !asset.empty;
   const problemAssetBasePath = isProblemFrame ? asset.src.replace(/\/[^/]+$/, "") : "";
@@ -28,7 +35,14 @@ export function CaseStudyMedia({ asset, className = "", layoutId }: CaseStudyMed
         {asset.overlayLabel ? (
           <span className="case-study-page__media-overlay-label">{asset.overlayLabel}</span>
         ) : null}
-        {asset.empty ? null : asset.type === "video" ? (
+        {asset.empty ? null : asset.type === "video" && playbackRate ? (
+          <PlaybackVideo
+            ariaLabel={asset.alt}
+            className={assetClassName}
+            playbackRate={playbackRate}
+            src={asset.src}
+          />
+        ) : asset.type === "video" ? (
           <video
             autoPlay
             className={assetClassName}
