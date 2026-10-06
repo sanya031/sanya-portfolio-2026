@@ -2722,22 +2722,16 @@ video {
 .case-study-card__label {
   display: inline-flex;
   align-items: center;
-  height: 18px;
-  padding: 0 8px;
+  height: 22px;
+  padding: 0 10px;
   border-radius: 999px;
   background: rgb(0 0 0 / 8%);
   color: #4a4a4a;
   font-family: "Geist", Arial, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
-}
-
-.case-study-card[data-case-study-id="bitcoin-dev-project-redesign"] .case-study-card__label {
-  height: 22px;
-  padding: 0 10px;
-  font-size: 14px;
 }
 
 .case-study-cursor {
