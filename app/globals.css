@@ -4758,7 +4758,7 @@ video {
 }
 
 .case-study-page__identity-cell > span {
-  color: #7a7a7a;
+  color: #000000;
   font-family: "Departure Mono", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.2;
@@ -4837,13 +4837,10 @@ video {
 
 .case-study-page__identity-illustration-media-label {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
+  top: 1rem;
+  left: 1rem;
   z-index: 1;
-  border-radius: 0.25rem;
-  background: rgba(255, 255, 255, 0.88);
-  padding: 0.3rem 0.6rem;
-  color: #201e1e;
+  color: #000000;
   font-family: "Departure Mono", "Courier New", monospace;
   font-size: 13px;
   line-height: 1.2;
