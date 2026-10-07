@@ -4245,7 +4245,7 @@ video {
   height: 100%;
   border: 1px solid #e8dfad;
   border-bottom: 0;
-  border-radius: 12px 12px 0 0;
+  border-radius: 8px 8px 0 0;
   background: #fff3a6;
   transform: translateX(var(--butter-highlight-left, 0));
   transition:
