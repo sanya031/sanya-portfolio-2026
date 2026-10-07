@@ -2483,7 +2483,7 @@ video {
     url("/assets/mid%20page.png") top center / 100% auto repeat-y,
     var(--paper);
   padding:
-    80px
+    48px
     clamp(1rem, 4.6vw, 4.35rem)
     calc(var(--paper-bottom-height) * 0.84);
 }
@@ -2495,13 +2495,17 @@ video {
 
 .work-section__heading {
   width: min(100%, 44rem);
-  margin: 0 auto var(--work-section-gap);
+  margin: 0 auto calc(var(--work-section-gap) * 0.7);
 }
 
 .work-section__heading-image {
   display: block;
   width: 100%;
   height: auto;
+  /* Crop the transparent padding baked into the PNG above and below the lettering. */
+  aspect-ratio: 2138 / 460;
+  object-fit: cover;
+  object-position: center;
 }
 
 .work-section__grid {
