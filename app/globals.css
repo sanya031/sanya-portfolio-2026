@@ -2515,10 +2515,6 @@ video {
 
 .case-study-card {
   --case-card-ink: #55290f;
-  --case-frame-gap: 4px;
-  --case-media-inset: 0.8rem;
-  --case-plus-size: 16px;
-  --case-frame-offset: calc((var(--case-plus-size) / 2) + var(--case-frame-gap));
   position: relative;
   max-width: min(64.4vw, 60.8rem);
   margin: 0 auto;
@@ -2533,71 +2529,6 @@ video {
 .case-study-card__media-frame {
   position: relative;
   cursor: none;
-  padding: var(--case-media-inset);
-}
-
-.case-study-card__frame-stroke,
-.case-study-card__frame-plus {
-  position: absolute;
-  z-index: 2;
-  filter: brightness(0) saturate(100%) invert(15%) sepia(71%) saturate(928%) hue-rotate(355deg)
-    brightness(96%) contrast(97%);
-  pointer-events: none;
-}
-
-.case-study-card__frame-stroke[data-edge="top"],
-.case-study-card__frame-stroke[data-edge="bottom"] {
-  left: var(--case-frame-offset);
-  width: calc(100% - (var(--case-frame-offset) * 2));
-  height: 1px;
-}
-
-.case-study-card__frame-stroke[data-edge="top"] {
-  top: 0;
-}
-
-.case-study-card__frame-stroke[data-edge="bottom"] {
-  bottom: 0;
-}
-
-.case-study-card__frame-stroke[data-edge="right"],
-.case-study-card__frame-stroke[data-edge="left"] {
-  top: var(--case-frame-offset);
-  width: 2px;
-  height: calc(100% - (var(--case-frame-offset) * 2));
-}
-
-.case-study-card__frame-stroke[data-edge="right"] {
-  right: 0;
-}
-
-.case-study-card__frame-stroke[data-edge="left"] {
-  left: 0;
-}
-
-.case-study-card__frame-plus {
-  width: var(--case-plus-size);
-  height: var(--case-plus-size);
-}
-
-.case-study-card__frame-plus[data-corner="top-left"] {
-  top: calc(var(--case-plus-size) / -2);
-  left: calc(var(--case-plus-size) / -2);
-}
-
-.case-study-card__frame-plus[data-corner="top-right"] {
-  top: calc(var(--case-plus-size) / -2);
-  right: calc(var(--case-plus-size) / -2);
-}
-
-.case-study-card__frame-plus[data-corner="bottom-left"] {
-  bottom: calc(var(--case-plus-size) / -2);
-  left: calc(var(--case-plus-size) / -2);
-}
-
-.case-study-card__frame-plus[data-corner="bottom-right"] {
-  right: calc(var(--case-plus-size) / -2);
-  bottom: calc(var(--case-plus-size) / -2);
 }
 
 .case-study-card__media {

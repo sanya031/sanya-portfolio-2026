@@ -8,8 +8,6 @@ export type CaseStudyCardProps = {
 };
 
 export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
-  const frameCorners = ["top-left", "top-right", "bottom-left", "bottom-right"];
-  const frameEdges = ["top", "right", "bottom", "left"];
   const mediaLayoutId = caseStudy.media.src ? `case-study-media-${caseStudy.id}` : undefined;
 
   return (
@@ -23,31 +21,6 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
         href={caseStudy.href}
       >
         <div className="case-study-card__media-frame" data-cursor="case-study">
-          {frameEdges.map((edge) => (
-            <img
-              className="case-study-card__frame-stroke"
-              data-edge={edge}
-              src={
-                edge === "top" || edge === "bottom"
-                  ? "/assets/stroke-horizontal-case-study.svg"
-                  : "/assets/stroke-vertical-case-study.svg"
-              }
-              alt=""
-              aria-hidden="true"
-              key={edge}
-            />
-          ))}
-          {frameCorners.map((corner) => (
-            <img
-              className="case-study-card__frame-plus"
-              data-corner={corner}
-              src="/assets/plus_case-study.svg"
-              alt=""
-              aria-hidden="true"
-              key={corner}
-            />
-          ))}
-
           <SharedMediaSurface
             className="case-study-card__media"
             layoutId={mediaLayoutId}
