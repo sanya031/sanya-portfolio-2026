@@ -395,7 +395,7 @@ export const caseStudyPages: CaseStudyPage[] = [
     },
     facts: [
       { label: "Organisation", value: ["Bitcoin Dev Project"] },
-      { label: "My Role", value: ["Product Designer"] },
+      { label: "My Role", value: ["Product Designer", "Illustrator"] },
       {
         label: "Collaborators",
         value: ["1 Team Lead", "2 Developers", "Open-source developers"],
