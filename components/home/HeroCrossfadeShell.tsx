@@ -34,15 +34,17 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
 
       const rect = shell.getBoundingClientRect();
       const viewportHeight = window.innerHeight || 1;
-      const progress = clamp(-rect.top / (viewportHeight * 0.7));
-      const containerFade = mapRange(progress, 0, 0.22);
-      const overlayFade = mapRange(progress, 0.18, 0.46);
-      const statementFade = mapRange(progress, 0.52, 0.78);
-      const workFade = mapRange(progress, 0.04, 0.36);
+      // Progress is measured in viewport heights scrolled. The first fold fades out over the first
+      // half viewport while the overlay starts with it but darkens sooner, then the work fades in.
+      const progress = clamp(-rect.top / viewportHeight);
+      const containerFade = mapRange(progress, 0, 0.5);
+      const overlayFade = mapRange(progress, 0, 0.35);
+      const statementFade = mapRange(progress, 0.36, 0.55);
+      const workFade = mapRange(progress, 0.2, 0.55);
 
       shell.style.setProperty("--hero-transition-progress", progress.toFixed(3));
       shell.style.setProperty("--hero-container-opacity", (1 - containerFade).toFixed(3));
-      shell.style.setProperty("--hero-overlay-opacity", (0.05 + overlayFade * 0.5).toFixed(3));
+      shell.style.setProperty("--hero-overlay-opacity", (0.05 + overlayFade * 0.63).toFixed(3));
       shell.style.setProperty("--hero-statement-opacity", statementFade.toFixed(3));
 
       if (workSection) {
