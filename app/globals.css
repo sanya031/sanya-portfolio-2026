@@ -5351,6 +5351,164 @@ video {
   }
 }
 
+/*
+ * Footer reveal: page content sits in a sheet above a footer pinned to the bottom of the
+ * viewport. The sheet clips its fixed backdrop (the home painting) to its own box, so as it
+ * scrolls away the footer underneath is uncovered, until the sheet's bottom meets the footer.
+ */
+.page-sheet {
+  position: relative;
+  z-index: 1;
+  background: var(--background);
+  clip-path: inset(0);
+}
+
+/* A soft shadow that rides along the sheet's bottom edge as it lifts off the footer. */
+.page-sheet__shadow {
+  position: relative;
+  z-index: 1;
+  height: 0;
+  pointer-events: none;
+}
+
+.page-sheet__shadow::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: clamp(2rem, 4vw, 3.5rem);
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  content: "";
+}
+
+.site-footer {
+  --site-footer-text: #fdf9ed;
+  --site-footer-muted: rgba(253, 249, 237, 0.6);
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+  display: grid;
+  height: clamp(26rem, 38vw, 100svh);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 2rem;
+  overflow: hidden;
+  background: var(--background);
+  color: var(--site-footer-text);
+  font-family: "Geist", Arial, sans-serif;
+  padding: clamp(2rem, 3.4vw, 3.25rem) clamp(1.25rem, 3.4vw, 3.5rem);
+}
+
+.site-footer__blooms {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.site-footer__bloom {
+  position: absolute;
+  overflow: visible;
+  translate: -50% -50%;
+}
+
+.site-footer__intro,
+.site-footer__columns {
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer__quote {
+  margin: 0;
+  color: var(--site-footer-text);
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.site-footer__hint {
+  margin: 1.1rem 0 0;
+  color: var(--site-footer-muted);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  text-transform: uppercase;
+}
+
+.site-footer__columns {
+  display: flex;
+  gap: clamp(2rem, 4.6vw, 4.5rem);
+  text-align: right;
+}
+
+.site-footer__column {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  justify-items: end;
+}
+
+.site-footer__heading {
+  margin: 0 0 0.15rem;
+  color: var(--site-footer-text);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.site-footer__item {
+  margin: 0;
+  color: var(--site-footer-muted);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.4;
+}
+
+.site-footer__link {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.site-footer__link:hover,
+.site-footer__link:focus-visible {
+  color: var(--site-footer-text);
+}
+
+.site-footer__link:focus-visible {
+  outline: 1px solid var(--site-footer-muted);
+  outline-offset: 3px;
+}
+
+.site-footer__dot {
+  margin: 0 0.55em;
+}
+
+@media (max-width: 860px) {
+  .site-footer {
+    height: 100svh;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(2.5rem, 8vw, 3.5rem);
+    padding: clamp(2.5rem, 10vw, 3.5rem) clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .site-footer__columns {
+    flex-direction: column;
+    gap: clamp(2rem, 7vw, 3rem);
+    text-align: left;
+  }
+
+  .site-footer__column {
+    justify-items: start;
+  }
+}
+
 .home-footer {
   position: relative;
   z-index: 5;

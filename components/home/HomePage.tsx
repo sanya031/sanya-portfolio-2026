@@ -6,7 +6,7 @@ import { DialKitRoot } from "../dev/DialKitRoot";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { HeroCrossfadeShell } from "./HeroCrossfadeShell";
 import { HeroIntro } from "./HeroIntro";
-import { HomeFooter } from "./HomeFooter";
+import { SiteFooter } from "../footer/SiteFooter";
 import { InstantWorkScroll } from "./InstantWorkScroll";
 import { ScrollStatement } from "./ScrollStatement";
 import { WorkSection } from "./WorkSection";
@@ -19,23 +19,20 @@ export function HomePage() {
       <AboutViewCursor label="View case study" target="case-study" tone="media" />
       <FloatingNavbar items={navItems} lockVariant variant="dark" />
 
-      <HeroCrossfadeShell>
-        <HeroIntro />
-       {/* <ScrollStatement words={statementWords} /> */}
-      </HeroCrossfadeShell>
+      {/* The page content scrolls up like a sheet to uncover the footer pinned beneath it. */}
+      <div className="page-sheet">
+        <HeroCrossfadeShell>
+          <HeroIntro />
+         {/* <ScrollStatement words={statementWords} /> */}
+        </HeroCrossfadeShell>
 
-      <WorkSection caseStudies={caseStudies} />
+        <WorkSection caseStudies={caseStudies} />
+      </div>
+      <div className="page-sheet__shadow" aria-hidden="true" />
 
       <DialKitRoot />
 
-      <HomeFooter
-        stamp={{
-          image: "/assets/footer_motif.svg",
-          label: "Toronto",
-          location: "Available for thoughtful product work",
-          link: "mailto:hello@example.com",
-        }}
-      />
+      <SiteFooter />
     </main>
   );
 }
