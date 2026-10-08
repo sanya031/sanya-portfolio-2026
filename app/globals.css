@@ -2558,6 +2558,8 @@ video {
   border-radius: 16px;
   background: rgba(253, 249, 237, 0.06);
   padding: 12px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .case-study-card__media {

@@ -4,14 +4,51 @@ import { motion, type Transition, useInView, useReducedMotion } from "motion/rea
 import { useEffect, useRef, useState } from "react";
 
 /* ─────────────────────────────────────────────────────────
- * BDP CARD STORYBOARD (plays once, when the card scrolls into view)
+ * BDP CARD STORYBOARD (plays once, when the card is on screen and the work has faded in)
  *
  *    0ms   all four screens stacked in the centre, homepage on top
  *  300ms   each screen moves out to its own corner of the 2×2 grid
  *          (staggered 50ms), settling with a soft spring
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  split: 300, // screens leave the centre for their grid cells
+  split: 300, // screens leave the centre for their grid cells, once the card is visible
+};
+
+// The home page reveals the work section on a timer once the visitor scrolls (see
+// HeroCrossfadeShell). Resolves once that reveal has finished, so the card is actually visible.
+const whenWorkRevealed = (element: HTMLElement, onReady: () => void) => {
+  const page = element.closest<HTMLElement>(".home-page");
+
+  if (!page) {
+    onReady();
+    return () => {};
+  }
+
+  let timer = 0;
+  const readRevealMs = () => {
+    const style = getComputedStyle(page);
+    const delay = Number.parseFloat(style.getPropertyValue("--reveal-work-delay")) || 0;
+    const duration = Number.parseFloat(style.getPropertyValue("--reveal-work-duration")) || 0;
+    return delay + duration;
+  };
+
+  const check = (justRevealed: boolean) => {
+    if (page.dataset.revealed !== "true") {
+      return;
+    }
+
+    observer.disconnect();
+    timer = window.setTimeout(onReady, justRevealed ? readRevealMs() : 0);
+  };
+
+  const observer = new MutationObserver(() => check(true));
+  observer.observe(page, { attributes: true, attributeFilter: ["data-revealed"] });
+  check(false);
+
+  return () => {
+    observer.disconnect();
+    window.clearTimeout(timer);
+  };
 };
 
 const MOVE: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
@@ -29,7 +66,7 @@ const screens = [
 
 export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(rootRef, { once: true, amount: 0.5 });
+  const isInView = useInView(rootRef, { once: true, amount: 0.6 });
   const reduceMotion = useReducedMotion();
   const [stage, setStage] = useState<Stage>("centre");
 
@@ -39,13 +76,21 @@ export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
       return;
     }
 
-    if (!isInView) {
+    const root = rootRef.current;
+
+    if (!isInView || !root) {
       return;
     }
 
-    const timer = window.setTimeout(() => setStage("grid"), TIMING.split);
+    let timer = 0;
+    const stopWaiting = whenWorkRevealed(root, () => {
+      timer = window.setTimeout(() => setStage("grid"), TIMING.split);
+    });
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      stopWaiting();
+      window.clearTimeout(timer);
+    };
   }, [isInView, reduceMotion]);
 
   return (
