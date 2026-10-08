@@ -5373,13 +5373,14 @@ video {
   pointer-events: none;
 }
 
+/* Strength is set from scroll by SiteFooter and fades to 0 as the footer settles into place. */
 .page-sheet__shadow::before {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  height: clamp(2rem, 4vw, 3.5rem);
-  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  height: clamp(2.5rem, 5vw, 4.5rem);
+  background: linear-gradient(rgba(0, 0, 0, var(--sheet-shadow-strength, 0.28)), rgba(0, 0, 0, 0));
   content: "";
 }
 
@@ -5390,7 +5391,7 @@ video {
   bottom: 0;
   z-index: 0;
   display: grid;
-  height: clamp(26rem, 38vw, 100svh);
+  height: clamp(32rem, 46vw, 100svh);
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   gap: 2rem;
@@ -5399,6 +5400,19 @@ video {
   color: var(--site-footer-text);
   font-family: "Geist", Arial, sans-serif;
   padding: clamp(2rem, 3.4vw, 3.25rem) clamp(1.25rem, 3.4vw, 3.5rem);
+}
+
+/* A paintbrush over the empty space signals it can be painted on; text and links stay normal. */
+.site-footer[data-brush="true"] {
+  cursor: url("/assets/cursor-brush.svg") 3 29, crosshair;
+}
+
+.site-footer[data-brush="true"] .site-footer__text {
+  cursor: auto;
+}
+
+.site-footer[data-brush="true"] .site-footer__link {
+  cursor: pointer;
 }
 
 .site-footer__blooms {
@@ -5419,6 +5433,11 @@ video {
 .site-footer__columns {
   position: relative;
   z-index: 1;
+}
+
+/* Hug the text so only the words themselves are off-limits for painting. */
+.site-footer__intro {
+  justify-self: start;
 }
 
 .site-footer__quote {
