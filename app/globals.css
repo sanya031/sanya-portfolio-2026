@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,600;1,700&family=Quicksand:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,600;1,700&family=Quicksand:wght@400&display=swap");
 @import "tailwindcss";
 @import "dialkit/styles.css";
 
@@ -5414,7 +5414,7 @@ video {
   margin: 1.1rem 0 0;
   color: var(--site-footer-muted);
   font-size: clamp(0.9rem, 1.1vw, 1rem);
-  text-transform: uppercase;
+  font-weight: 300;
 }
 
 .site-footer__columns {
