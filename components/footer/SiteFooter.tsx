@@ -15,7 +15,8 @@ const MAX_BLOOMS = 12;
 
 /*
  * Making click-to-create discoverable:
- *  - arrival: when the footer is fully uncovered, a few motifs bloom on their own, one by one
+ *  - arrival: as soon as a strip of the footer peeks out below the page, motifs bloom on
+ *    their own inside that visible strip, one by one, so there's movement to scroll towards
  *  - nudge: if nobody has clicked after a while, one more blooms; stops after the first click
  *  - brush: the cursor becomes a paintbrush over the footer's empty space
  * Each can be switched off or tuned from the Footer DialKit panel (local and previews only).
@@ -35,6 +36,10 @@ type FooterControls = ResolvedValues<typeof footerControls>;
 
 // How much of the footer still has to be uncovered (px) before the sheet's shadow is gone.
 const SHADOW_FADE_PX = 160;
+
+// Arrival blooms start once this much of the footer (px) is showing, and reset when it's hidden.
+const ARRIVAL_PEEK_PX = 80;
+const ARRIVAL_RESET_PX = 20;
 
 const pageLinks = [
   { label: "Home", href: "/" },
@@ -112,7 +117,7 @@ export function SiteFooter() {
     }
   };
 
-  const addBloom = useCallback((x: number, y: number) => {
+  const addBloom = useCallback((x: number, y: number, maxSize = BLOOM_SIZE.max) => {
     let colourIndex = Math.floor(Math.random() * MOTIF_PALETTE.length);
 
     // Never repeat the previous colour back to back.
@@ -126,30 +131,39 @@ export function SiteFooter() {
       id: nextBloomId.current++,
       x,
       y,
-      size: Math.round(BLOOM_SIZE.min + Math.random() * (BLOOM_SIZE.max - BLOOM_SIZE.min)),
+      size: Math.round(BLOOM_SIZE.min + Math.random() * Math.max(maxSize - BLOOM_SIZE.min, 0)),
       colour: MOTIF_PALETTE[colourIndex],
     };
 
     setBlooms((current) => [...current, bloom].slice(-MAX_BLOOMS));
   }, []);
 
-  // A random spot in the footer's empty space, kept clear of the text blocks and the edges.
+  // A random spot in the part of the footer that's currently showing below the page, kept clear
+  // of the text blocks and the edges. Motifs shrink to fit while only a thin strip is visible.
   const addRandomBloom = useCallback(() => {
     const footer = footerRef.current;
+    const sheet = document.querySelector<HTMLElement>(".page-sheet");
 
     if (!footer) {
       return;
     }
 
     const bounds = footer.getBoundingClientRect();
+    const visibleTop = sheet
+      ? Math.min(Math.max(sheet.getBoundingClientRect().bottom - bounds.top, 0), bounds.height)
+      : 0;
+    const visibleHeight = bounds.height - visibleTop;
+    const maxSize = Math.max(BLOOM_SIZE.min, Math.min(BLOOM_SIZE.max, visibleHeight * 0.85));
     const blocked = Array.from(footer.querySelectorAll(".site-footer__text")).map((element) =>
       element.getBoundingClientRect(),
     );
-    const margin = BLOOM_SIZE.max / 2;
+    const margin = maxSize / 2;
+    const yMin = visibleTop + margin;
+    const ySpan = Math.max(bounds.height - margin - yMin, 0);
 
     for (let attempt = 0; attempt < 12; attempt += 1) {
       const x = margin + Math.random() * Math.max(bounds.width - margin * 2, 1);
-      const y = margin + Math.random() * Math.max(bounds.height - margin * 2, 1);
+      const y = yMin + Math.random() * ySpan;
       const overlapsText = blocked.some(
         (rect) =>
           x > rect.left - bounds.left - margin &&
@@ -159,7 +173,7 @@ export function SiteFooter() {
       );
 
       if (!overlapsText) {
-        addBloom(x, y);
+        addBloom(x, y, maxSize);
         return;
       }
     }
@@ -211,7 +225,7 @@ export function SiteFooter() {
 
   controlsRef.current = controls;
 
-  // Fade the sheet's shadow as the footer settles, and play the arrival once it's fully in view.
+  // Fade the sheet's shadow as the footer settles, and play the arrival as soon as it peeks out.
   useEffect(() => {
     let isRevealed = false;
     let frame = 0;
@@ -236,11 +250,12 @@ export function SiteFooter() {
         String((controlsRef.current?.shadowStrength ?? 0.15) * Math.min(stillCovered / SHADOW_FADE_PX, 1)),
       );
 
-      // Revealed once almost nothing is left covering it; reset once it's mostly covered again.
-      if (!isRevealed && stillCovered < 8) {
+      const showing = footer.offsetHeight - stillCovered;
+
+      if (!isRevealed && showing >= ARRIVAL_PEEK_PX) {
         isRevealed = true;
         playArrival();
-      } else if (isRevealed && stillCovered > footer.offsetHeight * 0.6) {
+      } else if (isRevealed && showing < ARRIVAL_RESET_PX) {
         isRevealed = false;
         clearTimers();
       }
