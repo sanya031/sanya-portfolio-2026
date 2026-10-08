@@ -2575,6 +2575,49 @@ video {
   background: #1b1a17;
 }
 
+.case-study-card__media[data-media-type="bdp-animation"] {
+  background: transparent;
+}
+
+.bdp-card-animation {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: clamp(19rem, 36vw, 34.1rem);
+  overflow: hidden;
+}
+
+/* Each screen sits in its 2×2 grid cell; the motion moves and scales it from there. */
+.bdp-card-animation__screen {
+  position: absolute;
+  width: 48.5%;
+  height: 48.5%;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: top center;
+  will-change: transform, opacity;
+}
+
+.bdp-card-animation__screen[data-screen="hero"] {
+  top: 1%;
+  left: 0.75%;
+}
+
+.bdp-card-animation__screen[data-screen="field"] {
+  top: 1%;
+  left: 50.75%;
+}
+
+.bdp-card-animation__screen[data-screen="explore"] {
+  top: 50.5%;
+  left: 0.75%;
+}
+
+.bdp-card-animation__screen[data-screen="contribute"] {
+  top: 50.5%;
+  left: 50.75%;
+}
+
 .case-study-card__image,
 .case-study-card__video,
 .case-study-card__placeholder {

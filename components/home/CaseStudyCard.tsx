@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CaseStudy } from "../../data/caseStudies";
 import { PlaybackVideo } from "../case-study/PlaybackVideo";
 import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
+import { BdpCardAnimation } from "./BdpCardAnimation";
 
 export type CaseStudyCardProps = {
   caseStudy: CaseStudy;
@@ -26,7 +27,9 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
             layoutId={mediaLayoutId}
             data-media-type={caseStudy.media.type}
           >
-            {caseStudy.media.type === "video" && caseStudy.media.src ? (
+            {caseStudy.media.type === "bdp-animation" ? (
+              <BdpCardAnimation ariaLabel={caseStudy.media.alt} />
+            ) : caseStudy.media.type === "video" && caseStudy.media.src ? (
               <PlaybackVideo
                 ariaLabel={caseStudy.media.alt}
                 className="case-study-card__video"
