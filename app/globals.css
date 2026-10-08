@@ -1585,12 +1585,6 @@ video {
 }
 
 .home-page {
-  min-height: 100vh;
-  overflow-x: clip;
-  background: var(--background);
-}
-
-.home-page__hero-shell {
   --hero-transition-progress: 0;
   --hero-container-opacity: 1;
   --hero-overlay-opacity: 0.05;
@@ -1599,6 +1593,12 @@ video {
     url("/assets/bachground painting 1.webp") type("image/webp") 1x,
     url("/assets/bachground painting 1.png") type("image/png") 1x
   );
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--background);
+}
+
+.home-page__hero-shell {
   position: relative;
   min-height: 120vh;  /* Original min-hieght was 200vh */
   background-image: var(--hero-image);
@@ -1658,8 +1658,10 @@ video {
     linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
   background-size: var(--hero-cell) var(--hero-cell);
   content: "";
+  opacity: var(--hero-container-opacity);
   pointer-events: none;
   transform: translateX(-50%);
+  transition: opacity 80ms linear;
 }
 
 .hero-intro__overlay,
@@ -2436,59 +2438,46 @@ video {
 }
 
 .work-section {
-  --paper-tear-height: clamp(7.75rem, 12.7vw, 12rem);
-  --paper-bottom-height: clamp(7.25rem, 12.1vw, 22rem);
-  --paper-top-overlap: calc(var(--paper-tear-height) * 0.72);
   --work-section-gap: clamp(3rem, 7vw, 6rem);
+  --work-section-footer-fade: clamp(6rem, 12vw, 11rem);
   position: relative;
   z-index: 6;
-  margin-top: calc(var(--paper-tear-height) * -0.52);
-  background: transparent;
-  color: var(--ink);
-  padding-bottom: calc(var(--paper-bottom-height) * 0.24);
-}
-
-.work-section__tear {
-  position: absolute;
-  right: 0;
-  left: 0;
-  z-index: 3;
-  overflow: hidden;
-  height: var(--paper-tear-height);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 100%;
-  pointer-events: none;
-}
-
-.work-section__tear--top {
-  top: calc(var(--paper-top-overlap) * -1);
-  background-image: url("/assets/top%20tear.png");
-}
-
-.work-section__tear--bottom {
-  bottom: calc(var(--paper-bottom-height) * -0.18);
-  height: var(--paper-bottom-height);
-  background-image: url("/assets/bottom%20tear.png");
-  background-position: center bottom;
-  background-size: auto 100%;
-}
-
-.work-section__paper {
-  position: relative;
-  z-index: 1;
-  min-height: 36rem;
+  isolation: isolate;
+  /* Same fixed painting and scrims as the hero, so the dark overlay carries straight into the work. */
   background:
-    linear-gradient(rgba(239, 232, 213, 0.14), rgba(239, 232, 213, 0.14)),
-    url("/assets/mid%20page.png") top center / 100% auto repeat-y,
-    var(--paper);
+    linear-gradient(rgba(8, 8, 7, 0.06), rgba(8, 8, 7, 0.06)),
+    var(--hero-image) center top / cover no-repeat fixed;
+  color: var(--accent);
   padding:
     48px
     clamp(1rem, 4.6vw, 4.35rem)
-    calc(var(--paper-bottom-height) * 0.84);
+    calc(var(--work-section-footer-fade) + 2rem);
+}
+
+.work-section::before,
+.work-section::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.work-section::before {
+  background: #080807;
+  opacity: var(--hero-overlay-opacity);
+  transition: opacity 80ms linear;
+}
+
+.work-section::after {
+  top: auto;
+  height: var(--work-section-footer-fade);
+  background: linear-gradient(rgba(16, 15, 13, 0), var(--background));
 }
 
 .work-section__inner {
+  position: relative;
+  z-index: 1;
   width: min(100%, 84rem);
   margin: 0 auto;
 }
@@ -2529,27 +2518,25 @@ video {
 .case-study-card__media-frame {
   position: relative;
   cursor: none;
+  border: 1px solid rgba(253, 249, 237, 0.14);
+  border-radius: 16px;
+  background: rgba(253, 249, 237, 0.06);
+  padding: 12px;
 }
 
 .case-study-card__media {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background-color: #f3f3f1;
-  background-image:
-    linear-gradient(45deg, #dededc 25%, transparent 25%),
-    linear-gradient(-45deg, #dededc 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #dededc 75%),
-    linear-gradient(-45deg, transparent 75%, #dededc 75%);
-  background-position: 0 0, 0 1.1rem, 1.1rem -1.1rem, -1.1rem 0;
-  background-size: 2.2rem 2.2rem;
+  border-radius: 8px;
+  background-color: #1b1a17;
   min-height: clamp(19rem, 36vw, 34.1rem);
   transform-origin: center;
   will-change: transform;
 }
 
 .case-study-card__media[data-media-type="video"] {
-  background: #f3f3f1;
+  background: #1b1a17;
 }
 
 .case-study-card__image,
@@ -2629,7 +2616,7 @@ video {
 
 .case-study-card__org {
   margin: 0 0 4px;
-  color: #4a4a4a;
+  color: rgba(253, 249, 237, 0.6);
   font-family: "Geist", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -2639,7 +2626,7 @@ video {
 
 .case-study-card__heading {
   margin: 0;
-  color: #000;
+  color: #ffffff;
   font-family: "Geist", Arial, sans-serif;
   font-size: 20px;
   font-weight: 600;
@@ -2648,7 +2635,7 @@ video {
 
 .case-study-card__summary {
   margin: 0;
-  color: #4a4a4a;
+  color: rgba(253, 249, 237, 0.64);
   font-family: "Geist", Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -2670,8 +2657,8 @@ video {
   height: 22px;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgb(0 0 0 / 8%);
-  color: #4a4a4a;
+  background: rgba(253, 249, 237, 0.1);
+  color: rgba(253, 249, 237, 0.75);
   font-family: "Geist", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -5571,8 +5558,7 @@ video {
   }
 
   .work-section {
-    --paper-tear-height: 6.7rem;
-    --paper-bottom-height: 6.2rem;
+    background: rgba(8, 8, 7, 0.06);
   }
 
   .case-study-card {
@@ -5990,11 +5976,7 @@ video {
     padding: 2rem 1.25rem;
   }
 
-  .work-section__tear--bottom {
-    background-position: center bottom;
-  }
-
-  .work-section__paper {
+  .work-section {
     padding-right: 1.2rem;
     padding-left: 1.2rem;
   }

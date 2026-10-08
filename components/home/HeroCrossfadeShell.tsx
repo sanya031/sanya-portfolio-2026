@@ -1,14 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type HeroCrossfadeShellProps = {
   children: ReactNode;
-};
-
-type HeroCrossfadeStyle = CSSProperties & {
-  "--hero-image": string;
 };
 
 const clamp = (value: number) => Math.min(Math.max(value, 0), 1);
@@ -30,8 +26,10 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
 
     const updateProgress = () => {
       const shell = shellRef.current;
+      // Fade values live on the page so the work section's overlay stays in sync with the hero's.
+      const page = shell?.parentElement;
 
-      if (!shell) {
+      if (!shell || !page) {
         return;
       }
 
@@ -42,10 +40,10 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
       const overlayFade = mapRange(progress, 0.18, 0.46);
       const statementFade = mapRange(progress, 0.52, 0.78);
 
-      shell.style.setProperty("--hero-transition-progress", progress.toFixed(3));
-      shell.style.setProperty("--hero-container-opacity", (1 - containerFade).toFixed(3));
-      shell.style.setProperty("--hero-overlay-opacity", (0.05 + overlayFade * 0.5).toFixed(3));
-      shell.style.setProperty("--hero-statement-opacity", statementFade.toFixed(3));
+      page.style.setProperty("--hero-transition-progress", progress.toFixed(3));
+      page.style.setProperty("--hero-container-opacity", (1 - containerFade).toFixed(3));
+      page.style.setProperty("--hero-overlay-opacity", (0.05 + overlayFade * 0.5).toFixed(3));
+      page.style.setProperty("--hero-statement-opacity", statementFade.toFixed(3));
       shell.dataset.statementActive = statementFade > 0.8 ? "true" : "false";
     };
 

@@ -7,11 +7,8 @@ export type WorkSectionProps = {
 
 export function WorkSection({ caseStudies }: WorkSectionProps) {
   return (
-    <section id="work" className="work-section" data-nav-theme="light">
-      <div className="work-section__tear work-section__tear--top" aria-hidden="true" />
-
-      <div className="work-section__paper">
-        <div className="work-section__inner">
+    <section id="work" className="work-section" data-nav-theme="dark">
+      <div className="work-section__inner">
           <h2 className="work-section__heading">
             <img
               className="work-section__heading-image"
@@ -25,10 +22,7 @@ export function WorkSection({ caseStudies }: WorkSectionProps) {
               <CaseStudyCard caseStudy={caseStudy} key={caseStudy.id} />
             ))}
           </div>
-        </div>
       </div>
-
-      <div className="work-section__tear work-section__tear--bottom" aria-hidden="true" />
     </section>
   );
 }
