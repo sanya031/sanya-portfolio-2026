@@ -2,18 +2,22 @@
 
 import { motion, type Transition, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { useCardAnimationReady } from "./useCardAnimationReady";
+import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAnimationReady";
 
 /* ─────────────────────────────────────────────────────────
- * TRANSCRIPT CARD STORYBOARD (plays once, when the card is on screen and the work has faded in)
+ * TRANSCRIPT CARD STORYBOARD (loops once the card is on screen and the work has faded in)
  *
  *    0ms   review list slides down into the card from above
  *  900ms   cursor glides onto "Silent Payments Part 2"; the row pops out with a shadow
- * 2000ms   list slides out to the right while the editor slides in from the left
+ * 2000ms   list slides out to the right while the editor slides in from the left (~0.9s)
+ * 3900ms   after a 1s hold, the editor slides back out left; the list resets above the card
+ * 4800ms   loop
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
   pick: 900, // cursor arrives and the row pops out of the list
   swap: 2000, // list leaves right, editor enters left
+  reset: 3900, // editor leaves, 1s after it settles
+  loop: 4800, // editor is out; drop the list in again
 };
 
 const LIST_IN: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
@@ -29,6 +33,16 @@ const ROW_LIFTED = {
 
 type Stage = "waiting" | "list" | "pick" | "swap";
 
+const CUES: StageCue<Stage>[] = [
+  { at: 0, stage: "list" },
+  { at: TIMING.pick, stage: "pick" },
+  { at: TIMING.swap, stage: "swap" },
+  { at: TIMING.reset, stage: "waiting" },
+];
+
+// Off screen to the right after the swap, so it can jump back above the card unseen.
+const INSTANT: Transition = { duration: 0 };
+
 export function TranscriptCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const ready = useCardAnimationReady(rootRef);
@@ -38,21 +52,10 @@ export function TranscriptCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   useEffect(() => {
     if (reduceMotion) {
       setStage("swap");
-      return;
     }
+  }, [reduceMotion]);
 
-    if (!ready) {
-      return;
-    }
-
-    setStage("list");
-    const timers = [
-      window.setTimeout(() => setStage("pick"), TIMING.pick),
-      window.setTimeout(() => setStage("swap"), TIMING.swap),
-    ];
-
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [ready, reduceMotion]);
+  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage);
 
   const picked = stage === "pick" || stage === "swap";
   const swapped = stage === "swap";
@@ -64,7 +67,7 @@ export function TranscriptCardAnimation({ ariaLabel }: { ariaLabel: string }) {
         animate={{ x: swapped ? "115%" : "0%", y: stage === "waiting" ? "-120%" : "0%" }}
         className="transcript-card-animation__list"
         initial={false}
-        transition={swapped ? SWAP : LIST_IN}
+        transition={stage === "waiting" ? INSTANT : swapped ? SWAP : LIST_IN}
       >
         <img alt="" src="/assets/case-study-1/card-animation/list.webp" />
         <motion.img

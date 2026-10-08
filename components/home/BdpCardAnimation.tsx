@@ -2,23 +2,33 @@
 
 import { motion, type Transition, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { useCardAnimationReady } from "./useCardAnimationReady";
+import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAnimationReady";
 
 /* ─────────────────────────────────────────────────────────
- * BDP CARD STORYBOARD (plays once, when the card is on screen and the work has faded in)
+ * BDP CARD STORYBOARD (loops once the card is on screen and the work has faded in)
  *
  *    0ms   all four screens stacked in the centre, homepage on top
  *  300ms   each screen moves out to its own corner of the 2×2 grid
- *          (staggered 50ms), settling with a soft spring
+ *          (staggered 50ms), settling with a soft spring (~1s)
+ * 2300ms   after a 1s hold, the screens glide back into the centre stack
+ * 3100ms   loop
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  split: 300, // screens leave the centre for their grid cells, once the card is visible
+  split: 300, // screens leave the centre for their grid cells
+  regroup: 2300, // screens return to the centre stack, 1s after the grid settles
+  loop: 3100, // the stack has settled; start again
 };
 
 const MOVE: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
 const STAGGER = 0.05; // seconds between each screen setting off
 
 type Stage = "centre" | "grid";
+
+const CUES: StageCue<Stage>[] = [
+  { at: 0, stage: "centre" },
+  { at: TIMING.split, stage: "grid" },
+  { at: TIMING.regroup, stage: "centre" },
+];
 
 // Stacking order: the homepage is last so it sits on top of the stack.
 const screens = [
@@ -37,17 +47,10 @@ export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   useEffect(() => {
     if (reduceMotion) {
       setStage("grid");
-      return;
     }
+  }, [reduceMotion]);
 
-    if (!ready) {
-      return;
-    }
-
-    const timer = window.setTimeout(() => setStage("grid"), TIMING.split);
-
-    return () => window.clearTimeout(timer);
-  }, [ready, reduceMotion]);
+  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage);
 
   return (
     <div

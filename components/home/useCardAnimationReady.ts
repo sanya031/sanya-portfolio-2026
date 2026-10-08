@@ -57,3 +57,37 @@ export function useCardAnimationReady(ref: RefObject<HTMLElement | null>) {
 
   return ready;
 }
+
+export type StageCue<Stage> = { at: number; stage: Stage };
+
+/**
+ * Plays a timeline of stage changes on repeat once `ready`, restarting every `loopMs`.
+ * Pauses (holding the current stage) while the card is off screen and picks up again on return.
+ */
+export function useStageLoop<Stage>(
+  ref: RefObject<HTMLElement | null>,
+  ready: boolean,
+  cues: StageCue<Stage>[],
+  loopMs: number,
+  setStage: (stage: Stage) => void,
+) {
+  const isOnScreen = useInView(ref, { amount: 0.2 });
+
+  useEffect(() => {
+    if (!ready || !isOnScreen) {
+      return;
+    }
+
+    let timers: number[] = [];
+    const playCycle = () => {
+      timers = cues.map(({ at, stage }) => window.setTimeout(() => setStage(stage), at));
+      timers.push(window.setTimeout(playCycle, loopMs));
+    };
+
+    playCycle();
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+    // Cues are module constants in the callers, so they never change between renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, isOnScreen, loopMs, setStage]);
+}
