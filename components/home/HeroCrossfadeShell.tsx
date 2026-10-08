@@ -12,7 +12,7 @@ export type HeroCrossfadeShellProps = {
  * SCROLL REVEAL STORYBOARD
  *
  * Plays on a timer once the visitor scrolls past `startAfterScroll`, so it runs at the same
- * speed however fast they scroll. Scrolling back to the top plays it in reverse.
+ * speed however fast they scroll. Scrolling back to the top brings the first fold straight back.
  *
  *    0.00s   first fold boxes fade out (in place)
  *    0.30s   boxes gone; dark overlay starts darkening
@@ -41,22 +41,27 @@ const easings: Record<string, string> = {
 
 const seconds = (value: number) => `${Math.round(value * 1000)}ms`;
 
-// Forward plays boxes → overlay → work. Reverse mirrors the same schedule so it unwinds in order.
+// Scrolling back to the top replays quickly and nearly all at once, so the first fold comes
+// straight back instead of waiting for the forward sequence to unwind in order.
+const RETURN = {
+  work: { delay: 0, duration: 0.25 },
+  overlay: { delay: 0.1, duration: 0.45 },
+  boxes: { delay: 0.15, duration: 0.45 },
+};
+
+// Forward plays boxes → overlay → work on the tuned schedule; the return uses RETURN above.
 const applyTiming = (page: HTMLElement, controls: ScrollRevealControls, revealed: boolean) => {
-  const forward = {
-    boxes: { delay: 0, duration: controls.boxesFade },
-    overlay: { delay: controls.boxesFade, duration: controls.overlayFade },
-    work: { delay: controls.workDelay, duration: controls.workFade },
-  };
-  const total = Math.max(
-    ...Object.values(forward).map(({ delay, duration }) => delay + duration),
-  );
+  const schedule = revealed
+    ? {
+        boxes: { delay: 0, duration: controls.boxesFade },
+        overlay: { delay: controls.boxesFade, duration: controls.overlayFade },
+        work: { delay: controls.workDelay, duration: controls.workFade },
+      }
+    : RETURN;
 
-  for (const [name, { delay, duration }] of Object.entries(forward)) {
-    const directionalDelay = revealed ? delay : total - (delay + duration);
-
+  for (const [name, { delay, duration }] of Object.entries(schedule)) {
     page.style.setProperty(`--reveal-${name}-duration`, seconds(duration));
-    page.style.setProperty(`--reveal-${name}-delay`, seconds(directionalDelay));
+    page.style.setProperty(`--reveal-${name}-delay`, seconds(delay));
   }
 
   page.style.setProperty("--reveal-overlay-darkness", String(controls.overlayDarkness));
