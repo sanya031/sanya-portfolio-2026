@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AgentationDevtools } from "../components/Agentation";
+import { AccessibilityControls } from "../components/dev/AccessibilityControls";
 import { DialKitRoot } from "../components/dev/DialKitRoot";
 import { SiteFooter } from "../components/footer/SiteFooter";
 import { TransitionProvider } from "../components/transitions/TransitionProvider";
@@ -81,6 +82,7 @@ export default function RootLayout({
         </div>
         <div className="page-sheet__shadow" aria-hidden="true" />
         <SiteFooter />
+        <AccessibilityControls />
         <DialKitRoot />
         {process.env.NODE_ENV === "development" ? <AgentationDevtools /> : null}
         <Analytics />

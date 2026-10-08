@@ -2,6 +2,7 @@
 
 import { motion, type Transition, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useAccessibilityOptions } from "../../lib/accessibilityOptions";
 import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAnimationReady";
 
 /* ─────────────────────────────────────────────────────────
@@ -50,7 +51,12 @@ export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
     }
   }, [reduceMotion]);
 
-  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage);
+  const { cardLoops } = useAccessibilityOptions();
+
+  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage, {
+    maxLoops: cardLoops,
+    finalStage: "grid",
+  });
 
   return (
     <div

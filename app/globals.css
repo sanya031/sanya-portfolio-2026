@@ -2369,6 +2369,29 @@ video {
   opacity: 1;
 }
 
+/*
+ * Accessibility pass options, toggled from the Accessibility DialKit panel to compare with the
+ * current navbar. See components/dev/AccessibilityControls.
+ */
+html[data-a11y-nav-contrast="opacity"] .floating-navbar__label,
+html[data-a11y-nav-contrast="both"] .floating-navbar__label {
+  opacity: 0.75;
+}
+
+html[data-a11y-nav-contrast="glass"] .floating-navbar:not([data-variant="light"]),
+html[data-a11y-nav-contrast="both"] .floating-navbar:not([data-variant="light"]) {
+  background: rgba(16, 15, 13, 0.35);
+}
+
+html[data-a11y-nav-label-size="true"] .floating-navbar__link {
+  font-size: var(--a11y-nav-label-size);
+}
+
+html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
+  outline: 1px solid rgba(253, 249, 237, 0.6);
+  outline-offset: 3px;
+}
+
 .floating-navbar[data-variant="light"] {
   border: 1px solid rgba(30, 30, 30, 0.14);
   border-radius: 16px;

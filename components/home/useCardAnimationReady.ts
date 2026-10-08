@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "motion/react";
-import { type RefObject, useEffect, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
 // The home page reveals the work section on a timer once the visitor scrolls (see
 // HeroCrossfadeShell). Calls `onReady` once that reveal has finished, so the card is visible.
@@ -63,6 +63,7 @@ export type StageCue<Stage> = { at: number; stage: Stage };
 /**
  * Plays a timeline of stage changes on repeat once `ready`, restarting every `loopMs`.
  * Pauses (holding the current stage) while the card is off screen and picks up again on return.
+ * After `maxLoops` it plays one last time up to `finalStage` and stays there.
  */
 export function useStageLoop<Stage>(
   ref: RefObject<HTMLElement | null>,
@@ -70,18 +71,29 @@ export function useStageLoop<Stage>(
   cues: StageCue<Stage>[],
   loopMs: number,
   setStage: (stage: Stage) => void,
+  { maxLoops = Number.POSITIVE_INFINITY, finalStage }: { maxLoops?: number; finalStage?: Stage } = {},
 ) {
   const isOnScreen = useInView(ref, { amount: 0.2 });
+  const loopsPlayed = useRef(0);
 
   useEffect(() => {
-    if (!ready || !isOnScreen) {
+    if (!ready || !isOnScreen || loopsPlayed.current >= maxLoops) {
       return;
     }
 
     let timers: number[] = [];
     const playCycle = () => {
-      timers = cues.map(({ at, stage }) => window.setTimeout(() => setStage(stage), at));
-      timers.push(window.setTimeout(playCycle, loopMs));
+      loopsPlayed.current += 1;
+      const isLastLoop = loopsPlayed.current >= maxLoops;
+      const finalIndex = cues.findIndex((cue) => cue.stage === finalStage);
+      // The last loop stops on the final stage instead of resetting for another run.
+      const loopCues = isLastLoop && finalIndex !== -1 ? cues.slice(0, finalIndex + 1) : cues;
+
+      timers = loopCues.map(({ at, stage }) => window.setTimeout(() => setStage(stage), at));
+
+      if (!isLastLoop) {
+        timers.push(window.setTimeout(playCycle, loopMs));
+      }
     };
 
     playCycle();
@@ -89,5 +101,5 @@ export function useStageLoop<Stage>(
     return () => timers.forEach((timer) => window.clearTimeout(timer));
     // Cues are module constants in the callers, so they never change between renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, isOnScreen, loopMs, setStage]);
+  }, [ready, isOnScreen, loopMs, setStage, maxLoops, finalStage]);
 }

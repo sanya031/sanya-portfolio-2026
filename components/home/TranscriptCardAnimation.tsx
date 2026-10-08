@@ -2,6 +2,7 @@
 
 import { motion, type Transition, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useAccessibilityOptions } from "../../lib/accessibilityOptions";
 import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAnimationReady";
 
 /* ─────────────────────────────────────────────────────────
@@ -55,7 +56,12 @@ export function TranscriptCardAnimation({ ariaLabel }: { ariaLabel: string }) {
     }
   }, [reduceMotion]);
 
-  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage);
+  const { cardLoops } = useAccessibilityOptions();
+
+  useStageLoop(rootRef, ready && !reduceMotion, CUES, TIMING.loop, setStage, {
+    maxLoops: cardLoops,
+    finalStage: "swap",
+  });
 
   const picked = stage === "pick" || stage === "swap";
   const swapped = stage === "swap";
