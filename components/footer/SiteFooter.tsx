@@ -55,6 +55,8 @@ const pageLinks = [
   { label: "Work", href: "/#work" },
   { label: "About", href: "/about" },
   { label: "Resume", href: "/assets/Sanya-Malhotra-Resume.pdf", external: true },
+  // No page yet, so this lands on the 404 page until one exists at this path.
+  { label: "Run with me", href: "/run-with-me" },
 ];
 
 const contactLinks = [
