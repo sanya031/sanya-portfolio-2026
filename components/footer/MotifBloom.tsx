@@ -29,6 +29,9 @@ const DRAW: Transition = { duration: 0.8, ease: [0.45, 0, 0.2, 1] };
 const FILL: Transition = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
 const LEAVE: Transition = { duration: 0.5, ease: [0.45, 0, 0.2, 1] };
 
+/** How long a bloom stays on the page, from first stroke to removal. */
+export const BLOOM_LIFETIME_MS = TIMING.remove;
+
 export type Bloom = {
   id: number;
   x: number;
