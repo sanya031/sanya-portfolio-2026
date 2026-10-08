@@ -5470,6 +5470,123 @@ video {
   margin: 0 0.55em;
 }
 
+/*
+ * Footer text layouts, picked from the Footer DialKit panel while comparing options. Desktop
+ * only: on phones every layout stacks the same way. "classic" is the base layout above.
+ */
+@media (min-width: 861px) {
+  /* grounded: the same two blocks, anchored to the bottom edge; the top is open canvas. */
+  .site-footer[data-layout="grounded"] {
+    grid-template-rows: 1fr;
+    align-items: end;
+  }
+
+  /* centred: quote centred at the top, the columns as one centred row along the bottom. */
+  .site-footer[data-layout="centred"] {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__intro {
+    justify-self: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__columns {
+    align-self: end;
+    gap: clamp(3rem, 7vw, 7rem);
+    text-align: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__column {
+    justify-items: center;
+  }
+
+  /* editorial: a big full-width quote with the columns in a row beneath, all left-aligned. */
+  .site-footer[data-layout="editorial"] {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(2rem, 3.5vw, 3rem);
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__quote {
+    font-size: clamp(2.5rem, 5.2vw, 5rem);
+    line-height: 1.08;
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__columns {
+    justify-self: start;
+    gap: clamp(3rem, 6vw, 6rem);
+    text-align: left;
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__column {
+    justify-items: start;
+  }
+
+  /* sidebar: a narrow left rail (quote at the top, columns along its foot); the rest is open canvas. */
+  .site-footer[data-layout="sidebar"] {
+    grid-template-columns: minmax(18rem, 30%) 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__intro,
+  .site-footer[data-layout="sidebar"] .site-footer__columns {
+    grid-column: 1;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__quote {
+    font-size: clamp(1.4rem, 2vw, 1.9rem);
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__columns {
+    align-self: end;
+    justify-self: start;
+    gap: clamp(1.25rem, 2vw, 2rem);
+    text-align: left;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__column {
+    justify-items: start;
+  }
+
+  /* corners: quote top-left, location top-right, pages bottom-left, contact bottom-right. */
+  .site-footer[data-layout="corners"] .site-footer__columns {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: inherit;
+    pointer-events: none;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column {
+    position: absolute;
+    pointer-events: auto;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(1) {
+    top: clamp(2rem, 3.4vw, 3.25rem);
+    right: clamp(1.25rem, 3.4vw, 3.5rem);
+    justify-items: end;
+    text-align: right;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(2) {
+    bottom: clamp(2rem, 3.4vw, 3.25rem);
+    left: clamp(1.25rem, 3.4vw, 3.5rem);
+    justify-items: start;
+    text-align: left;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(3) {
+    right: clamp(1.25rem, 3.4vw, 3.5rem);
+    bottom: clamp(2rem, 3.4vw, 3.25rem);
+    justify-items: end;
+    text-align: right;
+  }
+}
+
 @media (max-width: 860px) {
   .site-footer {
     height: 100svh;

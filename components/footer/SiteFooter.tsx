@@ -23,7 +23,11 @@ const MAX_BLOOMS = 12;
  *  - brush: the cursor becomes a paintbrush over the footer's empty space
  * Each can be switched off or tuned from the Footer DialKit panel (local and previews only).
  */
+// Footer text layouts to compare (desktop; phones always stack). See .site-footer[data-layout].
+const FOOTER_LAYOUTS = ["classic", "grounded", "centred", "editorial", "sidebar", "corners"];
+
 const footerControls = {
+  layout: { type: "select", options: FOOTER_LAYOUTS, default: "classic" },
   arrivalBlooms: true,
   arrivalCount: [6, 1, 10, 1],
   arrivalGap: [0.9, 0.1, 2, 0.05],
@@ -342,6 +346,7 @@ export function SiteFooter() {
     <footer
       className="site-footer"
       data-brush={controls.brushCursor}
+      data-layout={controls.layout}
       data-nav-theme="dark"
       id="contact"
       onClick={createBloom}
@@ -362,8 +367,8 @@ export function SiteFooter() {
         <p className="site-footer__hint">Click to create</p>
       </div>
 
-      <nav className="site-footer__columns site-footer__text" aria-label="Footer">
-        <div className="site-footer__column">
+      <nav className="site-footer__columns" aria-label="Footer">
+        <div className="site-footer__column site-footer__text">
           <h2 className="site-footer__heading">My location</h2>
           <p className="site-footer__item">Toronto, ON, CA</p>
           <p className="site-footer__item">
@@ -376,7 +381,7 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <div className="site-footer__column">
+        <div className="site-footer__column site-footer__text">
           <h2 className="site-footer__heading">Page</h2>
           {pageLinks.map((link) => (
             <a
@@ -391,7 +396,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="site-footer__column">
+        <div className="site-footer__column site-footer__text">
           <h2 className="site-footer__heading">Contact</h2>
           <button className="site-footer__item site-footer__link" onClick={copyEmail} type="button">
             <span aria-live="polite">{emailCopied ? "Copied" : "Email"}</span>
