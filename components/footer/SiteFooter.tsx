@@ -62,10 +62,12 @@ const contactLinks = [
   { label: "X", href: "https://x.com/sanyamalhotraa?s=11" },
 ];
 
+// e.g. "5:26 AM EDT"; the zone abbreviation switches between EST and EDT with daylight saving.
 const torontoTime = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
   minute: "2-digit",
   timeZone: "America/Toronto",
+  timeZoneName: "short",
 });
 
 /** Toronto's local time, refreshed on the minute. Empty until mounted to avoid hydration drift. */
