@@ -17,7 +17,7 @@ export function HomePage() {
     <main className="home-page">
       <InstantWorkScroll />
       <CaseStudyCursor />
-      <FloatingNavbar items={navItems} variant="dark" />
+      <FloatingNavbar items={navItems} lockVariant variant="dark" />
 
       <HeroCrossfadeShell>
         <HeroIntro />
