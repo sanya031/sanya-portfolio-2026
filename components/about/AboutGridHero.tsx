@@ -7,7 +7,6 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { AboutContainer } from "./AboutContainer";
-import { HomeFooter } from "../home/HomeFooter";
 import { AboutViewCursor } from "../cursor/AboutViewCursor";
 import { aboutContainers } from "../../data/aboutContainers";
 import { navItems } from "../../data/navItems";
@@ -230,8 +229,6 @@ export function AboutGridHero() {
           </div>
         </div>
       ) : null}
-      <div className="about-page__footer-tear" aria-hidden="true" />
-      <HomeFooter />
     </main>
   );
 }

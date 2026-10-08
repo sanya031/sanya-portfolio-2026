@@ -968,34 +968,6 @@ video {
   }
 }
 
-.about-page__footer-tear {
-  position: relative;
-  z-index: 6;
-  width: 100%;
-  height: var(--about-footer-tear-height);
-  margin-top: calc(var(--about-footer-tear-height) * -0.58);
-  margin-bottom: calc(var(--about-footer-tear-height) * -0.18);
-  background-image: var(--about-background-image);
-  background-position:
-    center
-    calc(
-      (var(--about-hero-height) * -1) +
-        (var(--about-footer-tear-height) * 0.58)
-    );
-  background-repeat: no-repeat;
-  background-size: auto var(--about-rendered-image-height);
-  mask-image: url("/assets/bottom%20tear.png");
-  mask-position: center bottom;
-  mask-repeat: no-repeat;
-  mask-size: auto 100%;
-  mask-mode: alpha;
-  -webkit-mask-image: url("/assets/bottom%20tear.png");
-  -webkit-mask-position: center bottom;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: auto 100%;
-  pointer-events: none;
-}
-
 @media (min-width: 861px) and (max-width: 1080px) {
   .about-container {
     grid-column: var(--about-container-laptop-column) /
@@ -1601,12 +1573,12 @@ video {
   --hero-image: url("/assets/background-painting-2880.webp");
   /* Reveal timing; HeroCrossfadeShell sets direction-aware delays from the Scroll reveal panel. */
   --reveal-ease: cubic-bezier(0.45, 0, 0.2, 1);
-  --reveal-boxes-duration: 350ms;
+  --reveal-boxes-duration: 300ms;
   --reveal-boxes-delay: 0ms;
-  --reveal-overlay-duration: 700ms;
-  --reveal-overlay-delay: 350ms;
+  --reveal-overlay-duration: 1000ms;
+  --reveal-overlay-delay: 300ms;
   --reveal-overlay-darkness: 0.7;
-  --reveal-work-duration: 300ms;
+  --reveal-work-duration: 400ms;
   --reveal-work-delay: 700ms;
   --hero-pin-length: 40vh;
   --work-rest-top: 75vh;
@@ -2857,25 +2829,6 @@ video {
   overflow: hidden;
   background: var(--case-paper);
   padding: clamp(4rem, 8vw, 8.8rem) clamp(1.3rem, 6vw, 5rem) clamp(5rem, 9vw, 8rem);
-}
-
-.case-study-page__footer-tear {
-  --case-study-footer-tear-height: clamp(6rem, 11.9vw, 22rem);
-  position: relative;
-  z-index: 6;
-  height: var(--case-study-footer-tear-height);
-  margin-bottom: calc(var(--case-study-footer-tear-height) * -0.46);
-  background: #ffffff;
-  mask-image: url("/assets/bottom%20tear.png");
-  mask-position: center bottom;
-  mask-repeat: no-repeat;
-  mask-size: auto 100%;
-  mask-mode: alpha;
-  -webkit-mask-image: url("/assets/bottom%20tear.png");
-  -webkit-mask-position: center bottom;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: auto 100%;
-  pointer-events: none;
 }
 
 .case-study-page__hero,
@@ -5354,14 +5307,21 @@ video {
 }
 
 /*
- * Footer reveal: page content sits in a sheet above a footer pinned to the bottom of the
- * viewport. The sheet clips its fixed backdrop (the home painting) to its own box, so as it
- * scrolls away the footer underneath is uncovered, until the sheet's bottom meets the footer.
+ * Footer reveal (every page, set up in the root layout): page content sits in an opaque sheet
+ * above a footer pinned to the bottom of the viewport, so as the sheet scrolls away the footer
+ * underneath is uncovered, until the sheet's bottom meets the footer.
  */
 .page-sheet {
   position: relative;
   z-index: 1;
   background: var(--background);
+}
+
+/*
+ * The home page's painting is fixed to the viewport; clipping the page to its own box keeps it
+ * from showing over the footer. Only here, so fixed overlays on other pages aren't cut off.
+ */
+.home-page {
   clip-path: inset(0);
 }
 
@@ -5530,144 +5490,6 @@ video {
   }
 }
 
-.home-footer {
-  position: relative;
-  z-index: 5;
-  display: grid;
-  min-height: clamp(28rem, 32vw, 31rem);
-  grid-template-columns: 1fr;
-  align-items: end;
-  justify-items: center;
-  overflow: hidden;
-  background: var(--background);
-  color: var(--accent);
-  padding: clamp(6rem, 9vw, 9rem) clamp(0.9rem, 3.2vw, 3rem) 4.95rem;
-}
-
-.home-footer::before {
-  content: none;
-}
-
-.home-footer::after {
-  content: none;
-}
-
-.home-footer__stamp {
-  display: none;
-}
-
-.home-footer__content {
-  display: grid;
-  gap: 0.08rem;
-  width: min(100%, 74rem);
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  justify-items: center;
-  text-align: center;
-}
-
-.home-footer__title {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-  color: rgba(242, 238, 228, 0.96);
-  font-family: var(--serif);
-  font-size: clamp(4rem, 7.15vw, 6.7rem);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 0.88;
-}
-
-.home-footer__meta-row {
-  display: contents;
-}
-
-.home-footer__nav {
-  grid-column: 3;
-  grid-row: 2;
-  justify-self: end;
-  display: flex;
-  gap: clamp(1.6rem, 2.4vw, 2.4rem);
-  align-items: center;
-  justify-content: center;
-}
-
-.home-footer__link {
-  position: relative;
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: rgba(242, 238, 228, 0.72);
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 1rem;
-  padding: 0;
-  text-transform: capitalize;
-  transition: color 140ms ease;
-}
-
-.home-footer__link:hover {
-  color: #ffffff;
-}
-
-.home-footer__credit {
-  grid-column: 1;
-  grid-row: 2;
-  justify-self: start;
-  margin: 0;
-  color: rgba(242, 238, 228, 0.72);
-  font-size: 1rem;
-  white-space: nowrap;
-}
-
-.home-footer__copy-feedback {
-  position: absolute;
-  bottom: calc(100% + 0.58rem);
-  left: 0.42em;
-  display: inline-flex;
-  width: max-content;
-  gap: 0.34rem;
-  align-items: center;
-  color: rgba(242, 238, 228, 0.52);
-  font-size: 0.78rem;
-  opacity: 0;
-  pointer-events: none;
-  text-transform: none;
-  transform: translateY(0.35rem);
-  transition: opacity 140ms ease, transform 140ms ease;
-}
-
-.home-footer__copy-feedback[data-visible="true"] {
-  opacity: 0.82;
-  transform: translateY(0);
-}
-
-.home-footer__copy-icon {
-  width: 1.22rem;
-  height: auto;
-  flex: 0 0 auto;
-  transform: translateY(-0.1rem);
-}
-
-.home-footer__motifs {
-  position: absolute;
-  right: -4.5rem;
-  bottom: 0.625rem;
-  left: -4.5rem;
-  display: flex;
-  gap: clamp(0.25rem, 0.45vw, 0.75rem);
-  align-items: end;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.home-footer__motif {
-  width: clamp(2.8rem, 3.6vw, 3.75rem);
-  height: auto;
-  flex: 0 0 auto;
-}
-
 .hanging-stamp {
   position: relative;
   display: grid;
@@ -5733,33 +5555,6 @@ video {
     height: 0.5em;
   }
 
-  .home-footer {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .home-footer__content {
-    width: 100%;
-    box-sizing: border-box;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-
-  .home-footer__meta-row {
-    display: contents;
-    width: 100%;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
-
-  .home-footer__link,
-  .home-footer__credit {
-    font-size: 0.875rem;
-  }
-
-  .home-footer__credit {
-    transform: none;
-  }
 }
 
 @media (max-width: 860px) {
@@ -5942,55 +5737,6 @@ video {
     flex-basis: clamp(8.65rem, 42vw, 10.2rem);
   }
 
-  .home-footer {
-    min-height: 32rem;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: start;
-    padding: 6rem 2rem 5.4rem;
-  }
-
-  .home-footer__stamp {
-    padding-top: 0;
-  }
-
-  .home-footer__title {
-    grid-column: 1;
-    font-size: clamp(3.8rem, 15vw, 6rem);
-  }
-
-  .home-footer__nav {
-    grid-column: 1;
-    justify-self: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .home-footer__meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .home-footer__content {
-    grid-template-columns: 1fr;
-  }
-
-  .home-footer__credit {
-    grid-column: 1;
-    justify-self: center;
-    transform: none;
-  }
-
-  .home-footer__motifs {
-    right: -3rem;
-    left: -3rem;
-    gap: 0.25rem;
-  }
-
-  .home-footer__motif {
-    width: 2.8rem;
-  }
 }
 
 @media (max-width: 1080px) {
@@ -5998,80 +5744,6 @@ video {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .home-footer {
-    display: grid;
-    min-height: clamp(27rem, 58vh, 36rem);
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
-    align-content: end;
-    align-items: end;
-    justify-items: center;
-    gap: 0;
-    padding: clamp(5rem, 12vh, 8rem) 1.25rem clamp(1.1rem, 3.5vw, 1.6rem);
-    box-shadow: 0 100vh 0 100vh var(--background);
-  }
-
-  .home-footer__content,
-  .home-footer__meta-row {
-    display: contents;
-  }
-
-  .home-footer__nav {
-    display: flex;
-    grid-column: 1;
-    grid-row: 1;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-self: start;
-    gap: 1.05rem;
-    margin-bottom: clamp(1.45rem, 5vw, 2.15rem);
-    margin-left: clamp(1.35rem, 7vw, 2.6rem);
-  }
-
-  .home-footer__link {
-    font-size: 0.875rem;
-    line-height: 1;
-  }
-
-  .home-footer__title {
-    grid-column: 1;
-    grid-row: 2;
-    font-size: clamp(3.1rem, 13vw, 5.2rem);
-    line-height: 0.9;
-    margin-bottom: clamp(0.8rem, 2.4vw, 1.2rem);
-  }
-
-  .home-footer__motifs {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    grid-column: 1;
-    grid-row: 3;
-    width: calc(100% + 2.5rem);
-    margin-right: -1.25rem;
-    margin-left: -1.25rem;
-    gap: clamp(0.08rem, 0.45vw, 0.18rem);
-    justify-content: center;
-  }
-
-  .home-footer__motif {
-    width: clamp(2.05rem, 8.8vw, 3rem);
-  }
-
-  .home-footer__credit {
-    grid-column: 1;
-    grid-row: 4;
-    justify-self: center;
-    margin-top: clamp(0.95rem, 3vw, 1.4rem);
-    font-size: 0.75rem;
-    white-space: nowrap;
-  }
-
-  .home-footer__copy-feedback {
-    bottom: calc(100% + 0.42rem);
-    left: 0;
-  }
 }
 
 @media (min-width: 521px) and (max-width: 860px) {

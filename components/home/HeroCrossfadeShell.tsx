@@ -15,17 +15,17 @@ export type HeroCrossfadeShellProps = {
  * speed however fast they scroll. Scrolling back to the top plays it in reverse.
  *
  *    0.00s   first fold boxes fade out (in place)
- *    0.35s   boxes gone; dark overlay starts darkening
+ *    0.30s   boxes gone; dark overlay starts darkening
  *    0.70s   Selected work starts fading in, resting just below the first fold
- *    1.05s   everything settled
+ *    1.30s   everything settled
  * ───────────────────────────────────────────────────────── */
 const scrollRevealControls = {
   startAfterScroll: [25, 0, 400, 5],
-  boxesFade: [0.35, 0.1, 2, 0.05],
-  overlayFade: [0.7, 0.1, 3, 0.05],
+  boxesFade: [0.3, 0.1, 2, 0.05],
+  overlayFade: [1, 0.1, 3, 0.05],
   overlayDarkness: [0.7, 0, 1, 0.01],
   workDelay: [0.7, 0, 3, 0.05],
-  workFade: [0.3, 0.1, 2, 0.05],
+  workFade: [0.4, 0.1, 2, 0.05],
   easing: { type: "select", options: ["smooth", "gentle", "linear"], default: "smooth" },
   replay: { type: "action", label: "Replay reveal" },
   reverse: { type: "action", label: "Play in reverse" },
