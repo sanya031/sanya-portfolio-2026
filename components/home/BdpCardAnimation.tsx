@@ -8,18 +8,18 @@ import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAni
  * BDP CARD STORYBOARD (loops once the card is on screen and the work has faded in)
  *
  *    0ms   all four screens stacked in the centre, homepage on top
- *  300ms   each screen moves out to its own corner of the 2×2 grid
- *          (staggered 50ms), settling with a soft spring (~1s)
- * 2300ms   after a 1s hold, the screens glide back into the centre stack
- * 3100ms   loop
+ *  800ms   each screen moves out to its own corner of the 2×2 grid
+ *          (staggered 50ms), settling with a soft spring (~1.3s)
+ * 4100ms   after a 2s rest on the grid, the screens glide back into the centre stack
+ * 6200ms   the stack has rested ~1s; loop (next split 800ms later)
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  split: 300, // screens leave the centre for their grid cells
-  regroup: 2300, // screens return to the centre stack, 1s after the grid settles
-  loop: 3100, // the stack has settled; start again
+  split: 800, // screens leave the centre for their grid cells
+  regroup: 4100, // screens return to the centre stack after resting on the grid
+  loop: 6200, // the stack has settled and rested; start again
 };
 
-const MOVE: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
+const MOVE: Transition = { type: "spring", visualDuration: 1.15, bounce: 0 };
 const STAGGER = 0.05; // seconds between each screen setting off
 
 type Stage = "centre" | "grid";

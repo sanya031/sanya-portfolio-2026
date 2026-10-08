@@ -7,23 +7,23 @@ import { type StageCue, useCardAnimationReady, useStageLoop } from "./useCardAni
 /* ─────────────────────────────────────────────────────────
  * TRANSCRIPT CARD STORYBOARD (loops once the card is on screen and the work has faded in)
  *
- *    0ms   review list slides down into the card from above
- *  900ms   cursor glides onto "Silent Payments Part 2"; the row pops out with a shadow
- * 2000ms   list slides out to the right while the editor slides in from the left (~0.9s)
- * 3900ms   after a 1s hold, the editor slides back out left; the list resets above the card
- * 4800ms   loop
+ *    0ms   review list slides down into the card from above (~1.2s)
+ * 1700ms   cursor glides onto "Silent Payments Part 2"; the row pops out with a shadow
+ * 3400ms   list slides out to the right while the editor slides in from the left (~1.3s)
+ * 6700ms   after a 2s rest on the editor, it slides back out left; the list resets above
+ * 8200ms   editor is out and the card has rested; loop
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  pick: 900, // cursor arrives and the row pops out of the list
-  swap: 2000, // list leaves right, editor enters left
-  reset: 3900, // editor leaves, 1s after it settles
-  loop: 4800, // editor is out; drop the list in again
+  pick: 1700, // cursor arrives and the row pops out of the list
+  swap: 3400, // list leaves right, editor enters left
+  reset: 6700, // editor leaves after resting on screen
+  loop: 8200, // editor is out; drop the list in again
 };
 
-const LIST_IN: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
-const ROW_POP: Transition = { duration: 0.45, ease: [0.22, 1, 0.36, 1] };
-const CURSOR_IN: Transition = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
-const SWAP: Transition = { type: "spring", visualDuration: 0.85, bounce: 0 };
+const LIST_IN: Transition = { type: "spring", visualDuration: 1.2, bounce: 0 };
+const ROW_POP: Transition = { duration: 0.7, ease: [0.22, 1, 0.36, 1] };
+const CURSOR_IN: Transition = { duration: 0.8, ease: [0.22, 1, 0.36, 1] };
+const SWAP: Transition = { type: "spring", visualDuration: 1.3, bounce: 0 };
 
 const ROW_RESTING = { scale: 1, boxShadow: "0 0 0 rgba(0, 0, 0, 0)" };
 const ROW_LIFTED = {
