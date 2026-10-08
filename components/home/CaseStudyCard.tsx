@@ -3,6 +3,7 @@ import type { CaseStudy } from "../../data/caseStudies";
 import { PlaybackVideo } from "../case-study/PlaybackVideo";
 import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
 import { BdpCardAnimation } from "./BdpCardAnimation";
+import { TranscriptCardAnimation } from "./TranscriptCardAnimation";
 
 export type CaseStudyCardProps = {
   caseStudy: CaseStudy;
@@ -33,6 +34,8 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
           >
             {caseStudy.media.type === "bdp-animation" ? (
               <BdpCardAnimation ariaLabel={caseStudy.media.alt} />
+            ) : caseStudy.media.type === "transcript-animation" ? (
+              <TranscriptCardAnimation ariaLabel={caseStudy.media.alt} />
             ) : caseStudy.media.type === "video" && caseStudy.media.src ? (
               <PlaybackVideo
                 ariaLabel={caseStudy.media.alt}

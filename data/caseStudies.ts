@@ -1,5 +1,10 @@
-// "bdp-animation" renders the coded BDP screenshot sequence instead of a file.
-export type CaseStudyMediaType = "image" | "gif" | "video" | "bdp-animation";
+// The "-animation" types render coded screenshot sequences instead of a media file.
+export type CaseStudyMediaType =
+  | "image"
+  | "gif"
+  | "video"
+  | "bdp-animation"
+  | "transcript-animation";
 
 export type CaseStudy = {
   id: string;
@@ -61,7 +66,7 @@ export const caseStudies: CaseStudy[] = [
     labels: ["UX Audit", "IA", "Interaction Design", "Visual Identity", "Developer Handoff"],
     href: "/work/transcript-review-redesign",
     media: {
-      type: "video",
+      type: "transcript-animation",
       src: "/assets/case-study-1/hero-scene-1.mp4",
       alt: "Preview of the Bitcoin Transcript Review case study",
     },
