@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Transition, useReducedMotion } from "motion/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   MOTIF_GOLD_PATHS,
   MOTIF_PETAL_FILLS,
@@ -29,6 +29,7 @@ const TIMING = {
 
 const DRAW: Transition = { duration: 0.7, ease: [0.45, 0, 0.2, 1] };
 const FILL: Transition = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
+const LEAVE: Transition = { duration: 0.5, ease: [0.45, 0, 0.2, 1] };
 
 export type Bloom = {
   id: number;
@@ -43,31 +44,48 @@ type MotifBloomProps = {
   onDone: (id: number) => void;
 };
 
+type Stage = "blank" | "drawn" | "leaving";
+
 export function MotifBloom({ bloom, onDone }: MotifBloomProps) {
   const reduceMotion = useReducedMotion();
+  // The site's route transition wrapper turns off mount animations for everything inside it,
+  // so the bloom renders blank first and animates by changing stage on the next frame.
+  const [stage, setStage] = useState<Stage>("blank");
 
   useEffect(() => {
-    const timer = window.setTimeout(() => onDone(bloom.id), TIMING.remove);
-    return () => window.clearTimeout(timer);
+    const frame = window.requestAnimationFrame(() => setStage("drawn"));
+    const timers = [
+      window.setTimeout(() => setStage("leaving"), TIMING.leave * 1000),
+      window.setTimeout(() => onDone(bloom.id), TIMING.remove),
+    ];
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
   }, [bloom.id, onDone]);
 
-  const traced = reduceMotion ? { pathLength: 1 } : { pathLength: [0, 1] };
+  const drawn = stage !== "blank";
+  const leaving = stage === "leaving";
+  const lineLength = drawn || reduceMotion ? 1 : 0;
 
   return (
     <motion.svg
-      animate={{ opacity: [1, 1, 0], scale: [1, 1, 0.85] }}
+      animate={{ opacity: leaving ? 0 : 1, scale: leaving ? 0.85 : 1 }}
       className="site-footer__bloom"
       height={bloom.size}
+      initial={false}
       style={{ left: bloom.x, top: bloom.y }}
-      transition={{ duration: TIMING.remove / 1000, times: [0, TIMING.leave / (TIMING.remove / 1000), 1] }}
+      transition={LEAVE}
       viewBox={MOTIF_VIEWBOX}
       width={bloom.size}
     >
       {MOTIF_GOLD_PATHS.map((d) => (
         <motion.path
-          animate={{ ...traced, fillOpacity: [0, 1] }}
+          animate={{ pathLength: lineLength, fillOpacity: drawn ? 1 : 0 }}
           d={d}
           fill={MOTIF_GOLD}
+          initial={false}
           key={d}
           stroke={MOTIF_GOLD}
           strokeWidth={0.6}
@@ -79,18 +97,20 @@ export function MotifBloom({ bloom, onDone }: MotifBloomProps) {
       ))}
       {MOTIF_PETAL_FILLS.map((d) => (
         <motion.path
-          animate={{ fillOpacity: [0, 1] }}
+          animate={{ fillOpacity: drawn ? 1 : 0 }}
           d={d}
           fill={bloom.colour.fill}
+          initial={false}
           key={d}
           transition={{ ...FILL, delay: reduceMotion ? 0 : TIMING.petalFill }}
         />
       ))}
       {MOTIF_PETAL_OUTLINES.map((d) => (
         <motion.path
-          animate={traced}
+          animate={{ pathLength: lineLength }}
           d={d}
           fill="none"
+          initial={false}
           key={d}
           stroke={bloom.colour.outline}
           transition={{ ...DRAW, delay: reduceMotion ? 0 : TIMING.petalOutlines }}

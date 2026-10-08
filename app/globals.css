@@ -2280,7 +2280,9 @@ video {
 }
 
 .floating-navbar[data-over-footer="true"] {
-  transform: translateY(calc(-50% + 40px));
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(-100% - 1rem), -50%);
 }
 
 .floating-navbar:hover,
@@ -6131,7 +6133,9 @@ video {
   }
 
   .floating-navbar[data-over-footer="true"] {
-    transform: translateX(50%);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(50%, calc(100% + 2rem));
   }
 
   .floating-navbar:hover,
