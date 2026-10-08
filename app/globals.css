@@ -1585,23 +1585,28 @@ video {
 }
 
 .home-page {
-  --hero-image: image-set(
-    url("/assets/bachground painting 1.webp") type("image/webp") 1x,
-    url("/assets/bachground painting 1.png") type("image/png") 1x
-  );
+  --hero-image: url("/assets/background-painting-2880.webp");
+  /* Reveal timing; HeroCrossfadeShell sets direction-aware delays from the Scroll reveal panel. */
+  --reveal-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  --reveal-boxes-duration: 400ms;
+  --reveal-boxes-delay: 0ms;
+  --reveal-overlay-duration: 600ms;
+  --reveal-overlay-delay: 400ms;
+  --reveal-overlay-darkness: 0.7;
+  --reveal-work-duration: 600ms;
+  --reveal-work-delay: 700ms;
+  --hero-pin-length: 40vh;
+  --work-rest-top: 75vh;
   min-height: 100vh;
   overflow-x: clip;
   background: var(--background);
 }
 
 .home-page__hero-shell {
-  --hero-transition-progress: 0;
-  --hero-container-opacity: 1;
-  --hero-overlay-opacity: 0.05;
   --hero-statement-opacity: 0;
   position: relative;
-  /* One viewport for the first fold plus the distance it stays pinned while it fades. */
-  min-height: calc(100vh + var(--hero-pin-length, 30vh));
+  /* One viewport for the first fold plus a stretch where it stays pinned while it fades. */
+  min-height: calc(100vh + var(--hero-pin-length));
   isolation: isolate;
 }
 
@@ -1629,8 +1634,39 @@ video {
 .home-page__hero-shell::before {
   z-index: 1;
   background: #080807;
-  opacity: var(--hero-overlay-opacity);
-  will-change: opacity;
+  opacity: 0.05;
+  transition: opacity var(--reveal-overlay-duration) var(--reveal-ease) var(--reveal-overlay-delay);
+}
+
+/*
+ * Once the visitor scrolls past the trigger, the page plays a timed reveal: first fold boxes fade
+ * out, the overlay darkens, then the work fades in. Scrolling back to the top plays it in reverse.
+ */
+.home-page[data-revealed="true"] .home-page__hero-shell::before {
+  opacity: var(--reveal-overlay-darkness);
+}
+
+.hero-intro::before,
+.hero-intro__content,
+.hero-intro__motif,
+.hero-intro__scroll-prompt {
+  transition: opacity var(--reveal-boxes-duration) var(--reveal-ease) var(--reveal-boxes-delay);
+}
+
+.home-page[data-revealed="true"] .hero-intro::before,
+.home-page[data-revealed="true"] .hero-intro__content,
+.home-page[data-revealed="true"] .hero-intro__motif,
+.home-page[data-revealed="true"] .hero-intro__scroll-prompt {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Used for the first paint and replays so the page lands in place without animating. */
+.home-page[data-reveal-instant="true"] *,
+.home-page[data-reveal-instant="true"] *::before,
+.home-page[data-reveal-instant="true"] *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
 }
 
 .hero-intro,
@@ -1672,7 +1708,6 @@ video {
     linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
   background-size: var(--hero-cell) var(--hero-cell);
   content: "";
-  opacity: var(--hero-container-opacity);
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -1683,12 +1718,6 @@ video {
   inset: 0;
   background: rgba(8, 8, 7, 0.06);
   pointer-events: none;
-}
-
-.hero-intro__content,
-.hero-intro__motif,
-.hero-intro__scroll-prompt {
-  opacity: var(--hero-container-opacity);
 }
 
 .hero-intro__content {
@@ -1704,7 +1733,6 @@ video {
   background: rgba(16, 15, 13, 0.58);
   box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.2);
   padding: 24px;
-  backdrop-filter: blur(1px);
 }
 
 .hero-intro__corner-plus {
@@ -1840,7 +1868,6 @@ video {
   background: rgba(16, 15, 13, 0.58);
   box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.2);
   padding: 12px;
-  backdrop-filter: blur(1px);
   color: rgba(242, 238, 228, 0.78);
   font-size: clamp(0.55rem, 0.72vw, 0.66rem);
   line-height: 1;
@@ -2456,15 +2483,21 @@ video {
   z-index: 6;
   isolation: isolate;
   /* Pulled up over the pinned first fold so its top rests at --work-rest-top before any scrolling. */
-  margin-top: calc(var(--work-rest-top, 95vh) - 100vh - var(--hero-pin-length, 30vh));
+  margin-top: calc(var(--work-rest-top) - 100vh - var(--hero-pin-length));
   background: rgba(8, 8, 7, 0.06);
   color: var(--accent);
   opacity: 0;
-  will-change: opacity;
+  pointer-events: none;
+  transition: opacity var(--reveal-work-duration) var(--reveal-ease) var(--reveal-work-delay);
   padding:
     48px
     clamp(1rem, 4.6vw, 4.35rem)
     calc(var(--work-section-footer-fade) + 2rem);
+}
+
+.home-page[data-revealed="true"] .work-section {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .work-section::after {
@@ -5454,6 +5487,10 @@ video {
 }
 
 @media (max-width: 860px) {
+  .home-page {
+    --hero-image: url("/assets/background-painting-1600.webp");
+  }
+
   .home-page__hero-shell::after {
     background-position: 65% top;
   }

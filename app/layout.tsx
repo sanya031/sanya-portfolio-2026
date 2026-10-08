@@ -59,9 +59,17 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/assets/bachground painting 1.webp"
+          href="/assets/background-painting-2880.webp"
           as="image"
           type="image/webp"
+          media="(min-width: 861px)"
+        />
+        <link
+          rel="preload"
+          href="/assets/background-painting-1600.webp"
+          as="image"
+          type="image/webp"
+          media="(max-width: 860px)"
         />
       </head>
       <body suppressHydrationWarning>
