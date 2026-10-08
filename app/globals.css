@@ -2547,7 +2547,13 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .case-study-card__link {
   position: relative;
   display: grid;
+  /* minmax(0, …) stops wide media (e.g. Safari sizing aspect-ratio boxes) from widening the card. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.7rem;
+}
+
+.case-study-card__link > * {
+  min-width: 0;
 }
 
 .case-study-card__media-frame {
@@ -5820,10 +5826,16 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
   .case-study-card__image,
   .case-study-card__video,
-  .case-study-card__placeholder {
+  .case-study-card__placeholder,
+  .bdp-card-animation,
+  .transcript-card-animation {
     aspect-ratio: 16 / 9;
     min-height: 0;
     height: 100%;
+  }
+
+  .work-section__heading {
+    width: min(70%, 20rem);
   }
 
   .case-study-card::before,
