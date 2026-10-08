@@ -71,7 +71,6 @@ export function HeroIntro({
 
   return (
     <div ref={introRef} className="hero-intro" data-animation="hero-intro-fade-on-scroll">
-      <div className="hero-intro__overlay" aria-hidden="true" />
 
       <div className="hero-intro__content">
         {containerCorners.map((corner) => (

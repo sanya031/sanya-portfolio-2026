@@ -16,18 +16,16 @@ export type HeroCrossfadeShellProps = {
  *
  *    0.00s   first fold boxes fade out (in place)
  *    0.35s   boxes gone; dark overlay starts darkening
- *    0.70s   Selected work starts fading in ("scroll in": sits below the fold)
- *    1.05s   overlay settled ("fade in place": work fades in on the first fold now)
+ *    0.70s   Selected work starts fading in, resting just below the first fold
+ *    1.05s   everything settled
  * ───────────────────────────────────────────────────────── */
 const scrollRevealControls = {
   startAfterScroll: [25, 0, 400, 5],
   boxesFade: [0.35, 0.1, 2, 0.05],
   overlayFade: [0.7, 0.1, 3, 0.05],
   overlayDarkness: [0.7, 0, 1, 0.01],
-  workEntrance: { type: "select", options: ["scroll in", "fade in place"], default: "scroll in" },
   workDelay: [0.7, 0, 3, 0.05],
   workFade: [0.3, 0.1, 2, 0.05],
-  workPosition: [12, 0, 60, 1],
   easing: { type: "select", options: ["smooth", "gentle", "linear"], default: "smooth" },
   replay: { type: "action", label: "Replay reveal" },
   reverse: { type: "action", label: "Play in reverse" },
@@ -43,21 +41,12 @@ const easings: Record<string, string> = {
 
 const seconds = (value: number) => `${Math.round(value * 1000)}ms`;
 
-// Where the work section's top sits before scrolling, in vh, when it scrolls in from below.
-const scrollInRestTop = 75;
-
 // Forward plays boxes → overlay → work. Reverse mirrors the same schedule so it unwinds in order.
 const applyTiming = (page: HTMLElement, controls: ScrollRevealControls, revealed: boolean) => {
-  const fadesInPlace = controls.workEntrance === "fade in place";
-  const overlayEnd = controls.boxesFade + controls.overlayFade;
   const forward = {
     boxes: { delay: 0, duration: controls.boxesFade },
     overlay: { delay: controls.boxesFade, duration: controls.overlayFade },
-    // Fading in place starts as soon as the overlay has settled; Work Delay applies to scrolling in.
-    work: {
-      delay: fadesInPlace ? overlayEnd : controls.workDelay,
-      duration: controls.workFade,
-    },
+    work: { delay: controls.workDelay, duration: controls.workFade },
   };
   const total = Math.max(
     ...Object.values(forward).map(({ delay, duration }) => delay + duration),
@@ -70,10 +59,6 @@ const applyTiming = (page: HTMLElement, controls: ScrollRevealControls, revealed
     page.style.setProperty(`--reveal-${name}-delay`, seconds(directionalDelay));
   }
 
-  page.style.setProperty(
-    "--work-rest-top",
-    `${fadesInPlace ? controls.workPosition : scrollInRestTop}vh`,
-  );
   page.style.setProperty("--reveal-overlay-darkness", String(controls.overlayDarkness));
   page.style.setProperty("--reveal-ease", easings[controls.easing] ?? easings.smooth);
 };

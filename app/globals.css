@@ -1634,7 +1634,8 @@ video {
 .home-page__hero-shell::before {
   z-index: 1;
   background: #080807;
-  opacity: 0.05;
+  /* Includes the light scrim the hero used to carry, so the page has one even overlay layer. */
+  opacity: 0.11;
   transition: opacity var(--reveal-overlay-duration) var(--reveal-ease) var(--reveal-overlay-delay);
 }
 
@@ -1712,7 +1713,6 @@ video {
   transform: translateX(-50%);
 }
 
-.hero-intro__overlay,
 .scroll-statement__scrim {
   position: absolute;
   inset: 0;
@@ -2484,7 +2484,6 @@ video {
   isolation: isolate;
   /* Pulled up over the pinned first fold so its top rests at --work-rest-top before any scrolling. */
   margin-top: calc(var(--work-rest-top) - 100vh - var(--hero-pin-length));
-  background: rgba(8, 8, 7, 0.06);
   color: var(--accent);
   opacity: 0;
   pointer-events: none;
