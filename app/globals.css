@@ -1600,7 +1600,8 @@ video {
   --hero-overlay-opacity: 0.05;
   --hero-statement-opacity: 0;
   position: relative;
-  min-height: 100vh;
+  /* One viewport for the first fold plus half a viewport for it to stay pinned while it fades. */
+  min-height: 150vh;
   isolation: isolate;
 }
 
@@ -2454,8 +2455,8 @@ video {
   position: relative;
   z-index: 6;
   isolation: isolate;
-  /* Tucked under the first fold so the heading is already waiting and fades in as scrolling starts. */
-  margin-top: -18vh;
+  /* Pulled up over the pinned first fold so the heading is waiting just below it and fades in early. */
+  margin-top: -68vh;
   background: rgba(8, 8, 7, 0.06);
   color: var(--accent);
   opacity: 0;
