@@ -1,11 +1,10 @@
 import { caseStudies } from "../../data/caseStudies";
 import { navItems } from "../../data/navItems";
 import { statementWords } from "../../data/statementWords";
-import { CaseStudyCursor } from "../cursor/CaseStudyCursor";
+import { AboutViewCursor } from "../cursor/AboutViewCursor";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { HeroCrossfadeShell } from "./HeroCrossfadeShell";
 import { HeroIntro } from "./HeroIntro";
-import { HomeFooter } from "./HomeFooter";
 import { InstantWorkScroll } from "./InstantWorkScroll";
 import { ScrollStatement } from "./ScrollStatement";
 import { WorkSection } from "./WorkSection";
@@ -15,8 +14,8 @@ export function HomePage() {
   return (
     <main className="home-page">
       <InstantWorkScroll />
-      <CaseStudyCursor />
-      <FloatingNavbar items={navItems} variant="dark" />
+      <AboutViewCursor label="View case study" target="case-study" tone="media" />
+      <FloatingNavbar items={navItems} lockVariant variant="dark" />
 
       <HeroCrossfadeShell>
         <HeroIntro />
@@ -24,15 +23,6 @@ export function HomePage() {
       </HeroCrossfadeShell>
 
       <WorkSection caseStudies={caseStudies} />
-
-      <HomeFooter
-        stamp={{
-          image: "/assets/footer_motif.svg",
-          label: "Toronto",
-          location: "Available for thoughtful product work",
-          link: "mailto:hello@example.com",
-        }}
-      />
     </main>
   );
 }

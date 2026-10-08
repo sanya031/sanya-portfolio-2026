@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AgentationDevtools } from "../components/Agentation";
+import { AccessibilityControls } from "../components/dev/AccessibilityControls";
+import { DialKitRoot } from "../components/dev/DialKitRoot";
+import { SiteFooter } from "../components/footer/SiteFooter";
 import { TransitionProvider } from "../components/transitions/TransitionProvider";
 import "./globals.css";
 
@@ -59,13 +62,28 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/assets/bachground painting 1.webp"
+          href="/assets/background-painting-2880.webp"
           as="image"
           type="image/webp"
+          media="(min-width: 861px)"
+        />
+        <link
+          rel="preload"
+          href="/assets/background-painting-1600.webp"
+          as="image"
+          type="image/webp"
+          media="(max-width: 860px)"
         />
       </head>
       <body suppressHydrationWarning>
-        <TransitionProvider>{children}</TransitionProvider>
+        {/* Every page scrolls up like a sheet to uncover the footer pinned beneath it. */}
+        <div className="page-sheet">
+          <TransitionProvider>{children}</TransitionProvider>
+        </div>
+        <div className="page-sheet__shadow" aria-hidden="true" />
+        <SiteFooter />
+        <AccessibilityControls />
+        <DialKitRoot />
         {process.env.NODE_ENV === "development" ? <AgentationDevtools /> : null}
         <Analytics />
         <SpeedInsights />

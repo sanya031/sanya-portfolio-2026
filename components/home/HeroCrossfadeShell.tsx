@@ -1,69 +1,148 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import type { CSSProperties, ReactNode } from "react";
+import { type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
+import { useCallback, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 
 export type HeroCrossfadeShellProps = {
   children: ReactNode;
 };
 
-type HeroCrossfadeStyle = CSSProperties & {
-  "--hero-image": string;
+/* ─────────────────────────────────────────────────────────
+ * SCROLL REVEAL STORYBOARD
+ *
+ * Plays on a timer once the visitor scrolls past `startAfterScroll`, so it runs at the same
+ * speed however fast they scroll. Scrolling back to the top brings the first fold straight back.
+ *
+ *    0.00s   first fold boxes fade out (in place)
+ *    0.30s   boxes gone; dark overlay starts darkening
+ *    0.70s   Selected work starts fading in, resting just below the first fold
+ *    1.30s   everything settled
+ * ───────────────────────────────────────────────────────── */
+const scrollRevealControls = {
+  startAfterScroll: [25, 0, 400, 5],
+  boxesFade: [0.3, 0.1, 2, 0.05],
+  overlayFade: [1, 0.1, 3, 0.05],
+  overlayDarkness: [0.7, 0, 1, 0.01],
+  workDelay: [0.7, 0, 3, 0.05],
+  workFade: [0.4, 0.1, 2, 0.05],
+  easing: { type: "select", options: ["smooth", "gentle", "linear"], default: "smooth" },
+  replay: { type: "action", label: "Replay reveal" },
+  reverse: { type: "action", label: "Play in reverse" },
+} satisfies DialConfig;
+
+type ScrollRevealControls = ResolvedValues<typeof scrollRevealControls>;
+
+const easings: Record<string, string> = {
+  smooth: "cubic-bezier(0.45, 0, 0.2, 1)",
+  gentle: "cubic-bezier(0.22, 1, 0.36, 1)",
+  linear: "linear",
 };
 
-const clamp = (value: number) => Math.min(Math.max(value, 0), 1);
+const seconds = (value: number) => `${Math.round(value * 1000)}ms`;
 
-const smoothstep = (value: number) => {
-  const clampedValue = clamp(value);
-
-  return clampedValue * clampedValue * (3 - 2 * clampedValue);
+// Scrolling back to the top replays quickly and nearly all at once, so the first fold comes
+// straight back instead of waiting for the forward sequence to unwind in order.
+const RETURN = {
+  work: { delay: 0, duration: 0.25 },
+  overlay: { delay: 0.1, duration: 0.45 },
+  boxes: { delay: 0.15, duration: 0.45 },
 };
 
-const mapRange = (value: number, start: number, end: number) =>
-  smoothstep((value - start) / (end - start));
+// Forward plays boxes → overlay → work on the tuned schedule; the return uses RETURN above.
+const applyTiming = (page: HTMLElement, controls: ScrollRevealControls, revealed: boolean) => {
+  const schedule = revealed
+    ? {
+        boxes: { delay: 0, duration: controls.boxesFade },
+        overlay: { delay: controls.boxesFade, duration: controls.overlayFade },
+        work: { delay: controls.workDelay, duration: controls.workFade },
+      }
+    : RETURN;
+
+  for (const [name, { delay, duration }] of Object.entries(schedule)) {
+    page.style.setProperty(`--reveal-${name}-duration`, seconds(duration));
+    page.style.setProperty(`--reveal-${name}-delay`, seconds(delay));
+  }
+
+  page.style.setProperty("--reveal-overlay-darkness", String(controls.overlayDarkness));
+  page.style.setProperty("--reveal-ease", easings[controls.easing] ?? easings.smooth);
+};
 
 export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
   const shellRef = useRef<HTMLElement>(null);
+  const revealedRef = useRef(false);
+  const controlsRef = useRef<ScrollRevealControls | null>(null);
 
-  useEffect(() => {
-    let animationFrameId = 0;
+  const setRevealed = useCallback((revealed: boolean, instant = false) => {
+    const page = shellRef.current?.closest<HTMLElement>(".home-page");
+    const controls = controlsRef.current;
 
-    const updateProgress = () => {
-      const shell = shellRef.current;
+    if (!page || !controls) {
+      return;
+    }
 
-      if (!shell) {
-        return;
+    revealedRef.current = revealed;
+    applyTiming(page, controls, revealed);
+
+    if (instant) {
+      page.dataset.revealInstant = "true";
+    }
+
+    page.dataset.revealed = String(revealed);
+
+    if (instant) {
+      // Let the instant state paint before transitions come back.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          delete page.dataset.revealInstant;
+        });
+      });
+    }
+  }, []);
+
+  const controls = useDialKit("Scroll reveal", scrollRevealControls, {
+    defaultCollapsed: true,
+    id: "home-scroll-reveal",
+    persist: true,
+    onAction: (action) => {
+      if (action === "replay") {
+        setRevealed(false, true);
+        window.requestAnimationFrame(() => window.requestAnimationFrame(() => setRevealed(true)));
       }
 
-      const rect = shell.getBoundingClientRect();
-      const viewportHeight = window.innerHeight || 1;
-      const progress = clamp(-rect.top / (viewportHeight * 0.7));
-      const containerFade = mapRange(progress, 0, 0.22);
-      const overlayFade = mapRange(progress, 0.18, 0.46);
-      const statementFade = mapRange(progress, 0.52, 0.78);
+      if (action === "reverse") {
+        setRevealed(false);
+      }
+    },
+  });
 
-      shell.style.setProperty("--hero-transition-progress", progress.toFixed(3));
-      shell.style.setProperty("--hero-container-opacity", (1 - containerFade).toFixed(3));
-      shell.style.setProperty("--hero-overlay-opacity", (0.05 + overlayFade * 0.5).toFixed(3));
-      shell.style.setProperty("--hero-statement-opacity", statementFade.toFixed(3));
-      shell.dataset.statementActive = statementFade > 0.8 ? "true" : "false";
+  controlsRef.current = controls;
+
+  // Panel edits retime the current direction without replaying it.
+  useEffect(() => {
+    const page = shellRef.current?.closest<HTMLElement>(".home-page");
+
+    if (page) {
+      applyTiming(page, controls, revealedRef.current);
+    }
+  }, [controls]);
+
+  useEffect(() => {
+    const isPastTrigger = () => window.scrollY > (controlsRef.current?.startAfterScroll ?? 25);
+    const onScroll = () => {
+      const revealed = isPastTrigger();
+
+      if (revealed !== revealedRef.current) {
+        setRevealed(revealed);
+      }
     };
 
-    const requestUpdate = () => {
-      window.cancelAnimationFrame(animationFrameId);
-      animationFrameId = window.requestAnimationFrame(updateProgress);
-    };
+    // Land in the right state on load (including returning to #work) without animating.
+    setRevealed(isPastTrigger(), true);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    updateProgress();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-
-    return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-    };
-  }, []);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [setRevealed]);
 
   return (
     <section

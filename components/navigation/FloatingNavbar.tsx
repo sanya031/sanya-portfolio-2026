@@ -42,8 +42,12 @@ export function FloatingNavbar({
       const footerRect = footerSection?.getBoundingClientRect();
       const isNavOverWork =
         Boolean(workRect) && workRect!.top <= navProbeY && workRect!.bottom >= navProbeY;
-      const isNavOverFooter =
-        Boolean(footerRect) && footerRect!.top <= navProbeY && footerRect!.bottom >= navProbeY;
+      // With the footer reveal, the footer is pinned beneath the page sheet; the navbar steps
+      // aside as soon as the sheet starts lifting off it.
+      const sheetRect = document.querySelector<HTMLElement>(".page-sheet")?.getBoundingClientRect();
+      const isNavOverFooter = sheetRect
+        ? sheetRect.bottom < window.innerHeight - 24
+        : Boolean(footerRect) && footerRect!.top <= navProbeY && footerRect!.bottom >= navProbeY;
 
       setIsHiddenOnFirstFold(hideOnFirstFold && window.scrollY < window.innerHeight * 0.13);
       setIsOverFooter(isNavOverFooter);

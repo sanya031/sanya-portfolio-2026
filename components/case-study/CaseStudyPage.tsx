@@ -6,7 +6,6 @@ import type {
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { navItems } from "../../data/navItems";
-import { HomeFooter } from "../home/HomeFooter";
 import { BackToWorkLink } from "../navigation/BackToWorkLink";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { CaseStudyTeaserCursor } from "../cursor/CaseStudyTeaserCursor";
@@ -1176,8 +1175,6 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         </div>
       </div>
 
-      <div className="case-study-page__footer-tear" aria-hidden="true" />
-      <HomeFooter />
       <CaseStudyTeaserCursor />
     </main>
   );

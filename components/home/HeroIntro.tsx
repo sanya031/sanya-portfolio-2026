@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { DialRoot, type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
+import { type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
 import { useAnimationFrame, useReducedMotion } from "motion/react";
 
 export type HeroIntroProps = {
@@ -71,7 +71,6 @@ export function HeroIntro({
 
   return (
     <div ref={introRef} className="hero-intro" data-animation="hero-intro-fade-on-scroll">
-      <div className="hero-intro__overlay" aria-hidden="true" />
 
       <div className="hero-intro__content">
         {containerCorners.map((corner) => (
@@ -100,27 +99,7 @@ export function HeroIntro({
           <p className="hero-intro__supporting">
             {supportingText ?? (
               <>
-                Over the last 2 years, I’ve designed open-source products and complex workflows alongside developers, and lately, I’ve been using AI to make{" "}
-                <a
-                  className="hero-intro__playground-link"
-                  href="https://www.sanyamalhotra.me/404"
-                >
-                  interactive experiments
-                  <svg
-                    aria-hidden="true"
-                    className="hero-intro__playground-arrow"
-                    focusable="false"
-                    shapeRendering="crispEdges"
-                    viewBox="0 0 18 18"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M3 12H6V15H3Z M0 15H3V18H0Z M6 9H9V12H6Z M9 6H12V9H9Z M12 3H15V6H12Z M15 0H18V3H15Z M15 3H18V6H15Z M15 6H18V9H15Z M15 9H18V12H15Z M12 0H15V3H12Z M9 0H12V3H9Z M6 0H9V3H6Z M3 0H6V3H3Z"
-                    />
-                  </svg>
-                </a>
-                .
+                Over the last 2 years, I’ve designed open-source products and complex workflows alongside developers, and lately, I’ve been using AI to make interactive experiments.
               </>
             )}
           </p>
@@ -154,10 +133,6 @@ export function HeroIntro({
           </HeroMotif>
         ))}
       </div>
-
-      {process.env.NODE_ENV === "development" && (
-        <DialRoot defaultOpen={false} position="bottom-right" theme="dark" />
-      )}
     </div>
   );
 }

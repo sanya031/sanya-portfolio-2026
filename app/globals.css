@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,600;1,700&family=Quicksand:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,600;1,700&family=Quicksand:wght@400&display=swap");
 @import "tailwindcss";
 @import "dialkit/styles.css";
 
@@ -968,34 +968,6 @@ video {
   }
 }
 
-.about-page__footer-tear {
-  position: relative;
-  z-index: 6;
-  width: 100%;
-  height: var(--about-footer-tear-height);
-  margin-top: calc(var(--about-footer-tear-height) * -0.58);
-  margin-bottom: calc(var(--about-footer-tear-height) * -0.18);
-  background-image: var(--about-background-image);
-  background-position:
-    center
-    calc(
-      (var(--about-hero-height) * -1) +
-        (var(--about-footer-tear-height) * 0.58)
-    );
-  background-repeat: no-repeat;
-  background-size: auto var(--about-rendered-image-height);
-  mask-image: url("/assets/bottom%20tear.png");
-  mask-position: center bottom;
-  mask-repeat: no-repeat;
-  mask-size: auto 100%;
-  mask-mode: alpha;
-  -webkit-mask-image: url("/assets/bottom%20tear.png");
-  -webkit-mask-position: center bottom;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: auto 100%;
-  pointer-events: none;
-}
-
 @media (min-width: 861px) and (max-width: 1080px) {
   .about-container {
     grid-column: var(--about-container-laptop-column) /
@@ -1232,6 +1204,19 @@ video {
 
 .about-view-cursor[data-visible="true"] {
   opacity: 1;
+}
+
+/*
+ * Over case study media the cursor sits on top of busy screenshots. A near-opaque dark backing
+ * plus a heavy blur keeps the label legible: even over pure white, the backing composites to
+ * about rgb(52, 52, 52), giving #fdf9ed text roughly 11.8:1 contrast (WCAG AA needs 4.5:1).
+ */
+.about-view-cursor[data-tone="media"] {
+  border-color: rgba(253, 249, 237, 0.18);
+  background: rgba(8, 8, 7, 0.82);
+  white-space: nowrap;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
 }
 
 .about-view-cursor__icon {
@@ -1585,38 +1570,89 @@ video {
 }
 
 .home-page {
+  --hero-image: url("/assets/background-painting-2880.webp");
+  /* Reveal timing; HeroCrossfadeShell sets direction-aware delays from the Scroll reveal panel. */
+  --reveal-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  --reveal-boxes-duration: 300ms;
+  --reveal-boxes-delay: 0ms;
+  --reveal-overlay-duration: 1000ms;
+  --reveal-overlay-delay: 300ms;
+  --reveal-overlay-darkness: 0.7;
+  --reveal-work-duration: 400ms;
+  --reveal-work-delay: 700ms;
+  --hero-pin-length: 40vh;
+  --work-rest-top: 75vh;
   min-height: 100vh;
   overflow-x: clip;
   background: var(--background);
 }
 
 .home-page__hero-shell {
-  --hero-transition-progress: 0;
-  --hero-container-opacity: 1;
-  --hero-overlay-opacity: 0.05;
   --hero-statement-opacity: 0;
-  --hero-image: image-set(
-    url("/assets/bachground painting 1.webp") type("image/webp") 1x,
-    url("/assets/bachground painting 1.png") type("image/png") 1x
-  );
   position: relative;
-  min-height: 120vh;  /* Original min-hieght was 200vh */
-  background-image: var(--hero-image);
-  background-attachment: fixed;
-  background-position: center top;
-  background-size: cover;
+  /* One viewport for the first fold plus a stretch where it stays pinned while it fades. */
+  min-height: calc(100vh + var(--hero-pin-length));
   isolation: isolate;
 }
 
+/*
+ * The painting and its dark overlay are viewport-fixed layers that sit behind the whole page,
+ * so the work section scrolls over the same backdrop. Fixed layers composite on the GPU, unlike
+ * background-attachment: fixed, which repaints on every scroll frame.
+ */
+.home-page__hero-shell::after,
 .home-page__hero-shell::before {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 0;
-  background: #080807;
   content: "";
-  opacity: var(--hero-overlay-opacity);
   pointer-events: none;
-  transition: opacity 80ms linear;
+}
+
+.home-page__hero-shell::after {
+  z-index: 0;
+  background-image: var(--hero-image);
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home-page__hero-shell::before {
+  z-index: 1;
+  background: #080807;
+  /* Includes the light scrim the hero used to carry, so the page has one even overlay layer. */
+  opacity: 0.11;
+  transition: opacity var(--reveal-overlay-duration) var(--reveal-ease) var(--reveal-overlay-delay);
+}
+
+/*
+ * Once the visitor scrolls past the trigger, the page plays a timed reveal: first fold boxes fade
+ * out, the overlay darkens, then the work fades in. Scrolling back to the top plays it in reverse.
+ */
+.home-page[data-revealed="true"] .home-page__hero-shell::before {
+  opacity: var(--reveal-overlay-darkness);
+}
+
+.hero-intro::before,
+.hero-intro__content,
+.hero-intro__motif,
+.hero-intro__scroll-prompt {
+  transition: opacity var(--reveal-boxes-duration) var(--reveal-ease) var(--reveal-boxes-delay);
+}
+
+.home-page[data-revealed="true"] .hero-intro::before,
+.home-page[data-revealed="true"] .hero-intro__content,
+.home-page[data-revealed="true"] .hero-intro__motif,
+.home-page[data-revealed="true"] .hero-intro__scroll-prompt {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Used for the first paint and replays so the page lands in place without animating. */
+.home-page[data-reveal-instant="true"] *,
+.home-page[data-reveal-instant="true"] *::before,
+.home-page[data-reveal-instant="true"] *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
 }
 
 .hero-intro,
@@ -1635,7 +1671,7 @@ video {
   --hero-grid-line: rgba(253, 249, 237, 0.09);
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(var(--hero-cols), var(--hero-cell));
   grid-template-rows: repeat(var(--hero-rows), var(--hero-cell));
@@ -1662,19 +1698,11 @@ video {
   transform: translateX(-50%);
 }
 
-.hero-intro__overlay,
 .scroll-statement__scrim {
   position: absolute;
   inset: 0;
   background: rgba(8, 8, 7, 0.06);
   pointer-events: none;
-}
-
-.hero-intro__content,
-.hero-intro__motif,
-.hero-intro__scroll-prompt {
-  opacity: var(--hero-container-opacity);
-  transition: opacity 80ms linear;
 }
 
 .hero-intro__content {
@@ -1690,7 +1718,6 @@ video {
   background: rgba(16, 15, 13, 0.58);
   box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.2);
   padding: 24px;
-  backdrop-filter: blur(1px);
 }
 
 .hero-intro__corner-plus {
@@ -1771,29 +1798,6 @@ video {
   text-align: left;
   word-spacing: normal;
 }
-
-.hero-intro__playground-link {
-  display: inline;
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  transition: color 150ms ease, text-decoration-thickness 150ms ease;
-}
-
-.hero-intro__playground-link:hover,
-.hero-intro__playground-link:focus-visible {
-  text-decoration-thickness: 2px;
-}
-
-.hero-intro__playground-arrow {
-  display: inline-block;
-  width: 0.72em;
-  height: 0.72em;
-  margin-left: 8px;
-  vertical-align: -0.04em;
-}
-
 .hero-intro__scroll-prompt {
   position: absolute;
   left: calc((var(--hero-content-start) - 1) * var(--hero-cell));
@@ -1826,7 +1830,6 @@ video {
   background: rgba(16, 15, 13, 0.58);
   box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.2);
   padding: 12px;
-  backdrop-filter: blur(1px);
   color: rgba(242, 238, 228, 0.78);
   font-size: clamp(0.55rem, 0.72vw, 0.66rem);
   line-height: 1;
@@ -1970,6 +1973,8 @@ video {
 
 @media (max-width: 1320px) {
   .hero-intro {
+    /* Shrink cells below 40px when the 30-column stage would be wider than the screen. */
+    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
     --hero-cols: 30;
   }
 
@@ -1984,6 +1989,7 @@ video {
 
 @media (max-width: 1080px) {
   .hero-intro {
+    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
     --hero-content-start: 7;
     --hero-cols: 24;
   }
@@ -2226,7 +2232,9 @@ video {
 }
 
 .floating-navbar[data-over-footer="true"] {
-  transform: translateY(calc(-50% + 40px));
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(-100% - 1rem), -50%);
 }
 
 .floating-navbar:hover,
@@ -2364,6 +2372,38 @@ video {
   opacity: 1;
 }
 
+/*
+ * Accessibility pass options, toggled from the Accessibility DialKit panel to compare with the
+ * current navbar. See components/dev/AccessibilityControls.
+ */
+html[data-a11y-nav-contrast="opacity"] .floating-navbar__label,
+html[data-a11y-nav-contrast="both"] .floating-navbar__label {
+  opacity: 0.75;
+}
+
+html[data-a11y-nav-contrast="glass"] .floating-navbar:not([data-variant="light"]),
+html[data-a11y-nav-contrast="both"] .floating-navbar:not([data-variant="light"]) {
+  background: rgba(16, 15, 13, 0.35);
+}
+
+html[data-a11y-nav-label-size="true"] .floating-navbar__link {
+  font-size: var(--a11y-nav-label-size);
+}
+
+/* On phones the slots are 2.75rem wide; let them grow to fit larger labels like "Resume". */
+@media (max-width: 520px) {
+  html[data-a11y-nav-label-size="true"] .floating-navbar__link {
+    width: auto;
+    min-width: 2.75rem;
+    padding-inline: 0.15rem;
+  }
+}
+
+html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
+  outline: 1px solid rgba(253, 249, 237, 0.6);
+  outline-offset: 3px;
+}
+
 .floating-navbar[data-variant="light"] {
   border: 1px solid rgba(30, 30, 30, 0.14);
   border-radius: 16px;
@@ -2436,59 +2476,43 @@ video {
 }
 
 .work-section {
-  --paper-tear-height: clamp(7.75rem, 12.7vw, 12rem);
-  --paper-bottom-height: clamp(7.25rem, 12.1vw, 22rem);
-  --paper-top-overlap: calc(var(--paper-tear-height) * 0.72);
   --work-section-gap: clamp(3rem, 7vw, 6rem);
+  --work-section-footer-fade: clamp(6rem, 12vw, 11rem);
   position: relative;
   z-index: 6;
-  margin-top: calc(var(--paper-tear-height) * -0.52);
-  background: transparent;
-  color: var(--ink);
-  padding-bottom: calc(var(--paper-bottom-height) * 0.24);
-}
-
-.work-section__tear {
-  position: absolute;
-  right: 0;
-  left: 0;
-  z-index: 3;
-  overflow: hidden;
-  height: var(--paper-tear-height);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 100%;
+  isolation: isolate;
+  /* Pulled up over the pinned first fold so its top rests at --work-rest-top before any scrolling. */
+  margin-top: calc(var(--work-rest-top) - 100vh - var(--hero-pin-length));
+  color: var(--accent);
+  opacity: 0;
   pointer-events: none;
-}
-
-.work-section__tear--top {
-  top: calc(var(--paper-top-overlap) * -1);
-  background-image: url("/assets/top%20tear.png");
-}
-
-.work-section__tear--bottom {
-  bottom: calc(var(--paper-bottom-height) * -0.18);
-  height: var(--paper-bottom-height);
-  background-image: url("/assets/bottom%20tear.png");
-  background-position: center bottom;
-  background-size: auto 100%;
-}
-
-.work-section__paper {
-  position: relative;
-  z-index: 1;
-  min-height: 36rem;
-  background:
-    linear-gradient(rgba(239, 232, 213, 0.14), rgba(239, 232, 213, 0.14)),
-    url("/assets/mid%20page.png") top center / 100% auto repeat-y,
-    var(--paper);
+  transition: opacity var(--reveal-work-duration) var(--reveal-ease) var(--reveal-work-delay);
   padding:
     48px
     clamp(1rem, 4.6vw, 4.35rem)
-    calc(var(--paper-bottom-height) * 0.84);
+    calc(var(--work-section-footer-fade) + 2rem);
+}
+
+.home-page[data-revealed="true"] .work-section {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.work-section::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  height: var(--work-section-footer-fade);
+  background: linear-gradient(rgba(16, 15, 13, 0), var(--background));
 }
 
 .work-section__inner {
+  position: relative;
+  z-index: 1;
   width: min(100%, 84rem);
   margin: 0 auto;
 }
@@ -2529,27 +2553,139 @@ video {
 .case-study-card__media-frame {
   position: relative;
   cursor: none;
+  border: 1px solid rgba(253, 249, 237, 0.14);
+  border-radius: 16px;
+  background: rgba(8, 8, 7, 0.32);
+  padding: 12px;
+  backdrop-filter: blur(40px) saturate(1.1);
+  -webkit-backdrop-filter: blur(40px) saturate(1.1);
 }
 
 .case-study-card__media {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background-color: #f3f3f1;
-  background-image:
-    linear-gradient(45deg, #dededc 25%, transparent 25%),
-    linear-gradient(-45deg, #dededc 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #dededc 75%),
-    linear-gradient(-45deg, transparent 75%, #dededc 75%);
-  background-position: 0 0, 0 1.1rem, 1.1rem -1.1rem, -1.1rem 0;
-  background-size: 2.2rem 2.2rem;
+  border-radius: 8px;
+  background-color: #1b1a17;
   min-height: clamp(19rem, 36vw, 34.1rem);
   transform-origin: center;
   will-change: transform;
 }
 
 .case-study-card__media[data-media-type="video"] {
-  background: #f3f3f1;
+  background: #1b1a17;
+}
+
+.case-study-card__media-frame[data-media-type="bdp-animation"] .case-study-card__media,
+.case-study-card__media-frame[data-media-type="transcript-animation"] .case-study-card__media {
+  background: transparent;
+}
+
+/* The list and editor run off the bottom of this card, so they meet the frame's bottom edge. */
+.case-study-card__media-frame[data-media-type="transcript-animation"] {
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+.case-study-card__media-frame[data-media-type="transcript-animation"] .case-study-card__media {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.transcript-card-animation {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: clamp(19rem, 36vw, 34.1rem);
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+
+/* The list is taller than the card, so it runs off the bottom edge like the original video. */
+.transcript-card-animation__list {
+  position: absolute;
+  top: 6%;
+  left: 7%;
+  width: 86%;
+}
+
+.transcript-card-animation__list > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Sits exactly over the first row: it starts at that row's top divider (66px of 976px). */
+.transcript-card-animation__list .transcript-card-animation__row {
+  position: absolute;
+  top: calc(66 / 976 * 100%);
+  left: 0;
+  border-radius: 6px;
+}
+
+/* Rests over the row's chevron once it glides in. */
+.transcript-card-animation__cursor {
+  position: absolute;
+  top: calc(110 / 976 * 100%);
+  left: 96.6%;
+  width: clamp(14px, 2.2vw, 22px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.transcript-card-animation__editor {
+  position: absolute;
+  top: 4%;
+  left: 3%;
+  width: 94%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.35);
+}
+
+.bdp-card-animation {
+  /* The card frame already pads by 12px, so the grid runs edge to edge with a matching gap. */
+  --bdp-inset: 0px;
+  --bdp-gap: 12px;
+  --bdp-cell-w: calc((100% - var(--bdp-inset) * 2 - var(--bdp-gap)) / 2);
+  --bdp-cell-h: calc((100% - var(--bdp-inset) * 2 - var(--bdp-gap)) / 2);
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: clamp(19rem, 36vw, 34.1rem);
+}
+
+/* All screens start stacked in the centre; Motion animates each one out to its grid cell. */
+.bdp-card-animation__screen {
+  position: absolute;
+  top: calc(50% - var(--bdp-cell-h) / 2);
+  left: calc(50% - var(--bdp-cell-w) / 2);
+  width: var(--bdp-cell-w);
+  height: var(--bdp-cell-h);
+  object-fit: cover;
+  object-position: top center;
+}
+
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="hero"] {
+  top: var(--bdp-inset);
+  left: var(--bdp-inset);
+}
+
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="field"] {
+  top: var(--bdp-inset);
+  left: calc(var(--bdp-inset) + var(--bdp-cell-w) + var(--bdp-gap));
+}
+
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="explore"] {
+  top: calc(var(--bdp-inset) + var(--bdp-cell-h) + var(--bdp-gap));
+  left: var(--bdp-inset);
+}
+
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="contribute"] {
+  top: calc(var(--bdp-inset) + var(--bdp-cell-h) + var(--bdp-gap));
+  left: calc(var(--bdp-inset) + var(--bdp-cell-w) + var(--bdp-gap));
 }
 
 .case-study-card__image,
@@ -2629,7 +2765,7 @@ video {
 
 .case-study-card__org {
   margin: 0 0 4px;
-  color: #4a4a4a;
+  color: rgba(253, 249, 237, 0.6);
   font-family: "Geist", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -2639,7 +2775,7 @@ video {
 
 .case-study-card__heading {
   margin: 0;
-  color: #000;
+  color: #ffffff;
   font-family: "Geist", Arial, sans-serif;
   font-size: 20px;
   font-weight: 600;
@@ -2648,7 +2784,7 @@ video {
 
 .case-study-card__summary {
   margin: 0;
-  color: #4a4a4a;
+  color: rgba(253, 249, 237, 0.64);
   font-family: "Geist", Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -2670,42 +2806,13 @@ video {
   height: 22px;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgb(0 0 0 / 8%);
-  color: #4a4a4a;
+  background: rgba(253, 249, 237, 0.1);
+  color: rgba(253, 249, 237, 0.75);
   font-family: "Geist", Arial, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
-}
-
-.case-study-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 30;
-  width: clamp(7.87rem, 10.9vw, 10.16rem);
-  height: auto;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(
-      calc(var(--case-study-cursor-x, 0px) + 14px),
-      calc(var(--case-study-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(0.98);
-  transition: opacity 120ms ease;
-  user-select: none;
-}
-
-.case-study-cursor[data-visible="true"] {
-  opacity: 1;
-  transform: translate3d(
-      calc(var(--case-study-cursor-x, 0px) + 14px),
-      calc(var(--case-study-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(1);
 }
 
 .case-study-page {
@@ -2734,25 +2841,6 @@ video {
   overflow: hidden;
   background: var(--case-paper);
   padding: clamp(4rem, 8vw, 8.8rem) clamp(1.3rem, 6vw, 5rem) clamp(5rem, 9vw, 8rem);
-}
-
-.case-study-page__footer-tear {
-  --case-study-footer-tear-height: clamp(6rem, 11.9vw, 22rem);
-  position: relative;
-  z-index: 6;
-  height: var(--case-study-footer-tear-height);
-  margin-bottom: calc(var(--case-study-footer-tear-height) * -0.46);
-  background: #ffffff;
-  mask-image: url("/assets/bottom%20tear.png");
-  mask-position: center bottom;
-  mask-repeat: no-repeat;
-  mask-size: auto 100%;
-  mask-mode: alpha;
-  -webkit-mask-image: url("/assets/bottom%20tear.png");
-  -webkit-mask-position: center bottom;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: auto 100%;
-  pointer-events: none;
 }
 
 .case-study-page__hero,
@@ -4758,7 +4846,7 @@ video {
 }
 
 .case-study-page__identity-cell > span {
-  color: #7a7a7a;
+  color: #000000;
   font-family: "Departure Mono", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.2;
@@ -4837,13 +4925,10 @@ video {
 
 .case-study-page__identity-illustration-media-label {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
+  top: 1rem;
+  left: 1rem;
   z-index: 1;
-  border-radius: 0.25rem;
-  background: rgba(255, 255, 255, 0.88);
-  padding: 0.3rem 0.6rem;
-  color: #201e1e;
+  color: #000000;
   font-family: "Departure Mono", "Courier New", monospace;
   font-size: 13px;
   line-height: 1.2;
@@ -5233,143 +5318,333 @@ video {
   }
 }
 
-.home-footer {
+/*
+ * Footer reveal (every page, set up in the root layout): page content sits in an opaque sheet
+ * above a footer pinned to the bottom of the viewport, so as the sheet scrolls away the footer
+ * underneath is uncovered, until the sheet's bottom meets the footer.
+ */
+.page-sheet {
   position: relative;
-  z-index: 5;
+  z-index: 1;
+  background: var(--background);
+}
+
+/*
+ * The home page's painting is fixed to the viewport; clipping the page to its own box keeps it
+ * from showing over the footer. Only here, so fixed overlays on other pages aren't cut off.
+ */
+.home-page {
+  clip-path: inset(0);
+}
+
+/* A soft shadow that rides along the sheet's bottom edge as it lifts off the footer. */
+.page-sheet__shadow {
+  position: relative;
+  z-index: 1;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Strength is set from scroll by SiteFooter and fades to 0 as the footer settles into place. */
+.page-sheet__shadow::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: clamp(2.5rem, 5vw, 4.5rem);
+  background: linear-gradient(rgba(0, 0, 0, var(--sheet-shadow-strength, 0.15)), rgba(0, 0, 0, 0));
+  content: "";
+}
+
+.site-footer {
+  --site-footer-text: #fdf9ed;
+  --site-footer-muted: rgba(253, 249, 237, 0.6);
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
   display: grid;
-  min-height: clamp(28rem, 32vw, 31rem);
-  grid-template-columns: 1fr;
-  align-items: end;
-  justify-items: center;
+  height: clamp(32rem, 46vw, 100svh);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 2rem;
   overflow: hidden;
   background: var(--background);
-  color: var(--accent);
-  padding: clamp(6rem, 9vw, 9rem) clamp(0.9rem, 3.2vw, 3rem) 4.95rem;
+  color: var(--site-footer-text);
+  font-family: "Geist", Arial, sans-serif;
+  padding: clamp(2rem, 3.4vw, 3.25rem) clamp(1.25rem, 3.4vw, 3.5rem);
 }
 
-.home-footer::before {
-  content: none;
+/* A paintbrush over the empty space signals it can be painted on; text and links stay normal. */
+.site-footer[data-brush="true"] {
+  cursor: url("/assets/cursor-brush.svg") 3 29, crosshair;
 }
 
-.home-footer::after {
-  content: none;
+.site-footer[data-brush="true"] .site-footer__text {
+  cursor: auto;
 }
 
-.home-footer__stamp {
-  display: none;
+.site-footer[data-brush="true"] .site-footer__link {
+  cursor: pointer;
 }
 
-.home-footer__content {
-  display: grid;
-  gap: 0.08rem;
-  width: min(100%, 74rem);
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  justify-items: center;
-  text-align: center;
+.site-footer__blooms {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.home-footer__title {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
-  color: rgba(242, 238, 228, 0.96);
-  font-family: var(--serif);
-  font-size: clamp(4rem, 7.15vw, 6.7rem);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 0.88;
+.site-footer__bloom {
+  position: absolute;
+  overflow: visible;
+  translate: -50% -50%;
 }
 
-.home-footer__meta-row {
-  display: contents;
-}
-
-.home-footer__nav {
-  grid-column: 3;
-  grid-row: 2;
-  justify-self: end;
-  display: flex;
-  gap: clamp(1.6rem, 2.4vw, 2.4rem);
-  align-items: center;
-  justify-content: center;
-}
-
-.home-footer__link {
+.site-footer__intro,
+.site-footer__columns {
   position: relative;
+  z-index: 1;
+}
+
+/* Hug the text so only the words themselves are off-limits for painting. */
+.site-footer__intro {
+  justify-self: start;
+}
+
+.site-footer__quote {
+  margin: 0;
+  color: var(--site-footer-text);
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.site-footer__hint {
+  margin: 1.1rem 0 0;
+  color: var(--site-footer-muted);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  font-weight: 300;
+}
+
+.site-footer__columns {
+  display: flex;
+  gap: clamp(2rem, 4.6vw, 4.5rem);
+  text-align: right;
+}
+
+.site-footer__column {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  justify-items: end;
+}
+
+.site-footer__heading {
+  margin: 0 0 0.15rem;
+  color: var(--site-footer-text);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.site-footer__item {
+  margin: 0;
+  color: var(--site-footer-muted);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.4;
+}
+
+.site-footer__link {
   appearance: none;
   border: 0;
-  background: transparent;
-  color: rgba(242, 238, 228, 0.72);
+  background: none;
   cursor: pointer;
-  font-family: var(--mono);
-  font-size: 1rem;
+  font-family: inherit;
   padding: 0;
-  text-transform: capitalize;
+  text-decoration: none;
   transition: color 140ms ease;
 }
 
-.home-footer__link:hover {
-  color: #ffffff;
+.site-footer__link:hover,
+.site-footer__link:focus-visible {
+  color: var(--site-footer-text);
 }
 
-.home-footer__credit {
-  grid-column: 1;
-  grid-row: 2;
-  justify-self: start;
-  margin: 0;
-  color: rgba(242, 238, 228, 0.72);
-  font-size: 1rem;
-  white-space: nowrap;
+.site-footer__link:focus-visible {
+  outline: 1px solid var(--site-footer-muted);
+  outline-offset: 3px;
 }
 
-.home-footer__copy-feedback {
-  position: absolute;
-  bottom: calc(100% + 0.58rem);
-  left: 0.42em;
-  display: inline-flex;
-  width: max-content;
-  gap: 0.34rem;
-  align-items: center;
-  color: rgba(242, 238, 228, 0.52);
-  font-size: 0.78rem;
-  opacity: 0;
-  pointer-events: none;
-  text-transform: none;
-  transform: translateY(0.35rem);
-  transition: opacity 140ms ease, transform 140ms ease;
+.site-footer__dot {
+  margin: 0 0.55em;
 }
 
-.home-footer__copy-feedback[data-visible="true"] {
-  opacity: 0.82;
-  transform: translateY(0);
+/*
+ * Footer text layouts, picked from the Footer DialKit panel while comparing options. Desktop
+ * only: on phones every layout stacks the same way. "classic" is the base layout above.
+ */
+@media (min-width: 861px) {
+  /* grounded: the same two blocks, anchored to the bottom edge; the top is open canvas. */
+  .site-footer[data-layout="grounded"] {
+    grid-template-rows: 1fr;
+    align-items: end;
+  }
+
+  /* centred: quote centred at the top, the columns as one centred row along the bottom. */
+  .site-footer[data-layout="centred"] {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__intro {
+    justify-self: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__columns {
+    align-self: end;
+    gap: clamp(3rem, 7vw, 7rem);
+    text-align: center;
+  }
+
+  .site-footer[data-layout="centred"] .site-footer__column {
+    justify-items: center;
+  }
+
+  /* editorial: a big full-width quote with the columns in a row beneath, all left-aligned. */
+  .site-footer[data-layout="editorial"] {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(2rem, 3.5vw, 3rem);
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__quote {
+    font-size: clamp(2.5rem, 5.2vw, 5rem);
+    line-height: 1.08;
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__columns {
+    justify-self: start;
+    gap: clamp(3rem, 6vw, 6rem);
+    text-align: left;
+  }
+
+  .site-footer[data-layout="editorial"] .site-footer__column {
+    justify-items: start;
+  }
+
+  /* sidebar: a narrow left rail (quote at the top, columns along its foot); the rest is open canvas. */
+  .site-footer[data-layout="sidebar"] {
+    grid-template-columns: minmax(18rem, 30%) 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__intro,
+  .site-footer[data-layout="sidebar"] .site-footer__columns {
+    grid-column: 1;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__quote {
+    font-size: clamp(1.4rem, 2vw, 1.9rem);
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__columns {
+    align-self: end;
+    justify-self: start;
+    gap: clamp(1.25rem, 2vw, 2rem);
+    text-align: left;
+  }
+
+  .site-footer[data-layout="sidebar"] .site-footer__column {
+    justify-items: start;
+  }
+
+  /* corners: quote top-left, location top-right, pages bottom-left, contact bottom-right. */
+  .site-footer[data-layout="corners"] .site-footer__columns {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: inherit;
+    pointer-events: none;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column {
+    position: absolute;
+    pointer-events: auto;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(1) {
+    top: clamp(2rem, 3.4vw, 3.25rem);
+    right: clamp(1.25rem, 3.4vw, 3.5rem);
+    justify-items: end;
+    text-align: right;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(2) {
+    bottom: clamp(2rem, 3.4vw, 3.25rem);
+    left: clamp(1.25rem, 3.4vw, 3.5rem);
+    justify-items: start;
+    text-align: left;
+  }
+
+  .site-footer[data-layout="corners"] .site-footer__column:nth-child(3) {
+    right: clamp(1.25rem, 3.4vw, 3.5rem);
+    bottom: clamp(2rem, 3.4vw, 3.25rem);
+    justify-items: end;
+    text-align: right;
+  }
 }
 
-.home-footer__copy-icon {
-  width: 1.22rem;
-  height: auto;
-  flex: 0 0 auto;
-  transform: translateY(-0.1rem);
+@media (max-width: 860px) {
+  .site-footer {
+    height: 100svh;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(2.5rem, 8vw, 3.5rem);
+    padding: clamp(2.5rem, 10vw, 3.5rem) clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .site-footer__columns {
+    flex-direction: column;
+    gap: clamp(2rem, 7vw, 3rem);
+    text-align: left;
+  }
+
+  .site-footer__column {
+    justify-items: start;
+  }
 }
 
-.home-footer__motifs {
-  position: absolute;
-  right: -4.5rem;
-  bottom: 0.625rem;
-  left: -4.5rem;
-  display: flex;
-  gap: clamp(0.25rem, 0.45vw, 0.75rem);
-  align-items: end;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
+/*
+ * Short phones (e.g. 320×640, iPhone SE): the stacked footer is taller than the screen, so
+ * PAGE and CONTACT sit side by side under MY LOCATION and the spacing tightens.
+ */
+@media (max-width: 860px) and (max-height: 760px) {
+  .site-footer {
+    gap: 1.6rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .site-footer__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem 1.5rem;
+  }
+
+  .site-footer__column {
+    gap: 0.5rem;
+  }
+
+  .site-footer__column:first-child {
+    grid-column: 1 / -1;
+  }
 }
 
-.home-footer__motif {
-  width: clamp(2.8rem, 3.6vw, 3.75rem);
-  height: auto;
-  flex: 0 0 auto;
-}
 
 .hanging-stamp {
   position: relative;
@@ -5436,54 +5711,15 @@ video {
     height: 0.5em;
   }
 
-  .home-footer {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .home-footer__content {
-    width: 100%;
-    box-sizing: border-box;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-
-  .home-footer__meta-row {
-    display: contents;
-    width: 100%;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
-
-  .home-footer__link,
-  .home-footer__credit {
-    font-size: 0.875rem;
-  }
-
-  .home-footer__credit {
-    transform: none;
-  }
 }
 
 @media (max-width: 860px) {
-  .home-page__hero-shell {
-    background-image: none;
+  .home-page {
+    --hero-image: url("/assets/background-painting-1600.webp");
   }
 
   .home-page__hero-shell::after {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background-image: var(--hero-image);
     background-position: 65% top;
-    background-repeat: no-repeat;
-    background-size: cover;
-    content: "";
-    pointer-events: none;
-  }
-
-  .home-page__hero-shell::before {
-    z-index: 1;
   }
 
   .hero-intro {
@@ -5573,11 +5809,6 @@ video {
     display: none;
   }
 
-  .work-section {
-    --paper-tear-height: 6.7rem;
-    --paper-bottom-height: 6.2rem;
-  }
-
   .case-study-card {
     max-width: min(calc(100vw - 2.4rem), 48rem);
   }
@@ -5662,55 +5893,6 @@ video {
     flex-basis: clamp(8.65rem, 42vw, 10.2rem);
   }
 
-  .home-footer {
-    min-height: 32rem;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: start;
-    padding: 6rem 2rem 5.4rem;
-  }
-
-  .home-footer__stamp {
-    padding-top: 0;
-  }
-
-  .home-footer__title {
-    grid-column: 1;
-    font-size: clamp(3.8rem, 15vw, 6rem);
-  }
-
-  .home-footer__nav {
-    grid-column: 1;
-    justify-self: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .home-footer__meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .home-footer__content {
-    grid-template-columns: 1fr;
-  }
-
-  .home-footer__credit {
-    grid-column: 1;
-    justify-self: center;
-    transform: none;
-  }
-
-  .home-footer__motifs {
-    right: -3rem;
-    left: -3rem;
-    gap: 0.25rem;
-  }
-
-  .home-footer__motif {
-    width: 2.8rem;
-  }
 }
 
 @media (max-width: 1080px) {
@@ -5718,80 +5900,6 @@ video {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .home-footer {
-    display: grid;
-    min-height: clamp(27rem, 58vh, 36rem);
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
-    align-content: end;
-    align-items: end;
-    justify-items: center;
-    gap: 0;
-    padding: clamp(5rem, 12vh, 8rem) 1.25rem clamp(1.1rem, 3.5vw, 1.6rem);
-    box-shadow: 0 100vh 0 100vh var(--background);
-  }
-
-  .home-footer__content,
-  .home-footer__meta-row {
-    display: contents;
-  }
-
-  .home-footer__nav {
-    display: flex;
-    grid-column: 1;
-    grid-row: 1;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-self: start;
-    gap: 1.05rem;
-    margin-bottom: clamp(1.45rem, 5vw, 2.15rem);
-    margin-left: clamp(1.35rem, 7vw, 2.6rem);
-  }
-
-  .home-footer__link {
-    font-size: 0.875rem;
-    line-height: 1;
-  }
-
-  .home-footer__title {
-    grid-column: 1;
-    grid-row: 2;
-    font-size: clamp(3.1rem, 13vw, 5.2rem);
-    line-height: 0.9;
-    margin-bottom: clamp(0.8rem, 2.4vw, 1.2rem);
-  }
-
-  .home-footer__motifs {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    grid-column: 1;
-    grid-row: 3;
-    width: calc(100% + 2.5rem);
-    margin-right: -1.25rem;
-    margin-left: -1.25rem;
-    gap: clamp(0.08rem, 0.45vw, 0.18rem);
-    justify-content: center;
-  }
-
-  .home-footer__motif {
-    width: clamp(2.05rem, 8.8vw, 3rem);
-  }
-
-  .home-footer__credit {
-    grid-column: 1;
-    grid-row: 4;
-    justify-self: center;
-    margin-top: clamp(0.95rem, 3vw, 1.4rem);
-    font-size: 0.75rem;
-    white-space: nowrap;
-  }
-
-  .home-footer__copy-feedback {
-    bottom: calc(100% + 0.42rem);
-    left: 0;
-  }
 }
 
 @media (min-width: 521px) and (max-width: 860px) {
@@ -5872,7 +5980,9 @@ video {
   }
 
   .floating-navbar[data-over-footer="true"] {
-    transform: translateX(50%);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(50%, calc(100% + 2rem));
   }
 
   .floating-navbar:hover,
@@ -5993,11 +6103,7 @@ video {
     padding: 2rem 1.25rem;
   }
 
-  .work-section__tear--bottom {
-    background-position: center bottom;
-  }
-
-  .work-section__paper {
+  .work-section {
     padding-right: 1.2rem;
     padding-left: 1.2rem;
   }

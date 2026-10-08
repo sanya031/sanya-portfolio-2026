@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { CaseStudy } from "../../data/caseStudies";
 import { PlaybackVideo } from "../case-study/PlaybackVideo";
 import { SharedMediaSurface } from "../transitions/SharedMediaSurface";
+import { BdpCardAnimation } from "./BdpCardAnimation";
+import { TranscriptCardAnimation } from "./TranscriptCardAnimation";
 
 export type CaseStudyCardProps = {
   caseStudy: CaseStudy;
@@ -20,13 +22,21 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
         className="case-study-card__link"
         href={caseStudy.href}
       >
-        <div className="case-study-card__media-frame" data-cursor="case-study">
+        <div
+          className="case-study-card__media-frame"
+          data-cursor="case-study"
+          data-media-type={caseStudy.media.type}
+        >
           <SharedMediaSurface
             className="case-study-card__media"
             layoutId={mediaLayoutId}
             data-media-type={caseStudy.media.type}
           >
-            {caseStudy.media.type === "video" && caseStudy.media.src ? (
+            {caseStudy.media.type === "bdp-animation" ? (
+              <BdpCardAnimation ariaLabel={caseStudy.media.alt} />
+            ) : caseStudy.media.type === "transcript-animation" ? (
+              <TranscriptCardAnimation ariaLabel={caseStudy.media.alt} />
+            ) : caseStudy.media.type === "video" && caseStudy.media.src ? (
               <PlaybackVideo
                 ariaLabel={caseStudy.media.alt}
                 className="case-study-card__video"
