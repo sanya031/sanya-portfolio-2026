@@ -2597,14 +2597,13 @@ video {
   top: 6%;
   left: 7%;
   width: 86%;
-  overflow: hidden;
-  border-radius: 8px;
 }
 
-.transcript-card-animation__list img {
+.transcript-card-animation__list > img {
   display: block;
   width: 100%;
   height: auto;
+  border-radius: 8px;
 }
 
 /* Sits exactly over the first row: it starts at that row's top divider (66px of 976px). */
@@ -2612,6 +2611,18 @@ video {
   position: absolute;
   top: calc(66 / 976 * 100%);
   left: 0;
+  border-radius: 6px;
+}
+
+/* Rests over the row's chevron once it glides in. */
+.transcript-card-animation__cursor {
+  position: absolute;
+  top: calc(110 / 976 * 100%);
+  left: 96.6%;
+  width: clamp(14px, 2.2vw, 22px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
 }
 
 .transcript-card-animation__editor {
