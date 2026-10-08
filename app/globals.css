@@ -1973,6 +1973,8 @@ video {
 
 @media (max-width: 1320px) {
   .hero-intro {
+    /* Shrink cells below 40px when the 30-column stage would be wider than the screen. */
+    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
     --hero-cols: 30;
   }
 
@@ -1987,6 +1989,7 @@ video {
 
 @media (max-width: 1080px) {
   .hero-intro {
+    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
     --hero-content-start: 7;
     --hero-cols: 24;
   }
@@ -5615,6 +5618,33 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     justify-items: start;
   }
 }
+
+/*
+ * Short phones (e.g. 320×640, iPhone SE): the stacked footer is taller than the screen, so
+ * PAGE and CONTACT sit side by side under MY LOCATION and the spacing tightens.
+ */
+@media (max-width: 860px) and (max-height: 760px) {
+  .site-footer {
+    gap: 1.6rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .site-footer__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem 1.5rem;
+  }
+
+  .site-footer__column {
+    gap: 0.5rem;
+  }
+
+  .site-footer__column:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
 
 .hanging-stamp {
   position: relative;
