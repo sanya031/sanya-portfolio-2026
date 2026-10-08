@@ -1588,12 +1588,12 @@ video {
   --hero-image: url("/assets/background-painting-2880.webp");
   /* Reveal timing; HeroCrossfadeShell sets direction-aware delays from the Scroll reveal panel. */
   --reveal-ease: cubic-bezier(0.45, 0, 0.2, 1);
-  --reveal-boxes-duration: 400ms;
+  --reveal-boxes-duration: 350ms;
   --reveal-boxes-delay: 0ms;
-  --reveal-overlay-duration: 600ms;
-  --reveal-overlay-delay: 400ms;
+  --reveal-overlay-duration: 700ms;
+  --reveal-overlay-delay: 350ms;
   --reveal-overlay-darkness: 0.7;
-  --reveal-work-duration: 600ms;
+  --reveal-work-duration: 300ms;
   --reveal-work-delay: 700ms;
   --hero-pin-length: 40vh;
   --work-rest-top: 75vh;

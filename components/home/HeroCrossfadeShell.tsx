@@ -14,18 +14,18 @@ export type HeroCrossfadeShellProps = {
  * Plays on a timer once the visitor scrolls past `startAfterScroll`, so it runs at the same
  * speed however fast they scroll. Scrolling back to the top plays it in reverse.
  *
- *    0.0s   first fold boxes fade out (in place)
- *    0.4s   boxes gone; dark overlay starts darkening
- *    0.7s   Selected work starts fading in
- *    1.3s   everything settled
+ *    0.00s   first fold boxes fade out (in place)
+ *    0.35s   boxes gone; dark overlay starts darkening
+ *    0.70s   Selected work starts fading in
+ *    1.05s   everything settled
  * ───────────────────────────────────────────────────────── */
 const scrollRevealControls = {
-  startAfterScroll: [40, 0, 400, 5],
-  boxesFade: [0.4, 0.1, 2, 0.05],
-  overlayFade: [0.6, 0.1, 3, 0.05],
+  startAfterScroll: [25, 0, 400, 5],
+  boxesFade: [0.35, 0.1, 2, 0.05],
+  overlayFade: [0.7, 0.1, 3, 0.05],
   overlayDarkness: [0.7, 0, 1, 0.01],
   workDelay: [0.7, 0, 3, 0.05],
-  workFade: [0.6, 0.1, 2, 0.05],
+  workFade: [0.3, 0.1, 2, 0.05],
   easing: { type: "select", options: ["smooth", "gentle", "linear"], default: "smooth" },
   replay: { type: "action", label: "Replay reveal" },
   reverse: { type: "action", label: "Play in reverse" },
@@ -123,7 +123,7 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
   }, [controls]);
 
   useEffect(() => {
-    const isPastTrigger = () => window.scrollY > (controlsRef.current?.startAfterScroll ?? 40);
+    const isPastTrigger = () => window.scrollY > (controlsRef.current?.startAfterScroll ?? 25);
     const onScroll = () => {
       const revealed = isPastTrigger();
 
