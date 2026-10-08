@@ -2,6 +2,7 @@ import { caseStudies } from "../../data/caseStudies";
 import { navItems } from "../../data/navItems";
 import { statementWords } from "../../data/statementWords";
 import { CaseStudyCursor } from "../cursor/CaseStudyCursor";
+import { DialKitRoot } from "../dev/DialKitRoot";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { HeroCrossfadeShell } from "./HeroCrossfadeShell";
 import { HeroIntro } from "./HeroIntro";
@@ -24,6 +25,8 @@ export function HomePage() {
       </HeroCrossfadeShell>
 
       <WorkSection caseStudies={caseStudies} />
+
+      <DialKitRoot />
 
       <HomeFooter
         stamp={{

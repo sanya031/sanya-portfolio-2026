@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { DialRoot, type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
+import { type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
 import { useAnimationFrame, useReducedMotion } from "motion/react";
 
 export type HeroIntroProps = {
@@ -154,10 +154,6 @@ export function HeroIntro({
           </HeroMotif>
         ))}
       </div>
-
-      {process.env.NODE_ENV === "development" && (
-        <DialRoot defaultOpen={false} position="bottom-right" theme="dark" />
-      )}
     </div>
   );
 }
