@@ -2575,47 +2575,64 @@ video {
   background: #1b1a17;
 }
 
-.case-study-card__media[data-media-type="bdp-animation"] {
+.case-study-card__media-frame[data-media-type="bdp-animation"] .case-study-card__media {
   background: transparent;
 }
 
 .bdp-card-animation {
+  --bdp-inset: 16px;
+  --bdp-gap: 12px;
+  --bdp-cell-w: calc((100% - var(--bdp-inset) * 2 - var(--bdp-gap)) / 2);
+  --bdp-cell-h: calc((100% - var(--bdp-inset) * 2 - var(--bdp-gap)) / 2);
   position: relative;
   aspect-ratio: 16 / 9;
   width: 100%;
   min-height: clamp(19rem, 36vw, 34.1rem);
-  overflow: hidden;
 }
 
-/* Each screen sits in its 2×2 grid cell; the motion moves and scales it from there. */
+/* Stage layouts; Motion animates each screen between them with layout transitions. */
 .bdp-card-animation__screen {
   position: absolute;
-  width: 48.5%;
-  height: 48.5%;
-  border-radius: 6px;
+  top: calc(50% - var(--bdp-cell-h) / 2);
+  left: calc(50% - var(--bdp-cell-w) / 2);
+  width: var(--bdp-cell-w);
+  height: var(--bdp-cell-h);
   object-fit: cover;
   object-position: top center;
-  will-change: transform, opacity;
 }
 
-.bdp-card-animation__screen[data-screen="hero"] {
-  top: 1%;
-  left: 0.75%;
+.bdp-card-animation[data-stage="full"] .bdp-card-animation__screen[data-screen="hero"] {
+  top: var(--bdp-inset);
+  left: var(--bdp-inset);
+  width: calc(100% - var(--bdp-inset) * 2);
+  height: calc(100% - var(--bdp-inset) * 2);
 }
 
-.bdp-card-animation__screen[data-screen="field"] {
-  top: 1%;
-  left: 50.75%;
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="hero"] {
+  top: var(--bdp-inset);
+  left: var(--bdp-inset);
 }
 
-.bdp-card-animation__screen[data-screen="explore"] {
-  top: 50.5%;
-  left: 0.75%;
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="field"] {
+  top: var(--bdp-inset);
+  left: calc(var(--bdp-inset) + var(--bdp-cell-w) + var(--bdp-gap));
 }
 
-.bdp-card-animation__screen[data-screen="contribute"] {
-  top: 50.5%;
-  left: 50.75%;
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="explore"] {
+  top: calc(var(--bdp-inset) + var(--bdp-cell-h) + var(--bdp-gap));
+  left: var(--bdp-inset);
+}
+
+.bdp-card-animation[data-stage="grid"] .bdp-card-animation__screen[data-screen="contribute"] {
+  top: calc(var(--bdp-inset) + var(--bdp-cell-h) + var(--bdp-gap));
+  left: calc(var(--bdp-inset) + var(--bdp-cell-w) + var(--bdp-gap));
+}
+
+/* The BDP card's screens sit straight on the page, without the dark frame. */
+.case-study-card__media-frame[data-media-type="bdp-animation"] {
+  border-color: transparent;
+  background: transparent;
+  padding: 0;
 }
 
 .case-study-card__image,

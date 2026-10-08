@@ -21,7 +21,11 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
         className="case-study-card__link"
         href={caseStudy.href}
       >
-        <div className="case-study-card__media-frame" data-cursor="case-study">
+        <div
+          className="case-study-card__media-frame"
+          data-cursor="case-study"
+          data-media-type={caseStudy.media.type}
+        >
           <SharedMediaSurface
             className="case-study-card__media"
             layoutId={mediaLayoutId}

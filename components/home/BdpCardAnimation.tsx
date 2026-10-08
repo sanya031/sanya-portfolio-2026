@@ -1,150 +1,92 @@
 "use client";
 
-import { type Easing, motion, useInView, useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { motion, type Transition, useInView, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 /* ─────────────────────────────────────────────────────────
- * BDP CARD STORYBOARD (loops every 5.2s)
+ * BDP CARD STORYBOARD (plays once, when the card scrolls into view)
  *
- *    0.0s   homepage screenshot fills the card
- *    0.5s   it shrinks to the centre
- *    1.3s   the other three screens slide out from behind it into a 2×2 grid
- *    2.0s   grid settles and holds
- *    4.4s   grid folds back behind the homepage, which grows to fill the card
- *    5.2s   loop
+ *    0ms   homepage screenshot fills the card, inside the inset
+ *  450ms   it eases down to the centre
+ * 1150ms   the other three screens slide out from behind it into a 2×2 grid
+ *          (staggered 70ms) and the homepage settles into the top-left cell
  * ───────────────────────────────────────────────────────── */
-const LOOP = 5.2;
-
 const TIMING = {
-  shrinkStart: 0.5,
-  shrinkEnd: 1.1,
-  splitStart: 1.3,
-  splitEnd: 2.0,
-  foldStart: 4.4,
-  foldEnd: 5.0,
+  centre: 450, // homepage shrinks to the centre
+  grid: 1150, // screens split into the grid
 };
 
-// Each screen is laid out in its grid cell. Offsets (as % of the cell) move a cell's centre to
-// the card's centre; scales grow a cell to the centred size or to fill the card.
-const CELL = { offsetX: 51.5, offsetY: 51.03, centredScale: 1.031, fullScale: 2.062 };
+const MOVE: Transition = { type: "spring", visualDuration: 0.75, bounce: 0 };
+const STAGGER = 0.07; // seconds between the three screens leaving the homepage
 
-const EASE_IN_OUT: Easing = [0.65, 0, 0.35, 1];
-const EASE_OUT: Easing = [0.22, 1, 0.36, 1];
-const HOLD: Easing = "linear";
+type Stage = "full" | "centre" | "grid";
 
-const at = (seconds: number) => seconds / LOOP;
-
-type Screen = {
-  id: string;
-  src: string;
-  alt: string;
-  // Direction from this cell's position toward the card centre.
-  toCentre: { x: 1 | -1; y: 1 | -1 };
-};
-
-const screens: Screen[] = [
-  { id: "field", src: "/assets/case-study-2/card-animation/field.webp", alt: "BDP footer illustration", toCentre: { x: -1, y: 1 } },
-  { id: "explore", src: "/assets/case-study-2/card-animation/explore.webp", alt: "BDP explore your path section", toCentre: { x: 1, y: -1 } },
-  { id: "contribute", src: "/assets/case-study-2/card-animation/contribute.webp", alt: "BDP contribute page", toCentre: { x: -1, y: -1 } },
-];
-
-const hero: Screen = {
-  id: "hero",
-  src: "/assets/case-study-2/card-animation/hero.webp",
-  alt: "BDP homepage hero",
-  toCentre: { x: 1, y: 1 },
-};
-
-const centred = (screen: Screen) => ({
-  x: `${CELL.offsetX * screen.toCentre.x}%`,
-  y: `${CELL.offsetY * screen.toCentre.y}%`,
-});
-
-const heroKeyframes = () => {
-  const toCentre = centred(hero);
-  const { fullScale: full, centredScale: mid } = CELL;
-
-  return {
-    animate: {
-      x: [toCentre.x, toCentre.x, toCentre.x, toCentre.x, "0%", "0%", toCentre.x, toCentre.x],
-      y: [toCentre.y, toCentre.y, toCentre.y, toCentre.y, "0%", "0%", toCentre.y, toCentre.y],
-      scale: [full, full, mid, mid, 1, 1, full, full],
-    },
-    transition: {
-      duration: LOOP,
-      repeat: Infinity,
-      times: [
-        0,
-        at(TIMING.shrinkStart),
-        at(TIMING.shrinkEnd),
-        at(TIMING.splitStart),
-        at(TIMING.splitEnd),
-        at(TIMING.foldStart),
-        at(TIMING.foldEnd),
-        1,
-      ],
-      ease: [HOLD, EASE_IN_OUT, HOLD, EASE_OUT, HOLD, EASE_IN_OUT, HOLD],
-    },
-  };
-};
-
-const screenKeyframes = (screen: Screen) => {
-  const toCentre = centred(screen);
-
-  return {
-    animate: {
-      x: [toCentre.x, toCentre.x, "0%", "0%", toCentre.x, toCentre.x],
-      y: [toCentre.y, toCentre.y, "0%", "0%", toCentre.y, toCentre.y],
-      scale: [CELL.centredScale, CELL.centredScale, 1, 1, CELL.centredScale, CELL.centredScale],
-      opacity: [0, 0, 1, 1, 0, 0],
-    },
-    transition: {
-      duration: LOOP,
-      repeat: Infinity,
-      times: [0, at(TIMING.splitStart), at(TIMING.splitEnd), at(TIMING.foldStart), at(TIMING.foldEnd), 1],
-      ease: [HOLD, EASE_OUT, HOLD, EASE_IN_OUT, HOLD],
-      opacity: {
-        duration: LOOP,
-        repeat: Infinity,
-        times: [0, at(TIMING.splitStart), at(TIMING.splitStart + 0.2), at(TIMING.foldStart + 0.3), at(TIMING.foldEnd), 1],
-      },
-    },
-  };
-};
+const screens = [
+  { id: "field", src: "/assets/case-study-2/card-animation/field.webp" },
+  { id: "explore", src: "/assets/case-study-2/card-animation/explore.webp" },
+  { id: "contribute", src: "/assets/case-study-2/card-animation/contribute.webp" },
+] as const;
 
 export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(rootRef, { margin: "10% 0px" });
+  const isInView = useInView(rootRef, { once: true, amount: 0.5 });
   const reduceMotion = useReducedMotion();
-  const animating = isInView && !reduceMotion;
-  const heroMotion = heroKeyframes();
+  const [stage, setStage] = useState<Stage>("full");
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setStage("grid");
+      return;
+    }
+
+    if (!isInView) {
+      return;
+    }
+
+    const timers = [
+      window.setTimeout(() => setStage("centre"), TIMING.centre),
+      window.setTimeout(() => setStage("grid"), TIMING.grid),
+    ];
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [isInView, reduceMotion]);
+
+  const isGrid = stage === "grid";
 
   return (
-    <div aria-label={ariaLabel} className="bdp-card-animation" ref={rootRef} role="img">
-      {screens.map((screen) => {
-        const screenMotion = screenKeyframes(screen);
-
-        return (
-          <motion.img
-            alt=""
-            animate={animating ? screenMotion.animate : { x: "0%", y: "0%", scale: 1, opacity: 1 }}
-            className="bdp-card-animation__screen"
-            data-screen={screen.id}
-            initial={false}
-            key={screen.id}
-            src={screen.src}
-            transition={animating ? screenMotion.transition : { duration: 0 }}
-          />
-        );
-      })}
+    <div
+      aria-label={ariaLabel}
+      className="bdp-card-animation"
+      data-stage={stage}
+      ref={rootRef}
+      role="img"
+    >
+      {screens.map((screen, index) => (
+        <motion.img
+          alt=""
+          animate={{ opacity: isGrid ? 1 : 0 }}
+          className="bdp-card-animation__screen"
+          data-screen={screen.id}
+          initial={false}
+          key={screen.id}
+          layout
+          src={screen.src}
+          style={{ borderRadius: 8 }}
+          transition={{
+            ...MOVE,
+            delay: isGrid ? index * STAGGER : 0,
+            opacity: { duration: 0.25, delay: isGrid ? index * STAGGER : 0 },
+          }}
+        />
+      ))}
       <motion.img
         alt=""
-        animate={animating ? heroMotion.animate : { x: "0%", y: "0%", scale: 1 }}
         className="bdp-card-animation__screen"
-        data-screen={hero.id}
-        initial={false}
-        src={hero.src}
-        transition={animating ? heroMotion.transition : { duration: 0 }}
+        data-screen="hero"
+        layout
+        src="/assets/case-study-2/card-animation/hero.webp"
+        style={{ borderRadius: 8 }}
+        transition={MOVE}
       />
     </div>
   );
