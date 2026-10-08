@@ -1585,10 +1585,6 @@ video {
 }
 
 .home-page {
-  --hero-transition-progress: 0;
-  --hero-container-opacity: 1;
-  --hero-overlay-opacity: 0.05;
-  --hero-statement-opacity: 0;
   --hero-image: image-set(
     url("/assets/bachground painting 1.webp") type("image/webp") 1x,
     url("/assets/bachground painting 1.png") type("image/png") 1x
@@ -1599,24 +1595,41 @@ video {
 }
 
 .home-page__hero-shell {
+  --hero-transition-progress: 0;
+  --hero-container-opacity: 1;
+  --hero-overlay-opacity: 0.05;
+  --hero-statement-opacity: 0;
   position: relative;
-  min-height: 120vh;  /* Original min-hieght was 200vh */
-  background-image: var(--hero-image);
-  background-attachment: fixed;
-  background-position: center top;
-  background-size: cover;
+  min-height: 100vh;
   isolation: isolate;
 }
 
+/*
+ * The painting and its dark overlay are viewport-fixed layers that sit behind the whole page,
+ * so the work section scrolls over the same backdrop. Fixed layers composite on the GPU, unlike
+ * background-attachment: fixed, which repaints on every scroll frame.
+ */
+.home-page__hero-shell::after,
 .home-page__hero-shell::before {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 0;
-  background: #080807;
   content: "";
-  opacity: var(--hero-overlay-opacity);
   pointer-events: none;
-  transition: opacity 80ms linear;
+}
+
+.home-page__hero-shell::after {
+  z-index: 0;
+  background-image: var(--hero-image);
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home-page__hero-shell::before {
+  z-index: 1;
+  background: #080807;
+  opacity: var(--hero-overlay-opacity);
+  will-change: opacity;
 }
 
 .hero-intro,
@@ -1635,7 +1648,7 @@ video {
   --hero-grid-line: rgba(253, 249, 237, 0.09);
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(var(--hero-cols), var(--hero-cell));
   grid-template-rows: repeat(var(--hero-rows), var(--hero-cell));
@@ -1661,7 +1674,6 @@ video {
   opacity: var(--hero-container-opacity);
   pointer-events: none;
   transform: translateX(-50%);
-  transition: opacity 80ms linear;
 }
 
 .hero-intro__overlay,
@@ -1676,7 +1688,6 @@ video {
 .hero-intro__motif,
 .hero-intro__scroll-prompt {
   opacity: var(--hero-container-opacity);
-  transition: opacity 80ms linear;
 }
 
 .hero-intro__content {
@@ -2443,34 +2454,26 @@ video {
   position: relative;
   z-index: 6;
   isolation: isolate;
-  /* Same fixed painting and scrims as the hero, so the dark overlay carries straight into the work. */
-  background:
-    linear-gradient(rgba(8, 8, 7, 0.06), rgba(8, 8, 7, 0.06)),
-    var(--hero-image) center top / cover no-repeat fixed;
+  /* Tucked under the first fold so the heading is already waiting and fades in as scrolling starts. */
+  margin-top: -18vh;
+  background: rgba(8, 8, 7, 0.06);
   color: var(--accent);
+  opacity: 0;
+  will-change: opacity;
   padding:
     48px
     clamp(1rem, 4.6vw, 4.35rem)
     calc(var(--work-section-footer-fade) + 2rem);
 }
 
-.work-section::before,
 .work-section::after {
   position: absolute;
-  inset: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 0;
   content: "";
   pointer-events: none;
-}
-
-.work-section::before {
-  background: #080807;
-  opacity: var(--hero-overlay-opacity);
-  transition: opacity 80ms linear;
-}
-
-.work-section::after {
-  top: auto;
   height: var(--work-section-footer-fade);
   background: linear-gradient(rgba(16, 15, 13, 0), var(--background));
 }
@@ -5450,24 +5453,8 @@ video {
 }
 
 @media (max-width: 860px) {
-  .home-page__hero-shell {
-    background-image: none;
-  }
-
   .home-page__hero-shell::after {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background-image: var(--hero-image);
     background-position: 65% top;
-    background-repeat: no-repeat;
-    background-size: cover;
-    content: "";
-    pointer-events: none;
-  }
-
-  .home-page__hero-shell::before {
-    z-index: 1;
   }
 
   .hero-intro {
@@ -5555,10 +5542,6 @@ video {
 
   .case-study-section-rail {
     display: none;
-  }
-
-  .work-section {
-    background: rgba(8, 8, 7, 0.06);
   }
 
   .case-study-card {
