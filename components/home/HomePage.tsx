@@ -1,7 +1,7 @@
 import { caseStudies } from "../../data/caseStudies";
 import { navItems } from "../../data/navItems";
 import { statementWords } from "../../data/statementWords";
-import { CaseStudyCursor } from "../cursor/CaseStudyCursor";
+import { AboutViewCursor } from "../cursor/AboutViewCursor";
 import { DialKitRoot } from "../dev/DialKitRoot";
 import { FloatingNavbar } from "../navigation/FloatingNavbar";
 import { HeroCrossfadeShell } from "./HeroCrossfadeShell";
@@ -16,7 +16,7 @@ export function HomePage() {
   return (
     <main className="home-page">
       <InstantWorkScroll />
-      <CaseStudyCursor />
+      <AboutViewCursor label="View case study" target="case-study" tone="media" />
       <FloatingNavbar items={navItems} lockVariant variant="dark" />
 
       <HeroCrossfadeShell>

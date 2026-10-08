@@ -1234,6 +1234,19 @@ video {
   opacity: 1;
 }
 
+/*
+ * Over case study media the cursor sits on top of busy screenshots. A near-opaque dark backing
+ * plus a heavy blur keeps the label legible: even over pure white, the backing composites to
+ * about rgb(52, 52, 52), giving #fdf9ed text roughly 11.8:1 contrast (WCAG AA needs 4.5:1).
+ */
+.about-view-cursor[data-tone="media"] {
+  border-color: rgba(253, 249, 237, 0.18);
+  background: rgba(8, 8, 7, 0.82);
+  white-space: nowrap;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+}
+
 .about-view-cursor__icon {
   width: 18.2px;
   height: 14px;
@@ -2814,35 +2827,6 @@ video {
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
-}
-
-.case-study-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 30;
-  width: clamp(7.87rem, 10.9vw, 10.16rem);
-  height: auto;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(
-      calc(var(--case-study-cursor-x, 0px) + 14px),
-      calc(var(--case-study-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(0.98);
-  transition: opacity 120ms ease;
-  user-select: none;
-}
-
-.case-study-cursor[data-visible="true"] {
-  opacity: 1;
-  transform: translate3d(
-      calc(var(--case-study-cursor-x, 0px) + 14px),
-      calc(var(--case-study-cursor-y, 0px) + 14px),
-      0
-    )
-    scale(1);
 }
 
 .case-study-page {

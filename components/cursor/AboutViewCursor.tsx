@@ -4,7 +4,19 @@ import { useEffect, useRef } from "react";
 
 const CURSOR_OFFSET = 14;
 
-export function AboutViewCursor() {
+export type ViewCursorProps = {
+  /** Shows over elements with this `data-cursor` value. */
+  target?: string;
+  label?: string;
+  /** "media" sits over busy images, so it uses a darker, more blurred backing for legibility. */
+  tone?: "default" | "media";
+};
+
+export function AboutViewCursor({
+  target = "about-view",
+  label = "View",
+  tone = "default",
+}: ViewCursorProps = {}) {
   const cursorRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<number | null>(null);
   const latestPosition = useRef({ x: 0, y: 0 });
@@ -57,7 +69,7 @@ export function AboutViewCursor() {
       schedulePaint();
     };
 
-    const targets = Array.from(document.querySelectorAll('[data-cursor="about-view"]'));
+    const targets = Array.from(document.querySelectorAll(`[data-cursor="${target}"]`));
 
     targets.forEach((target) => {
       target.addEventListener("pointerenter", showCursor);
@@ -76,12 +88,13 @@ export function AboutViewCursor() {
         target.removeEventListener("pointermove", moveCursor);
       });
     };
-  }, []);
+  }, [target]);
 
   return (
     <div
       ref={cursorRef}
       className="about-view-cursor"
+      data-tone={tone}
       data-visible="false"
       aria-hidden="true"
     >
@@ -91,7 +104,7 @@ export function AboutViewCursor() {
         alt=""
         draggable={false}
       />
-      <span>VIEW</span>
+      <span>{label}</span>
     </div>
   );
 }
