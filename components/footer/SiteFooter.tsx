@@ -27,7 +27,7 @@ const MAX_BLOOMS = 12;
 const FOOTER_LAYOUTS = ["classic", "grounded", "centred", "editorial", "sidebar", "corners"];
 
 const footerControls = {
-  layout: { type: "select", options: FOOTER_LAYOUTS, default: "classic" },
+  layout: { type: "select", options: FOOTER_LAYOUTS, default: "corners" },
   arrivalBlooms: true,
   arrivalCount: [6, 1, 10, 1],
   arrivalGap: [0.9, 0.1, 2, 0.05],
