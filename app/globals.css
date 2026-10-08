@@ -2582,13 +2582,24 @@ video {
   background: transparent;
 }
 
+/* The list and editor run off the bottom of this card, so they meet the frame's bottom edge. */
+.case-study-card__media-frame[data-media-type="transcript-animation"] {
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+.case-study-card__media-frame[data-media-type="transcript-animation"] .case-study-card__media {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 .transcript-card-animation {
   position: relative;
   aspect-ratio: 16 / 9;
   width: 100%;
   min-height: clamp(19rem, 36vw, 34.1rem);
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
 }
 
 /* The list is taller than the card, so it runs off the bottom edge like the original video. */
