@@ -13,21 +13,19 @@ import { MOTIF_GOLD, type MotifColour } from "../../data/motifPalette";
 /* ─────────────────────────────────────────────────────────
  * MOTIF BLOOM STORYBOARD (one motif, spawned where the footer was clicked)
  *
- *    0ms   gold heart scrolls trace their outlines
- *  500ms   gold fills in; petal stems and outlines draw outwards
- * 1000ms   petals fill with this motif's colour
+ *    0ms   gold scrolls and petal outlines draw together, in opposite directions:
+ *          the scrolls trace forwards along their lines, the petals trace back from their ends
+ *  550ms   gold and petals fill in together
  * 3000ms   after resting, the motif fades and shrinks away
  * 3500ms   removed
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  goldFill: 0.5, // gold shapes fill once their outline is traced
-  petalOutlines: 0.5, // petal stems and outlines start drawing
-  petalFill: 1.0, // petals colour in
+  fill: 0.55, // gold and petals colour in as their lines finish drawing
   leave: 3.0, // motif starts fading away
   remove: 3500, // ms: motif is removed from the page
 };
 
-const DRAW: Transition = { duration: 0.7, ease: [0.45, 0, 0.2, 1] };
+const DRAW: Transition = { duration: 0.8, ease: [0.45, 0, 0.2, 1] };
 const FILL: Transition = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
 const LEAVE: Transition = { duration: 0.5, ease: [0.45, 0, 0.2, 1] };
 
@@ -68,6 +66,7 @@ export function MotifBloom({ bloom, onDone }: MotifBloomProps) {
   const drawn = stage !== "blank";
   const leaving = stage === "leaving";
   const lineLength = drawn || reduceMotion ? 1 : 0;
+  const fillDelay = reduceMotion ? 0 : TIMING.fill;
 
   return (
     <motion.svg
@@ -91,7 +90,7 @@ export function MotifBloom({ bloom, onDone }: MotifBloomProps) {
           strokeWidth={0.6}
           transition={{
             pathLength: DRAW,
-            fillOpacity: { ...FILL, delay: reduceMotion ? 0 : TIMING.goldFill },
+            fillOpacity: { ...FILL, delay: fillDelay },
           }}
         />
       ))}
@@ -102,18 +101,19 @@ export function MotifBloom({ bloom, onDone }: MotifBloomProps) {
           fill={bloom.colour.fill}
           initial={false}
           key={d}
-          transition={{ ...FILL, delay: reduceMotion ? 0 : TIMING.petalFill }}
+          transition={{ ...FILL, delay: fillDelay }}
         />
       ))}
       {MOTIF_PETAL_OUTLINES.map((d) => (
         <motion.path
-          animate={{ pathLength: lineLength }}
+          // Offsetting by the undrawn length makes the line grow back from its far end.
+          animate={{ pathLength: lineLength, pathOffset: 1 - lineLength }}
           d={d}
           fill="none"
           initial={false}
           key={d}
           stroke={bloom.colour.outline}
-          transition={{ ...DRAW, delay: reduceMotion ? 0 : TIMING.petalOutlines }}
+          transition={DRAW}
         />
       ))}
     </motion.svg>
