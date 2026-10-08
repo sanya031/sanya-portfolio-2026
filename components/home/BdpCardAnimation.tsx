@@ -6,32 +6,32 @@ import { useEffect, useRef, useState } from "react";
 /* ─────────────────────────────────────────────────────────
  * BDP CARD STORYBOARD (plays once, when the card scrolls into view)
  *
- *    0ms   homepage screenshot fills the card, inside the inset
- *  450ms   it eases down to the centre
- * 1150ms   the other three screens slide out from behind it into a 2×2 grid
- *          (staggered 70ms) and the homepage settles into the top-left cell
+ *    0ms   all four screens stacked in the centre, homepage on top
+ *  300ms   each screen moves out to its own corner of the 2×2 grid
+ *          (staggered 50ms), settling with a soft spring
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
-  centre: 450, // homepage shrinks to the centre
-  grid: 1150, // screens split into the grid
+  split: 300, // screens leave the centre for their grid cells
 };
 
-const MOVE: Transition = { type: "spring", visualDuration: 0.75, bounce: 0 };
-const STAGGER = 0.07; // seconds between the three screens leaving the homepage
+const MOVE: Transition = { type: "spring", visualDuration: 0.8, bounce: 0 };
+const STAGGER = 0.05; // seconds between each screen setting off
 
-type Stage = "full" | "centre" | "grid";
+type Stage = "centre" | "grid";
 
+// Stacking order: the homepage is last so it sits on top of the stack.
 const screens = [
-  { id: "field", src: "/assets/case-study-2/card-animation/field.webp" },
-  { id: "explore", src: "/assets/case-study-2/card-animation/explore.webp" },
   { id: "contribute", src: "/assets/case-study-2/card-animation/contribute.webp" },
+  { id: "explore", src: "/assets/case-study-2/card-animation/explore.webp" },
+  { id: "field", src: "/assets/case-study-2/card-animation/field.webp" },
+  { id: "hero", src: "/assets/case-study-2/card-animation/hero.webp" },
 ] as const;
 
 export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(rootRef, { once: true, amount: 0.5 });
   const reduceMotion = useReducedMotion();
-  const [stage, setStage] = useState<Stage>("full");
+  const [stage, setStage] = useState<Stage>("centre");
 
   useEffect(() => {
     if (reduceMotion) {
@@ -43,15 +43,10 @@ export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
       return;
     }
 
-    const timers = [
-      window.setTimeout(() => setStage("centre"), TIMING.centre),
-      window.setTimeout(() => setStage("grid"), TIMING.grid),
-    ];
+    const timer = window.setTimeout(() => setStage("grid"), TIMING.split);
 
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
+    return () => window.clearTimeout(timer);
   }, [isInView, reduceMotion]);
-
-  const isGrid = stage === "grid";
 
   return (
     <div
@@ -64,30 +59,15 @@ export function BdpCardAnimation({ ariaLabel }: { ariaLabel: string }) {
       {screens.map((screen, index) => (
         <motion.img
           alt=""
-          animate={{ opacity: isGrid ? 1 : 0 }}
           className="bdp-card-animation__screen"
           data-screen={screen.id}
-          initial={false}
           key={screen.id}
           layout
           src={screen.src}
           style={{ borderRadius: 8 }}
-          transition={{
-            ...MOVE,
-            delay: isGrid ? index * STAGGER : 0,
-            opacity: { duration: 0.25, delay: isGrid ? index * STAGGER : 0 },
-          }}
+          transition={{ ...MOVE, delay: (screens.length - 1 - index) * STAGGER }}
         />
       ))}
-      <motion.img
-        alt=""
-        className="bdp-card-animation__screen"
-        data-screen="hero"
-        layout
-        src="/assets/case-study-2/card-animation/hero.webp"
-        style={{ borderRadius: 8 }}
-        transition={MOVE}
-      />
     </div>
   );
 }
