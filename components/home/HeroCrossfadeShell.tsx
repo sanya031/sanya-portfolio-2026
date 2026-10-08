@@ -69,7 +69,7 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
   const controlsRef = useRef<ScrollRevealControls | null>(null);
 
   const setRevealed = useCallback((revealed: boolean, instant = false) => {
-    const page = shellRef.current?.parentElement;
+    const page = shellRef.current?.closest<HTMLElement>(".home-page");
     const controls = controlsRef.current;
 
     if (!page || !controls) {
@@ -115,7 +115,7 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
 
   // Panel edits retime the current direction without replaying it.
   useEffect(() => {
-    const page = shellRef.current?.parentElement;
+    const page = shellRef.current?.closest<HTMLElement>(".home-page");
 
     if (page) {
       applyTiming(page, controls, revealedRef.current);
