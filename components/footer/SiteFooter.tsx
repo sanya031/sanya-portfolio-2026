@@ -22,12 +22,12 @@ const MAX_BLOOMS = 12;
  */
 const footerControls = {
   arrivalBlooms: true,
-  arrivalCount: [3, 1, 6, 1],
-  arrivalGap: [0.45, 0.1, 1.5, 0.05],
+  arrivalCount: [6, 1, 10, 1],
+  arrivalGap: [0.9, 0.1, 2, 0.05],
   nudge: true,
   nudgeAfter: [5, 2, 15, 0.5],
   brushCursor: true,
-  shadowStrength: [0.28, 0, 0.7, 0.01],
+  shadowStrength: [0.15, 0, 0.7, 0.01],
   replayArrival: { type: "action", label: "Replay arrival blooms" },
 } satisfies DialConfig;
 
@@ -233,7 +233,7 @@ export function SiteFooter() {
 
       shadow?.style.setProperty(
         "--sheet-shadow-strength",
-        String((controlsRef.current?.shadowStrength ?? 0.28) * Math.min(stillCovered / SHADOW_FADE_PX, 1)),
+        String((controlsRef.current?.shadowStrength ?? 0.15) * Math.min(stillCovered / SHADOW_FADE_PX, 1)),
       );
 
       // Revealed once almost nothing is left covering it; reset once it's mostly covered again.
