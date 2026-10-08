@@ -1798,29 +1798,6 @@ video {
   text-align: left;
   word-spacing: normal;
 }
-
-.hero-intro__playground-link {
-  display: inline;
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  transition: color 150ms ease, text-decoration-thickness 150ms ease;
-}
-
-.hero-intro__playground-link:hover,
-.hero-intro__playground-link:focus-visible {
-  text-decoration-thickness: 2px;
-}
-
-.hero-intro__playground-arrow {
-  display: inline-block;
-  width: 0.72em;
-  height: 0.72em;
-  margin-left: 8px;
-  vertical-align: -0.04em;
-}
-
 .hero-intro__scroll-prompt {
   position: absolute;
   left: calc((var(--hero-content-start) - 1) * var(--hero-cell));
