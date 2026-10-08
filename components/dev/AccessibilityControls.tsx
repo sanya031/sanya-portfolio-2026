@@ -11,12 +11,13 @@ import { setAccessibilityOptions } from "../../lib/accessibilityOptions";
  *  - nav focus ring: a visible outline on keyboard focus (2.4.7)
  *  - card loops: card animations stop on their last frame after 3 loops (2.2.2)
  * "current" and "accessibility pass" are presets; "custom" uses the individual controls.
+ * The site ships with the accessibility pass.
  */
 const accessibilityControls = {
   version: {
     type: "select",
     options: ["current", "accessibility pass", "custom"],
-    default: "current",
+    default: "accessibility pass",
   },
   navContrast: {
     type: "select",
