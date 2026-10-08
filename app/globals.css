@@ -1662,12 +1662,14 @@ video {
 }
 
 .hero-intro {
-  --hero-cell: 40px;
+  /* 40px squares, shrinking only when the stage would be wider than the screen. */
+  --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
   --hero-cols: 36;
   --hero-rows: 20;
   --hero-stage-width: calc(var(--hero-cols) * var(--hero-cell));
   --hero-stage-offset: max(0px, calc((100vw - var(--hero-stage-width)) / 2));
-  --hero-content-start: 3;
+  /* Content starts at column 4 and the chips end at 33, leaving 3 columns either side. */
+  --hero-content-start: 4;
   --hero-grid-line: rgba(253, 249, 237, 0.09);
   position: sticky;
   top: 0;
@@ -1947,17 +1949,17 @@ video {
 }
 
 .hero-intro__motif[data-motif-label="about"] {
-  grid-column: 29 / span 2;
+  grid-column: 30 / span 2;
   grid-row: 7 / span 2;
 }
 
 .hero-intro__motif[data-motif-label="work"] {
-  grid-column: 21 / span 2;
+  grid-column: 22 / span 2;
   grid-row: 10 / span 2;
 }
 
 .hero-intro__motif[data-motif-label="resume"] {
-  grid-column: 31 / span 2;
+  grid-column: 32 / span 2;
   grid-row: 9 / span 2;
 }
 
@@ -1973,9 +1975,13 @@ video {
 
 @media (max-width: 1320px) {
   .hero-intro {
-    /* Shrink cells below 40px when the 30-column stage would be wider than the screen. */
-    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
+    /* Content 3–20 and chips 21–28 leave 2 columns either side of the 30. */
+    --hero-content-start: 3;
     --hero-cols: 30;
+  }
+
+  .hero-intro__motif[data-motif-label="work"] {
+    grid-column: 21 / span 2;
   }
 
   .hero-intro__motif[data-motif-label="about"] {
@@ -1989,8 +1995,8 @@ video {
 
 @media (max-width: 1080px) {
   .hero-intro {
-    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
-    --hero-content-start: 7;
+    /* Content spans 18 of 24 columns, starting at 4, so it sits centred on the stage. */
+    --hero-content-start: 4;
     --hero-cols: 24;
   }
 
@@ -2001,7 +2007,7 @@ video {
   }
 
   .hero-intro__content {
-    grid-column: var(--hero-content-start) / span 17;
+    grid-column: var(--hero-content-start) / span 18;
     grid-row: 4 / span 6;
   }
 
@@ -2027,18 +2033,19 @@ video {
     height: clamp(2.196rem, 3.6vw, 2.952rem);
   }
 
+  /* Chips sit under the centred box, mirroring its left and right edges. */
   .hero-intro__motif[data-motif-label="about"] {
-    grid-column: 7 / span 2;
+    grid-column: 5 / span 2;
     grid-row: 13 / span 2;
   }
 
   .hero-intro__motif[data-motif-label="work"] {
-    grid-column: 17 / span 2;
+    grid-column: 18 / span 2;
     grid-row: 14 / span 2;
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-column: 9 / span 2;
+    grid-column: 7 / span 2;
     grid-row: 16 / span 2;
   }
 
