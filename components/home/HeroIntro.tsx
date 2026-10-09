@@ -68,29 +68,13 @@ export function HeroIntro({
       const contentRows = Math.ceil(height / cell);
       intro.style.setProperty("--hero-content-rows", String(contentRows));
 
-      // Chips: square, spanning enough cells to hold their icon and label.
-      const motifs = Array.from(intro.querySelectorAll<HTMLElement>(".hero-intro__motif"));
-      const needed = Math.max(
-        0,
-        ...motifs.map((motif) => {
-          const content = motif.querySelector<HTMLElement>(".hero-intro__motif-content");
-          const label = motif.querySelector<HTMLElement>(".hero-intro__motif-label");
-          const motifStyle = getComputedStyle(motif);
-          const chrome = Number.parseFloat(motifStyle.paddingTop) * 2 + 2;
-          const inner = Math.max(
-            content?.getBoundingClientRect().width ?? 0,
-            label?.getBoundingClientRect().width ?? 0,
-            (content?.getBoundingClientRect().height ?? 0) + (label?.getBoundingClientRect().height ?? 0) + 4,
-          );
-          return inner + chrome;
-        }),
-      );
       // Narrower layouts stack the chips under the frame, measured from where it actually ends:
       // About under its left edge, Resume diagonally below-right of About, Work under its right edge.
-      // Wider layouts keep their fixed 2×2 chips beside the frame.
+      // Chips are always 2×2 cells; below the frame their contents scale with the cell size.
       const placeBelow = introStyle.getPropertyValue("--hero-motif-layout").trim() === "below";
-      const span = placeBelow ? Math.max(2, Math.ceil(needed / cell)) : 2;
-      intro.style.setProperty("--hero-motif-span", String(span));
+      const span = 2;
+      intro.dataset.motifLayout = placeBelow ? "below" : "beside";
+      const motifs = Array.from(intro.querySelectorAll<HTMLElement>(".hero-intro__motif"));
       const panelStyle = getComputedStyle(panel);
       const colStart = lineNumber(panelStyle.gridColumnStart, 1);
       const colSpan = lineNumber(panelStyle.gridColumnEnd.replace("span", ""), 1);
