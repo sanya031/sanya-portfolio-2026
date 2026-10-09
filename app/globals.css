@@ -6460,3 +6460,22 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   padding-top: clamp(18px, var(--hero-cell), 28px);
   padding-bottom: clamp(18px, var(--hero-cell), 28px);
 }
+
+/*
+ * Narrower hero layouts: chips stay 2×2 cells, so their icon, label and padding scale with the
+ * cell size to fit inside. HeroIntro sets data-motif-layout from --hero-motif-layout.
+ */
+.hero-intro[data-motif-layout="below"] .hero-intro__motif {
+  gap: calc(var(--hero-cell) * 0.08);
+  padding: calc(var(--hero-cell) * 0.14);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-content img,
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-icon svg {
+  width: calc(var(--hero-cell) * 0.85);
+  height: calc(var(--hero-cell) * 0.85);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-label {
+  font-size: clamp(9px, calc(var(--hero-cell) * 0.3), 12px);
+}
