@@ -1648,35 +1648,6 @@ video {
 }
 
 /*
- * Snap to Selected work (Scroll reveal panel): two resting places on the way down. The top of
- * the page, and the work section, whose snap area runs past the end of the page so the cards
- * and footer reveal scroll freely. scroll-snap-stop keeps a fast swipe from the first fold from
- * passing the work section's start.
- */
-html[data-snap-work="true"] {
-  scroll-snap-type: y mandatory;
-}
-
-.home-page__snap-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 100svh;
-  pointer-events: none;
-}
-
-html[data-snap-work="true"] .home-page__snap-top {
-  scroll-snap-align: start;
-}
-
-html[data-snap-work="true"] .work-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  scroll-margin-bottom: 100svh;
-}
-
-/*
  * Scroll mode: HeroCrossfadeShell drives the three reveal layers directly from the scroll
  * position, so their timed transitions are switched off. The doubled class outranks the timed
  * mode's [data-revealed] rules, which still toggle clickability.
@@ -5551,6 +5522,78 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .site-footer__dot {
   margin: 0 0.55em;
+}
+
+/*
+ * Floating PAGE and CONTACT (corners layout, desktop): pinned to the same bottom corners they
+ * occupy in the footer, above the page, from the second fold on. A dark glass backing keeps them
+ * readable over the page and fades out as the footer arrives beneath them.
+ */
+.site-footer-float {
+  display: none;
+}
+
+@media (min-width: 861px) {
+  .site-footer-float[data-layout="corners"] {
+    --site-footer-text: #fdf9ed;
+    --site-footer-muted: rgba(253, 249, 237, 0.6);
+    display: block;
+    font-family: "Geist", Arial, sans-serif;
+  }
+
+  /* Keep the vertically centred navbar clear of the floating PAGE column on shorter screens. */
+  .floating-navbar {
+    top: min(50%, calc(100svh - 25rem));
+  }
+
+  .site-footer-float__column {
+    position: fixed;
+    bottom: clamp(2rem, 3.4vw, 3.25rem);
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.5rem);
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease;
+  }
+
+  .site-footer-float__column[data-visible="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .site-footer-float__column::before {
+    position: absolute;
+    inset: -0.9rem -1.1rem;
+    z-index: -1;
+    border: 1px solid rgba(253, 249, 237, 0.12);
+    border-radius: 0.95rem;
+    background: rgba(16, 15, 13, 0.6);
+    content: "";
+    opacity: var(--float-glass, 1);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .site-footer-float__column[data-corner="left"] {
+    left: clamp(1.25rem, 3.4vw, 3.5rem);
+  }
+
+  .site-footer-float__column[data-corner="right"] {
+    right: clamp(1.25rem, 3.4vw, 3.5rem);
+  }
+
+  .site-footer-float__column[data-corner="left"] .site-footer__column {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .site-footer-float__column[data-corner="right"] .site-footer__column {
+    justify-items: end;
+    text-align: right;
+  }
 }
 
 /*
