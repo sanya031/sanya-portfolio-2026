@@ -21,9 +21,12 @@ export type HeroCrossfadeShellProps = {
  *    so it can be scrubbed, paused and reversed and can't be skipped by scrolling fast
  *  - timed: scrolling past `startAfterScroll` plays the storyboard on a timer; scrolling back to
  *    the top brings the first fold straight back
+ * `snapToWork` makes "Selected work" a native scroll-snap stop, so a fast swipe from the first
+ * fold always lands on the heading instead of carrying past it.
  * ───────────────────────────────────────────────────────── */
 const scrollRevealControls = {
   mode: { type: "select", options: ["scroll", "timed"], default: "scroll" },
+  snapToWork: true,
   scrollDistance: [60, 20, 150, 5],
   smoothing: [90, 0, 400, 10],
   startAfterScroll: [25, 0, 400, 5],
@@ -269,6 +272,22 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
     };
   }, [setRevealed, controls.mode, controls.scrollDistance]);
 
+  // Snap: the page rests either at the top or anywhere from the work section down, and a swipe
+  // from the first fold can't pass the work section's start. Home page only.
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (controls.snapToWork) {
+      root.dataset.snapWork = "true";
+    } else {
+      delete root.dataset.snapWork;
+    }
+
+    return () => {
+      delete root.dataset.snapWork;
+    };
+  }, [controls.snapToWork]);
+
   // Re-apply scroll mode when its storyboard values change in the panel.
   useEffect(() => {
     if (controls.mode === "scroll") {
@@ -282,6 +301,8 @@ export function HeroCrossfadeShell({ children }: HeroCrossfadeShellProps) {
       className="home-page__hero-shell"
       ref={shellRef}
     >
+      {/* A viewport-sized snap target for the top of the page (the shell itself is taller). */}
+      <div className="home-page__snap-top" aria-hidden="true" />
       {children}
     </section>
   );

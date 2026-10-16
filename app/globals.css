@@ -1648,6 +1648,35 @@ video {
 }
 
 /*
+ * Snap to Selected work (Scroll reveal panel): two resting places on the way down. The top of
+ * the page, and the work section, whose snap area runs past the end of the page so the cards
+ * and footer reveal scroll freely. scroll-snap-stop keeps a fast swipe from the first fold from
+ * passing the work section's start.
+ */
+html[data-snap-work="true"] {
+  scroll-snap-type: y mandatory;
+}
+
+.home-page__snap-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100svh;
+  pointer-events: none;
+}
+
+html[data-snap-work="true"] .home-page__snap-top {
+  scroll-snap-align: start;
+}
+
+html[data-snap-work="true"] .work-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  scroll-margin-bottom: 100svh;
+}
+
+/*
  * Scroll mode: HeroCrossfadeShell drives the three reveal layers directly from the scroll
  * position, so their timed transitions are switched off. The doubled class outranks the timed
  * mode's [data-revealed] rules, which still toggle clickability.
