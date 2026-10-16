@@ -1647,6 +1647,29 @@ video {
   pointer-events: none;
 }
 
+/*
+ * Scroll mode: HeroCrossfadeShell drives the three reveal layers directly from the scroll
+ * position, so their timed transitions are switched off. The doubled class outranks the timed
+ * mode's [data-revealed] rules, which still toggle clickability.
+ */
+.home-page.home-page[data-reveal-mode="scroll"] .hero-intro::before,
+.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__content,
+.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__motif,
+.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__scroll-prompt {
+  opacity: var(--scrub-boxes, 1);
+  transition: none;
+}
+
+.home-page.home-page[data-reveal-mode="scroll"] .home-page__hero-shell::before {
+  opacity: var(--scrub-overlay, 0.11);
+  transition: none;
+}
+
+.home-page.home-page[data-reveal-mode="scroll"] .work-section {
+  opacity: var(--scrub-work, 0);
+  transition: none;
+}
+
 /* Used for the first paint and replays so the page lands in place without animating. */
 .home-page[data-reveal-instant="true"] *,
 .home-page[data-reveal-instant="true"] *::before,
