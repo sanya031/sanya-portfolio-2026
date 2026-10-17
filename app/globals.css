@@ -5564,17 +5564,25 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     transform: none;
   }
 
+  /* A soft, borderless backing that feathers out at its edges instead of reading as a box. */
   .site-footer-float__column::before {
     position: absolute;
-    inset: -0.9rem -1.1rem;
+    inset: -1.75rem -2rem;
     z-index: -1;
-    border: 1px solid rgba(253, 249, 237, 0.12);
-    border-radius: 0.95rem;
     background: rgba(16, 15, 13, 0.6);
     content: "";
     opacity: var(--float-glass, 1);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+    --float-feather: 1.6rem;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent),
+      linear-gradient(to bottom, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent),
+      linear-gradient(to bottom, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent);
+    mask-composite: intersect;
   }
 
   .site-footer-float__column[data-corner="left"] {
