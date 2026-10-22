@@ -173,12 +173,20 @@ export const caseStudyPages: CaseStudyPage[] = [
           "I redesigned Bitcoin Transcript Review to make contributing easier and reduce unfinished work. In one month, I introduced previews before claiming, clearer navigation, and withdrawal options to help contributors make informed decisions, complete reviews, and keep transcripts moving through the review pipeline.",
         // These describe the constraints of the system rather than outcomes.
         stats: [
-          { value: "1 month", label: "To audit, redesign, and hand off the experience", icon: "clock" },
-          { value: "24 hours", label: "Claim deadlines that affect transcript availability", icon: "timer" },
+          {
+            value: "1 month",
+            label: "To audit, explore, redesign, and hand off the experience",
+            icon: "clock",
+          },
           {
             value: "Existing system",
-            label: "Redesigning workflows without rebuilding the platform",
+            label: "Improving connected workflows without rebuilding the platform",
             icon: "flow",
+          },
+          {
+            value: "Limited access",
+            label: "No contributor testing available to validate design decisions",
+            icon: "people",
           },
         ],
       },
