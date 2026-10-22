@@ -174,11 +174,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         // These describe the constraints of the system rather than outcomes.
         stats: [
           {
-            value: "1 month",
-            label: "To audit, explore, redesign, and hand off the experience",
-            icon: "clock",
-          },
-          {
             value: "Existing system",
             label: "Improving connected workflows without rebuilding the platform",
             icon: "flow",

@@ -1,6 +1,7 @@
 "use client";
 
 import { type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { MOTIF_PALETTE } from "../../data/motifPalette";
@@ -110,6 +111,8 @@ function useTorontoTemperature() {
 
 export function SiteFooter() {
   const time = useTorontoTime();
+  // The floating PAGE and CONTACT links are left off the case study pages.
+  const showFloatingLinks = !usePathname().startsWith("/work");
   const temperature = useTorontoTemperature();
   const [emailCopied, setEmailCopied] = useState(false);
   const [blooms, setBlooms] = useState<Bloom[]>([]);
@@ -458,6 +461,7 @@ export function SiteFooter() {
       uncovered underneath a column, the copy hides and the footer's own column, in the same
       spot, takes over.
     */}
+    {showFloatingLinks ? (
     <div className="site-footer-float" data-layout={controls.layout}>
       <nav
         aria-label="Page links"
@@ -478,6 +482,7 @@ export function SiteFooter() {
         {contactColumn}
       </nav>
     </div>
+    ) : null}
     </>
   );
 }

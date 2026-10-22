@@ -2862,7 +2862,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   --case-column-width: 50.875rem;
   --case-heading: #32404f;
   --case-body: #787878;
-  --case-label: #c728d5;
+  /* Transcript Review's label colour (eyebrows, meta, stat icons, section rail). */
+  --case-label: #737373;
   --case-rail-active: var(--case-label);
   --case-border: #e4e0d7;
   --case-container-border: #e0e0e0;
@@ -3199,9 +3200,11 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   text-wrap: pretty;
 }
 
+/* Equal columns for however many stats there are (two or three), always spanning the card. */
 .case-study-page__summary-banner-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
   gap: 0.75rem;
 }
 
@@ -3269,7 +3272,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 @media (max-width: 560px) {
   .case-study-page__summary-banner-stats {
-    grid-template-columns: 1fr;
+    grid-auto-flow: row;
   }
 }
 
