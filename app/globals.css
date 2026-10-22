@@ -3258,7 +3258,13 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   font-size: 0.6875rem;
   font-weight: 400;
   line-height: 1.35;
-  white-space: nowrap;
+  overflow-wrap: break-word;
+}
+
+.case-study-page__summary-banner-stat-value[data-kind="text"] {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 @media (max-width: 560px) {

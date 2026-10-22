@@ -451,7 +451,13 @@ function SummaryBannerSection({
                 <SummaryBannerStatIcon icon={stat.icon} />
               </span>
               <div className="case-study-page__summary-banner-stat-text">
-                <span className="case-study-page__summary-banner-stat-value">{stat.value}</span>
+                <span
+                  className="case-study-page__summary-banner-stat-value"
+                  // Short figures ("6", "+19%") read as big numbers; worded values use a quieter style.
+                  data-kind={stat.value.length > 5 ? "text" : "figure"}
+                >
+                  {stat.value}
+                </span>
                 <span className="case-study-page__summary-banner-stat-label">{stat.label}</span>
               </div>
             </div>
