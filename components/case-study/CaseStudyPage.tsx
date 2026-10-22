@@ -248,7 +248,49 @@ function QuoteSection({
   );
 }
 
-function SummaryBannerStatIcon({ icon }: { icon?: "people" | "up" | "down" }) {
+type StatIcon = "people" | "up" | "down" | "clock" | "timer" | "flow";
+
+function SummaryBannerStatIcon({ icon }: { icon?: StatIcon }) {
+  if (icon === "clock") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" />
+        <path
+          d="M10 6v4.2l2.8 1.6"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (icon === "timer") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="11.5" r="6" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M7.5 2.75h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M10 8.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (icon === "flow") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+        <rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+        <path
+          d="M6 9v2.5a1.5 1.5 0 0 0 1.5 1.5H11"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
   if (icon === "people") {
     return (
       <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -327,7 +369,7 @@ function SummaryBannerSection({
   speechBubbleText,
 }: {
   statement?: string;
-  stats?: Array<{ value: string; label: string; icon?: "people" | "up" | "down" }>;
+  stats?: Array<{ value: string; label: string; icon?: StatIcon }>;
   heading?: string;
   subheading?: string;
   media?: { type: "image" | "video"; src: string; alt?: string };

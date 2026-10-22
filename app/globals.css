@@ -3206,7 +3206,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  white-space: nowrap;
+  /* Short values ("6", "+19%") stay on one line; longer ones like "Existing system" can wrap. */
+  overflow-wrap: break-word;
 }
 
 .case-study-page__summary-banner-stat-label {
