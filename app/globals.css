@@ -6974,10 +6974,10 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* The three proposals stay in one row, just smaller. */
   .transcript-story__reward-images[data-count="3"] {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-    padding-inline: 10px;
+    gap: 6px;
+    padding-inline: 0;
   }
 
   .transcript-story__reward-copy {
@@ -7245,4 +7245,14 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 /* Finding work screenshots sit straight on the aqua, without the framed outline. */
 .transcript-story__finding .transcript-story__shot--framed {
   border: 0;
+}
+
+/* A visual-only story (the withdraw container) continues the section above it, so it sits at
+   the same 16px gap as text-to-visual rather than a full section gap. */
+.case-study-page__section-anchor:has(> .transcript-story[data-visual-only="true"]) {
+  margin-top: calc(1rem - clamp(2.1rem, 4vw, 2rem));
+}
+
+.transcript-story[data-visual-only="true"] {
+  margin-top: 0;
 }
