@@ -59,8 +59,18 @@ export function CaseStudyStoryNav({
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 
+    // The page can still be moving into place when the index mounts (route transition, scroll
+    // back to the top, images loading), so check again once it settles and whenever the
+    // layout changes, rather than waiting for the next scroll.
+    const settle = [150, 500, 1200].map((delay) => window.setTimeout(onScroll, delay));
+    const layout = new ResizeObserver(onScroll);
+
+    layout.observe(document.body);
+
     return () => {
       window.cancelAnimationFrame(frame);
+      settle.forEach((timer) => window.clearTimeout(timer));
+      layout.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
