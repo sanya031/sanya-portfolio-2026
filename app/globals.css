@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;1,600;1,700&family=Quicksand:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,600;1,700&family=Quicksand:wght@400&display=swap");
 @import "tailwindcss";
 @import "dialkit/styles.css";
 
@@ -47,6 +47,17 @@ body {
 ::-moz-selection {
   background: #ac9b29;
   color: #16130f;
+}
+
+/* Case studies sit on white, so the same gold is lighter there to keep selected text readable. */
+.case-study-page ::selection {
+  background: rgba(172, 155, 41, 0.35);
+  color: inherit;
+}
+
+.case-study-page ::-moz-selection {
+  background: rgba(172, 155, 41, 0.35);
+  color: inherit;
 }
 
 .route-transition-shell {
@@ -2750,7 +2761,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-card-ink);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 1.375rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.34;
 }
 
@@ -2820,19 +2831,14 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   --case-column-width: 50.875rem;
   --case-heading: #32404f;
   --case-body: #787878;
-  --case-label: #c728d5;
+  /* Label colour (eyebrows, meta, stat icons, section rail), shared by every case study. */
+  --case-label: #737373;
   --case-rail-active: var(--case-label);
   --case-border: #e4e0d7;
-  --case-container-border: #e0e0e0;
+  --case-container-border: #c6c6c6;
   background: #fff3a6;
   color: var(--case-body);
   font-family: "Geist", Arial, sans-serif;
-}
-
-.case-study-page[data-case-study-slug="bitcoin-dev-project-redesign"] {
-  --case-label: #cd4429;
-  --case-rail-active: var(--case-label);
-  --case-container-border: #e0e0e0;
 }
 
 .case-study-page__paper {
@@ -2933,7 +2939,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 2.25rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.18;
 }
@@ -3004,7 +3010,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: clamp(1.125rem, 2vw, 1.5rem);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.3;
 }
 
@@ -3157,9 +3163,11 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   text-wrap: pretty;
 }
 
+/* Equal columns for however many stats there are (two or three), always spanning the card. */
 .case-study-page__summary-banner-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
   gap: 0.75rem;
 }
 
@@ -3206,7 +3214,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  white-space: nowrap;
+  /* Short values ("6", "+19%") stay on one line; longer ones like "Existing system" can wrap. */
+  overflow-wrap: break-word;
 }
 
 .case-study-page__summary-banner-stat-label {
@@ -3215,12 +3224,18 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   font-size: 0.6875rem;
   font-weight: 400;
   line-height: 1.35;
-  white-space: nowrap;
+  overflow-wrap: break-word;
+}
+
+.case-study-page__summary-banner-stat-value[data-kind="text"] {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 @media (max-width: 560px) {
   .case-study-page__summary-banner-stats {
-    grid-template-columns: 1fr;
+    grid-auto-flow: row;
   }
 }
 
@@ -3479,15 +3494,19 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   text-transform: uppercase;
 }
 
+/* Columns take their content's width with equal space between them; the longest ones wrap
+   first when the row runs out of room. */
 .case-study-page__facts {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
   gap: clamp(1.25rem, 2.4vw, 2.25rem);
   margin-top: 1.875rem;
   padding: 0;
 }
 
 .case-study-page__fact {
+  flex: 0 1 auto;
+  min-width: 0;
   display: grid;
   gap: 0.5rem;
   align-content: start;
@@ -3523,6 +3542,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .case-study-page__content {
   display: grid;
+  /* One column that never grows past the screen, whatever its widest child wants. */
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(2.1rem, 4vw, 2rem);
   margin-top: clamp(2.6rem, 5vw, 4rem);
   overflow: hidden;
@@ -3688,7 +3709,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   margin: 0;
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.34;
 }
@@ -3744,7 +3765,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.34;
 }
@@ -4206,7 +4227,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.34;
 }
@@ -4286,7 +4307,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: var(--case-heading);
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.34;
 }
@@ -4838,6 +4859,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .case-study-page__identity-cell {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   gap: 0.75rem;
   min-width: 0;
@@ -4945,7 +4967,17 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 @media (max-width: 760px) {
   .case-study-page__identity-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The primary and accent colour swatches stack instead of squeezing side by side. */
+  .case-study-page__identity-colors {
+    flex-wrap: wrap;
+  }
+
+  .case-study-page__identity-colors > img,
+  .case-study-page__identity-colors .case-study-page__accent-colors-stack {
+    flex-basis: 100%;
   }
 
   .case-study-page__identity-cell[data-cell="colors"],
@@ -5897,6 +5929,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 @media (max-width: 1080px) {
   .case-study-page__facts {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -6126,7 +6159,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     margin-left: 0.55rem;
   }
 
-  .case-study-page__facts,
   .case-study-page__split-grid,
   .case-study-page__section[data-columns="true"] .case-study-page__ordered-list {
     grid-template-columns: 1fr;
@@ -6419,5 +6451,950 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
   .case-study-page__resource-card {
     width: 10rem;
+  }
+}
+
+/* ── Transcript Review story sections (eyebrow, serif heading, copy, built visual container) ── */
+.transcript-story {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.transcript-story > .case-study-page__section-title {
+  margin-bottom: 0;
+}
+
+.transcript-story > .case-study-page__body-copy + * {
+  margin-top: 0.25rem;
+}
+
+.transcript-story__canvas {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* clip, unlike hidden, can't be scrolled when a button inside takes focus */
+  overflow: clip;
+  border: 1px solid #c6c6c6;
+}
+
+.transcript-story__canvas > figcaption {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+
+.transcript-story__label {
+  margin: 0;
+  padding: 20px;
+  color: #1c1c1c;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.transcript-story__label span {
+  color: rgba(28, 28, 28, 0.7);
+}
+
+.transcript-story__squiggle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.transcript-story__squiggle img {
+  position: absolute;
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+}
+
+.transcript-story__shot {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  max-width: none;
+  object-fit: cover;
+}
+
+.transcript-story__shot--framed {
+  border: 0.5px solid #5f84a8;
+  border-radius: 8px;
+}
+
+.transcript-story__shot--top-rounded {
+  border-radius: 6px 6px 0 0;
+}
+
+.transcript-story__shot--soft {
+  border: 1px solid #e3e3e3;
+  border-radius: 6px;
+}
+
+.transcript-story__shot--row {
+  box-shadow: 0 10px 24px rgba(31, 61, 92, 0.18);
+}
+
+/* Context: the original journey as a row of steps */
+.transcript-story__journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 132px;
+  padding-bottom: 36px;
+}
+
+.transcript-story__journey > figcaption {
+  position: relative;
+  align-self: flex-start;
+}
+
+/* Everything in the row is sized in em, so on narrow containers the whole row shrinks
+   together and stays on one line (it measures about 54em wide). */
+.transcript-story__journey {
+  container-type: inline-size;
+}
+
+.transcript-story__journey-steps {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.33em;
+  margin: 9px 0 0;
+  padding: 0 20px;
+  font-size: min(12px, calc((100cqi - 24px) / 54));
+  list-style: none;
+}
+
+.transcript-story__journey-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.33em;
+}
+
+.transcript-story__journey-steps img {
+  width: 2.33em;
+  height: auto;
+}
+
+.transcript-story__journey-steps span {
+  padding: 0.5em 0.67em;
+  border-radius: 1.5em;
+  background: #ffffff;
+  color: #000000;
+  font-size: 1em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Discovery: the problem list beside the original table */
+.transcript-story__finding {
+  aspect-ratio: 716 / 352;
+}
+
+.transcript-story__finding-shots {
+  position: absolute;
+  inset: 0;
+}
+
+.transcript-story__problems {
+  position: absolute;
+  z-index: 2;
+  top: 23%;
+  left: 2.65%;
+  display: grid;
+  gap: 8px;
+  /* Ends before the zoomed table row starts (221 / 716 of the container). */
+  width: 28%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.transcript-story__problems li {
+  position: relative;
+  display: grid;
+}
+
+.transcript-story__problems button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(0, 0, 0, 0.24);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__problems li[data-active="true"] button {
+  color: #101010;
+}
+
+.transcript-story__problem-body {
+  overflow: hidden;
+}
+
+.transcript-story__problem-body p {
+  margin: 0;
+  padding-top: 4px;
+  color: #101010;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* The progress bar beside the active problem: fills top to bottom, then the next stage starts. */
+.transcript-story__problem-track {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: -10px;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__problems li[data-active="true"] .transcript-story__problem-track {
+  opacity: 1;
+}
+
+.transcript-story__problem-fill {
+  display: block;
+  height: 100%;
+  background: #2e2e2e;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: transcript-story-fill var(--finding-fill, 6000ms) linear forwards;
+  animation-play-state: paused;
+}
+
+.transcript-story__problem-fill[data-playing="true"] {
+  animation-play-state: running;
+}
+
+@keyframes transcript-story-fill {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Stage label: the number and first word roll down while WORK stays fixed. */
+.transcript-story__rolling-label {
+  position: relative;
+  white-space: nowrap;
+}
+
+.transcript-story__rolling-slot {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.transcript-story__rolling-slot > span {
+  grid-area: 1 / 1;
+}
+
+.transcript-story__rolling-measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.transcript-story__rolling-measure > span {
+  display: inline-block;
+}
+
+/* Screenshots crossfade between problems. */
+.transcript-story__finding-stage {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__finding-stage[data-active="false"] {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transcript-story__finding-stage {
+    transition: opacity 0.3s linear;
+  }
+
+  .transcript-story__finding-stage[data-active="false"] {
+    transform: none;
+  }
+}
+
+/* Approach: two reference products */
+.transcript-story__approach {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.transcript-story__approach > figure {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  margin: 0;
+}
+
+.transcript-story__reference-name {
+  position: absolute;
+  z-index: 2;
+  top: 6px;
+  left: 11px;
+  margin: 0;
+  color: #4c4b4b;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+.transcript-story__approach figcaption {
+  display: grid;
+  gap: 8px;
+  color: #4c4b4b;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.transcript-story__approach figcaption p {
+  margin: 0;
+}
+
+.transcript-story__approach figcaption ul {
+  margin: 0;
+  list-style: disc;
+  padding-left: 21px;
+}
+
+/* Before / after containers stacked into one block */
+.transcript-story__pair {
+  display: grid;
+}
+
+.transcript-story__pair > .transcript-story__canvas + .transcript-story__canvas {
+  border-top: 0;
+}
+
+/* Rewards and review pages: containers with flowing content */
+.transcript-story__panel {
+  position: relative;
+  display: grid;
+  margin: 0;
+  padding: 10px;
+  overflow: hidden;
+  overflow: clip;
+  border: 1px solid #c6c6c6;
+}
+
+/* Content sits above the brush strokes. */
+.transcript-story__panel > :not(.transcript-story__squiggle) {
+  position: relative;
+}
+
+.transcript-story__rewards {
+  gap: 12px;
+}
+
+.transcript-story__reward-copy {
+  display: grid;
+  gap: 10px;
+  padding: 20px 20px 0;
+}
+
+.transcript-story__reward-copy .transcript-story__label {
+  padding: 0;
+}
+
+.transcript-story__reward-copy p:last-child {
+  margin: 0;
+  color: #4c4b4b;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.transcript-story__reward-images {
+  display: grid;
+  padding: 20px 10px 10px;
+}
+
+.transcript-story__reward-images img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #ced4da;
+  background: #ffffff;
+}
+
+.transcript-story__rewards > :first-child .transcript-story__reward-images img {
+  max-width: 573px;
+}
+
+.transcript-story__reward-images[data-count="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding-inline: 16px;
+}
+
+.transcript-story__reward-images[data-count="3"] img {
+  border-width: 0.5px;
+}
+
+.transcript-story__review-pages {
+  gap: 10px;
+  overflow: hidden;
+}
+
+.transcript-story__review-pages img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Prototyping: the embed sits inside a browser-style window */
+.transcript-story__window {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid #c6c6c6;
+  border-radius: 8px 8px 0 0;
+}
+
+.transcript-story__window-bar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 21px;
+  padding-left: 6px;
+  background: #a18e00;
+}
+
+.transcript-story__window-bar span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e9de8f;
+}
+
+.transcript-story__window-stage {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.transcript-story__window-stage iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border: 0;
+  transform-origin: top left;
+}
+
+/* Validation: the four open questions */
+.transcript-story__questions {
+  display: grid;
+  gap: 1em;
+  margin: 0;
+  padding-left: 21px;
+  list-style: disc;
+  color: var(--case-body);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.transcript-story__questions strong {
+  color: var(--case-heading);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .transcript-story__label {
+    padding: 12px;
+    font-size: 10px;
+  }
+
+  .transcript-story__journey {
+    min-height: 0;
+    padding-bottom: 20px;
+  }
+
+  .transcript-story__journey-steps {
+    margin-top: 0;
+  }
+
+  /* The problem list and table stack instead of sitting side by side. */
+  .transcript-story__finding {
+    display: grid;
+    gap: 16px;
+    aspect-ratio: auto;
+    padding: 44px 16px 0 28px;
+  }
+
+  .transcript-story__problems {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+
+  /* Screenshots keep one fixed frame so the stages can crossfade in place. */
+  .transcript-story__finding-shots {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 485 / 280;
+    overflow: hidden;
+  }
+
+  .transcript-story__finding-shots .transcript-story__shot {
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    /* Fill the whole frame so no screenshot leaves a gap at the bottom. */
+    height: 100% !important;
+    object-fit: cover;
+    object-position: left top;
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* The zoomed row is the same table again, so it only appears beside the full table. */
+  .transcript-story__finding-shots .transcript-story__shot--row {
+    display: none;
+  }
+
+  .transcript-story__approach {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The three proposals stay in one row, just smaller. */
+  .transcript-story__reward-images[data-count="3"] {
+    gap: 6px;
+    padding-inline: 0;
+  }
+
+  .transcript-story__reward-copy {
+    padding: 12px 10px 0;
+  }
+}
+
+/* ── Story case studies: section list on the left (Transcript wireframe) ── */
+.case-study-story-nav {
+  position: fixed;
+  z-index: 20;
+  top: 120px;
+  left: 33px;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 228px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-story-nav[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Only where it fits beside the column without overlapping it. */
+@media (min-width: 1360px) {
+  .case-study-story-nav {
+    display: flex;
+  }
+}
+
+.case-study-story-nav__link {
+  padding: 4px 0;
+  color: #acacac;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-story-nav__link[data-secondary="true"] {
+  padding-left: 8px;
+}
+
+.case-study-story-nav__link:hover,
+.case-study-story-nav__link:focus-visible,
+.case-study-story-nav__link[data-active="true"] {
+  color: #867600;
+}
+
+.case-study-story-nav__marker {
+  position: absolute;
+  top: 0;
+  /* Sits 8px clear of the links. */
+  left: -19px;
+  width: 11px;
+  height: 11px;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-study-story-nav__marker {
+    transition-duration: 0.01s;
+  }
+}
+
+/* Figma-style collaborator cursor over the prototype; never blocks clicks. */
+.collaborator-cursor-layer {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.collaborator-cursor {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+}
+
+.collaborator-cursor__arrow {
+  width: 16px;
+  height: 18px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+.collaborator-cursor__arrow path {
+  fill: var(--cursor-colour);
+  stroke: #ffffff;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.collaborator-cursor__tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  margin: 14px 0 0 -2px;
+  padding: 3px 8px;
+  border-radius: 3px 11px 11px 11px;
+  background: var(--cursor-colour);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.collaborator-cursor__tag[data-empty="true"] {
+  opacity: 0;
+}
+
+.collaborator-cursor__caret {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin-left: 1px;
+  background: currentColor;
+  animation: collaborator-caret 0.8s steps(1) infinite;
+}
+
+@keyframes collaborator-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.case-study-story-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 16px;
+  padding-bottom: 2px;
+  /* A border rather than text-decoration, so the underline runs under the arrow too. */
+  border-bottom: 1px solid currentColor;
+  color: #867600;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-story-nav__cta-arrow {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.case-study-story-nav__cta:hover,
+.case-study-story-nav__cta:focus-visible {
+  color: #5c5100;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ── Story case studies: "Home / page" breadcrumb ── */
+.case-study-breadcrumb ol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  color: #737373;
+  font-size: 14px;
+  line-height: 18px;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.case-study-breadcrumb a {
+  color: #2e2e2e;
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-breadcrumb a:hover,
+.case-study-breadcrumb a:focus-visible {
+  color: #867600;
+}
+
+.case-study-breadcrumb [aria-current="page"] {
+  color: #acacac;
+}
+
+/* Above the title by default; pinned above the section index where that index is shown. */
+.case-study-breadcrumb {
+  width: min(100%, var(--case-column-width));
+  margin: 0 auto 1.25rem;
+}
+
+@media (min-width: 1360px) {
+  .case-study-breadcrumb {
+    position: fixed;
+    z-index: 20;
+    top: 72px;
+    left: 33px;
+    width: 228px;
+    margin: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+}
+
+.transcript-story__window-group {
+  display: grid;
+  gap: 8px;
+}
+
+.transcript-story__window-caption {
+  margin: 0;
+  color: #9a9a9a;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.transcript-story__window-caption a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__window-caption a:hover,
+.transcript-story__window-caption a:focus-visible {
+  color: #867600;
+}
+
+/* Grey containers holding darker screenshots: strokes stay faint and extra soft. */
+.transcript-story__soft-strokes .transcript-story__squiggle img {
+  filter: blur(3px);
+}
+
+/* Facts on phones: two rows of two, with the odd last item (the longest list) across the full
+   width. Kept last so it wins over the 3-column tablet rule. */
+@media (max-width: 860px) {
+  .case-study-page__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-study-page__fact:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Finding work screenshots sit straight on the aqua, without the framed outline. */
+.transcript-story__finding .transcript-story__shot--framed {
+  border: 0;
+}
+
+/* A visual-only story (the withdraw container) continues the section above it, so it sits at
+   the same 16px gap as text-to-visual rather than a full section gap. */
+.case-study-page__section-anchor:has(> .transcript-story[data-visual-only="true"]) {
+  margin-top: calc(1rem - clamp(2.1rem, 4vw, 2rem));
+}
+
+.transcript-story[data-visual-only="true"] {
+  margin-top: 0;
+}
+
+/* ── Story-layout spacing for pages built from separate text and visual sections (BDP):
+   headed sections start ~60px apart, visuals sit 16px under the text they belong to. ── */
+.case-study-page__section-anchor[data-story-role="heading"] {
+  margin-top: 1.75rem;
+}
+
+.case-study-page__section-anchor[data-story-role="visual"] {
+  margin-top: calc(1rem - clamp(2.1rem, 4vw, 2rem));
+}
+
+/* ── Story-layout before/after graphics (StoryGraphic) ── */
+.story-graphic {
+  display: grid;
+  container-type: inline-size;
+}
+
+.story-graphic[data-layout="row"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.story-graphic__canvas {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each label sits in the flow above its image, so long labels can wrap on narrow screens. */
+.story-graphic__item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  overflow: clip;
+}
+
+.story-graphic__item > * {
+  flex: none;
+  min-width: 0;
+}
+
+/* Room between one screenshot's cut-off edge and the next label. */
+.story-graphic__item + .story-graphic__item {
+  margin-top: 28px;
+}
+
+.story-graphic .transcript-story__label {
+  padding: 20px 20px 16px;
+  white-space: normal;
+}
+
+.story-graphic__media img,
+.story-graphic__media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #e3e3e3;
+  background: #ffffff;
+}
+
+/* Screenshots are cut off at the same 716:400 height; short ones end where they end, and the
+   last one runs into the container's bottom edge. */
+.story-graphic[data-fit="bleed"] .story-graphic__item {
+  max-height: calc(100cqi * 400 / 716);
+}
+
+.story-graphic[data-fit="bleed"] .story-graphic__media {
+  margin: 0 7%;
+}
+
+.story-graphic[data-fit="bleed"] .story-graphic__media img,
+.story-graphic[data-fit="bleed"] .story-graphic__media video {
+  border-radius: 6px 6px 0 0;
+}
+
+/* Diagrams stay whole. */
+.story-graphic[data-fit="contain"] .story-graphic__canvas {
+  padding: 0 20px 20px;
+}
+
+.story-graphic[data-fit="contain"] .transcript-story__label {
+  padding: 20px 0 14px;
+}
+
+.story-graphic[data-fit="contain"] .story-graphic__media img {
+  border-radius: 6px;
+}
+
+@media (max-width: 760px) {
+  .story-graphic[data-layout="row"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .story-graphic .transcript-story__label {
+    padding: 12px 12px 10px;
+  }
+
+  .story-graphic[data-fit="bleed"] .story-graphic__media {
+    margin: 0 5%;
+  }
+
+  .story-graphic[data-fit="contain"] .story-graphic__canvas {
+    padding: 0 12px 12px;
+  }
+
+  .story-graphic[data-fit="contain"] .transcript-story__label {
+    padding: 12px 0 10px;
+  }
+}
+
+/* Positioned containers (Canvas): on desktop the label floats over the stage's empty top edge;
+   on phones it sits above the stage, and the stage slides up under it by that same empty edge
+   (52 of 716 wireframe px), so a label of any length never covers the screenshots. */
+.transcript-story__stage {
+  position: relative;
+}
+
+@media (max-width: 760px) {
+  .transcript-story__canvas--staged {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .transcript-story__canvas--staged > figcaption {
+    position: relative;
+    order: -1;
+  }
+
+  .transcript-story__canvas--staged > .transcript-story__stage {
+    margin-top: calc(-52 / 716 * 100%);
   }
 }

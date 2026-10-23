@@ -2,6 +2,7 @@ import type {
   CaseStudyAsset,
   CaseStudyFinding,
   CaseStudyPage as CaseStudyPageData,
+  TranscriptStoryVisual,
 } from "../../data/caseStudyPages";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -17,8 +18,12 @@ import {
   type CaseStudySectionNavItem,
 } from "./CaseStudySectionRail";
 import { PlaybackVideo } from "./PlaybackVideo";
+import { CaseStudyBreadcrumb } from "./CaseStudyBreadcrumb";
+import { CaseStudyStoryNav } from "./CaseStudyStoryNav";
+import { StoryGraphic } from "./StoryGraphic";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
+import { PROTOTYPE_EMBED_SRC, TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
 import { HeroContentReveal } from "../transitions/HeroContentReveal";
 import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
@@ -28,18 +33,15 @@ export type CaseStudyPageProps = {
 
 const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
   "transcript-review-redesign": {
-    1: "overview",
-    2: "audit",
-    4: "audit-findings",
-    6: "solution",
-    7: "workflow-comparison",
-    8: "constraints",
-    9: "primary-navigation",
-    11: "transcript-browsing",
-    15: "preview-before-claiming",
-    17: "withdrawing-work",
-    21: "review-states",
-    23: "reflection",
+    1: "context",
+    2: "discovery",
+    3: "approach",
+    4: "preview-before-commitment",
+    6: "choosing-work",
+    7: "rethinking-rewards",
+    8: "consistency-vs-usability",
+    9: "prototyping",
+    10: "validation",
   },
   "bitcoin-dev-project-redesign": {
     1: "overview",
@@ -50,36 +52,53 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     11: "discovery",
     19: "testing",
     21: "findings",
+    26: "finding-funding",
+    32: "finding-smaller",
     33: "collaboration",
+  },
+};
+
+// Story pages use the wireframe's left section list (with a breadcrumb above it and a CTA below)
+// instead of the floating navbar and rail, and open straight on the title.
+const storyPages: Record<string, { breadcrumb: string; cta: { label: string; href: string } }> = {
+  "transcript-review-redesign": {
+    breadcrumb: "BTC Transcript Review",
+    cta: { label: "Try the prototype", href: PROTOTYPE_EMBED_SRC },
+  },
+  "bitcoin-dev-project-redesign": {
+    breadcrumb: "Bitcoin Dev Project",
+    cta: { label: "Visit the live site", href: "https://bitcoindevs.xyz/learn" },
   },
 };
 
 const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "transcript-review-redesign": [
-    { id: "overview", label: "Overview" },
-    { id: "audit", label: "Audit" },
-    { id: "audit-findings", label: "Problems", secondary: true },
-    { id: "solution", label: "Approach" },
-    { id: "workflow-comparison", label: "Workflow Comparison", secondary: true },
-    { id: "constraints", label: "Constraints & Trade-offs", secondary: true },
-    { id: "primary-navigation", label: "Key Decisions" },
-    { id: "primary-navigation", label: "Navigation", secondary: true },
-    { id: "transcript-browsing", label: "Browsing", secondary: true },
-    { id: "preview-before-claiming", label: "Claiming", secondary: true },
-    { id: "withdrawing-work", label: "Editor", secondary: true },
-    { id: "review-states", label: "Review States", secondary: true },
-    { id: "reflection", label: "Reflection" },
+    { id: "context", label: "Context" },
+    { id: "discovery", label: "Looking beyond the editor" },
+    { id: "discovery", label: "Following the contributor journey", secondary: true },
+    { id: "finding-friction", label: "Finding the Friction", secondary: true },
+    { id: "approach", label: "Rethinking the workflow" },
+    { id: "preview-before-commitment", label: "Preview before commitment", secondary: true },
+    { id: "choosing-work", label: "Finding and choosing work", secondary: true },
+    { id: "rethinking-rewards", label: "When decisions were challenged" },
+    { id: "rethinking-rewards", label: "Rethinking rewards", secondary: true },
+    { id: "consistency-vs-usability", label: "Consistency vs. usability", secondary: true },
+    { id: "prototyping", label: "Prototyping beyond the happy path" },
+    { id: "validation", label: "What I’d validate next" },
   ],
   "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
-    { id: "problem", label: "Problem" },
-    { id: "scope", label: "Scope" },
-    { id: "structure", label: "Structure" },
-    { id: "identity", label: "Identity" },
-    { id: "discovery", label: "Discovery" },
-    { id: "testing", label: "Testing" },
-    { id: "findings", label: "Findings" },
-    { id: "collaboration", label: "Collaboration" },
+    { id: "problem", label: "Where developers got lost" },
+    { id: "scope", label: "Scope of the redesign" },
+    { id: "structure", label: "Rebuilding the experience" },
+    { id: "structure", label: "Organizing around developer goals", secondary: true },
+    { id: "identity", label: "A more recognizable BDP", secondary: true },
+    { id: "discovery", label: "Making resources easier to find", secondary: true },
+    { id: "testing", label: "Testing after launch" },
+    { id: "findings", label: "Fixing what I got wrong", secondary: true },
+    { id: "finding-funding", label: "Making funding visible", secondary: true },
+    { id: "finding-smaller", label: "Smaller fixes", secondary: true },
+    { id: "collaboration", label: "Working async" },
   ],
 };
 
@@ -132,6 +151,49 @@ function TextSection({
           </div>
         ) : null}
       </div>
+    </section>
+  );
+}
+
+// Eyebrow, serif heading, copy and a built visual container, kept together as one section.
+function StorySection({
+  eyebrow,
+  title,
+  body,
+  visual,
+  visualAnchor,
+  after,
+}: {
+  eyebrow?: string;
+  title?: string;
+  body?: string[];
+  visual?: TranscriptStoryVisual;
+  visualAnchor?: string;
+  after?: string[];
+}) {
+  return (
+    <section className="case-study-page__section transcript-story" data-visual-only={title ? undefined : "true"}>
+      {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
+      {title ? <h2 className="case-study-page__section-title">{title}</h2> : null}
+      {body?.length ? (
+        <div className="case-study-page__body-copy">
+          {body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
+      {visual ? (
+        <div className="case-study-page__section-anchor" id={visualAnchor}>
+          <TranscriptStoryVisualBlock visual={visual} />
+        </div>
+      ) : null}
+      {after?.length ? (
+        <div className="case-study-page__body-copy">
+          {after.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -248,7 +310,49 @@ function QuoteSection({
   );
 }
 
-function SummaryBannerStatIcon({ icon }: { icon?: "people" | "up" | "down" }) {
+type StatIcon = "people" | "up" | "down" | "clock" | "timer" | "flow";
+
+function SummaryBannerStatIcon({ icon }: { icon?: StatIcon }) {
+  if (icon === "clock") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" />
+        <path
+          d="M10 6v4.2l2.8 1.6"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (icon === "timer") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="11.5" r="6" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M7.5 2.75h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M10 8.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (icon === "flow") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+        <rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+        <path
+          d="M6 9v2.5a1.5 1.5 0 0 0 1.5 1.5H11"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
   if (icon === "people") {
     return (
       <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -327,7 +431,7 @@ function SummaryBannerSection({
   speechBubbleText,
 }: {
   statement?: string;
-  stats?: Array<{ value: string; label: string; icon?: "people" | "up" | "down" }>;
+  stats?: Array<{ value: string; label: string; icon?: StatIcon }>;
   heading?: string;
   subheading?: string;
   media?: { type: "image" | "video"; src: string; alt?: string };
@@ -409,7 +513,13 @@ function SummaryBannerSection({
                 <SummaryBannerStatIcon icon={stat.icon} />
               </span>
               <div className="case-study-page__summary-banner-stat-text">
-                <span className="case-study-page__summary-banner-stat-value">{stat.value}</span>
+                <span
+                  className="case-study-page__summary-banner-stat-value"
+                  // Short figures ("6", "+19%") read as big numbers; worded values use a quieter style.
+                  data-kind={stat.value.length > 5 ? "text" : "figure"}
+                >
+                  {stat.value}
+                </span>
                 <span className="case-study-page__summary-banner-stat-label">{stat.label}</span>
               </div>
             </div>
@@ -969,43 +1079,56 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
   const heroLayoutId = `case-study-media-${page.slug}`;
   const sectionAnchors = sectionAnchorsBySlug[page.slug] ?? {};
   const sectionNavItems = navItemsBySlug[page.slug] ?? [];
+  const story = storyPages[page.slug];
+  const isStory = Boolean(story);
 
   return (
     <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
-      <FloatingNavbar
-        autoExpandOnScroll
-        hideOnFirstFold={false}
-        homeHref="/"
-        items={navItems}
-        lockVariant
-        variant="light"
-        workHref="/#work"
-      />
-      {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
+      {isStory ? (
+        <CaseStudyStoryNav cta={story.cta} items={sectionNavItems} />
+      ) : (
+        <>
+          <FloatingNavbar
+            autoExpandOnScroll
+            hideOnFirstFold={false}
+            homeHref="/"
+            items={navItems}
+            lockVariant
+            variant="light"
+            workHref="/#work"
+          />
+          {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
+        </>
+      )}
       <div className="case-study-page__paper">
+        {isStory ? <CaseStudyBreadcrumb current={story.breadcrumb} /> : null}
         <header className="case-study-page__hero">
           <HeroContentReveal>
-            <BackToWorkLink className="case-study-page__back-link">
-              <span className="case-study-page__back-link-track">
-                <svg aria-hidden="true" viewBox="0 0 18 10">
-                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
-                </svg>
-                Back to work
-                <svg
-                  aria-hidden="true"
-                  className="case-study-page__back-link-next-arrow"
-                  viewBox="0 0 18 10"
-                >
-                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
-                </svg>
-              </span>
-            </BackToWorkLink>
-            <div className="case-study-page__meta" aria-label="Case study metadata">
-              {page.meta.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
+            {isStory ? null : (
+              <>
+                <BackToWorkLink className="case-study-page__back-link">
+                  <span className="case-study-page__back-link-track">
+                    <svg aria-hidden="true" viewBox="0 0 18 10">
+                      <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                    </svg>
+                    Back to work
+                    <svg
+                      aria-hidden="true"
+                      className="case-study-page__back-link-next-arrow"
+                      viewBox="0 0 18 10"
+                    >
+                      <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                    </svg>
+                  </span>
+                </BackToWorkLink>
+                <div className="case-study-page__meta" aria-label="Case study metadata">
+                  {page.meta.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </>
+            )}
             <h1>{page.title}</h1>
             {page.subtitle ? (
               <p className="case-study-page__subtitle">{page.subtitle}</p>
@@ -1036,19 +1159,33 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
           {page.sections.map((section, index) => {
             const sectionKey = `${section.variant}-${index}`;
             const anchorId = sectionAnchors[index];
-            const withAnchor = (content: ReactNode) =>
-              anchorId ? (
-                <div className="case-study-page__section-anchor" id={anchorId} key={sectionKey}>
-                  {content}
-                </div>
-              ) : (
-                <div className="case-study-page__section-anchor" key={sectionKey}>
-                  {content}
-                </div>
-              );
+            // Story pages group a section's heading, copy and visuals: headed sections start
+            // further apart, and visuals sit close under the text they belong to.
+            const role =
+              section.variant === "text"
+                ? section.eyebrow
+                  ? "heading"
+                  : "text"
+                : section.variant === "summary-banner" || section.variant === "story"
+                  ? undefined
+                  : "visual";
+            const withAnchor = (content: ReactNode) => (
+              <div
+                className="case-study-page__section-anchor"
+                data-story-role={isStory ? role : undefined}
+                id={anchorId}
+                key={sectionKey}
+              >
+                {content}
+              </div>
+            );
 
             if (section.variant === "text") {
               return withAnchor(<TextSection {...section} />);
+            }
+
+            if (section.variant === "story") {
+              return withAnchor(<StorySection {...section} />);
             }
 
             if (section.variant === "split") {
@@ -1084,6 +1221,12 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "audit-findings") {
               return withAnchor(<AuditFindingsSection items={section.items} />);
+            }
+
+            if (section.variant === "graphic" && isStory && section.items?.length && !section.bare) {
+              return withAnchor(
+                <StoryGraphic items={section.items} layout={section.layout} palette={section.palette} />,
+              );
             }
 
             if (section.variant === "graphic") {

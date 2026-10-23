@@ -38,6 +38,18 @@ export type CaseStudyFinding = {
   body: string;
 };
 
+export type TranscriptStoryVisual =
+  | "journey"
+  | "finding-work"
+  | "approach"
+  | "preview"
+  | "withdraw"
+  | "browse-list"
+  | "rewards"
+  | "review-pages"
+  | "prototype"
+  | "validation";
+
 export type CaseStudyFact = {
   label: string;
   value: string[];
@@ -86,12 +98,23 @@ export type CaseStudyPage = {
         layout?: "row";
         bare?: boolean;
         tint?: string;
+        // Story-layout pages: the container's tint and brush-stroke colour.
+        palette?: "peach" | "beige" | "blue" | "slate" | "lilac";
         items?: Array<{
           label?: string;
           src: string;
           alt?: string;
           type?: "image" | "video";
         }>;
+      })
+    | ({
+        variant: "story";
+        eyebrow?: string;
+        title?: string;
+        body?: string[];
+        visual?: TranscriptStoryVisual;
+        visualAnchor?: string;
+        after?: string[];
       })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
     | ({ variant: "quote"; quote: string; highlight?: string; author?: string; role?: string })
@@ -107,7 +130,11 @@ export type CaseStudyPage = {
     | ({
         variant: "summary-banner";
         statement?: string;
-        stats?: Array<{ value: string; label: string; icon?: "people" | "up" | "down" }>;
+        stats?: Array<{
+          value: string;
+          label: string;
+          icon?: "people" | "up" | "down" | "clock" | "timer" | "flow";
+        }>;
         heading?: string;
         subheading?: string;
         media?: { type: "image" | "video"; src: string; alt?: string };
@@ -145,19 +172,17 @@ export const caseStudyPages: CaseStudyPage[] = [
       frame: "hero",
     },
     facts: [
-      {
-        label: "Organisation",
-        value: ["Bitcoin Dev Project", "Bitcoin Transcript Review (Product)"],
-      },
+      { label: "Organisation", value: ["Bitcoin Transcript Review"] },
       { label: "Collaborators", value: ["Team Lead", "1 Developer"] },
-      { label: "Role", value: ["Product Designer"] },
+      { label: "My Role", value: ["Product Designer"] },
       { label: "Timeline", value: ["1 Month"] },
       {
         label: "Responsibilities",
         value: [
-          "UX audit",
+          "Heuristic evaluation",
+          "Competitive analysis",
           "Information architecture",
-          "Interaction and visual design",
+          "AI-assisted prototyping",
           "Developer handoff",
         ],
       },
@@ -166,197 +191,107 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "summary-banner",
         statement:
-          "I reorganized Bitcoin Transcript Review's fragmented workflow into one connected sequence of stages, redesigned in a month, then handed it off for development with the reasoning behind each decision documented.",
-      },
-      {
-        variant: "text",
-        eyebrow: "Overview",
-        title: "Connecting 4 fragmented workflows into a clearer review experience.",
-        body: [
-          "The product split transcript discovery, claiming, editing and rewards across disconnected workflows, making it difficult for contributors to understand what to do next and leaving incomplete work locked for 24 hours.",
-          "I audited the end-to-end journey and reorganized it around clearer stages. Contributors could preview a transcript before claiming it, manage active and completed reviews separately, and withdraw work they could not complete.",
-          "The redesigned workflow was approved and handed off for development.",
-        ],
-      },
-      {
-        variant: "text",
-        eyebrow: "Audit",
-        title: "Each screen worked independently, but the journey between them did not.",
-        body: [
-          "I walked through the live product as both a new and returning contributor, documenting friction across discovery, claiming, editing and review history.",
-          "I reviewed the findings with the team lead and developer to distinguish usability problems from intentional product rules and backend constraints.",
-        ],
-      },
-      {
-        variant: "audit-artifacts",
-        items: [
+          "I redesigned Bitcoin Transcript Review to make contributing easier and reduce unfinished work. In one month, I introduced previews before claiming, clearer navigation, and withdrawal options to help contributors make informed decisions, complete reviews, and keep transcripts moving through the review pipeline.",
+        // These describe the constraints of the system rather than outcomes.
+        stats: [
           {
-            type: "image",
-            src: `${transcriptReviewBasePath}/figjam.png`,
-            alt: "FigJam audit notes grouped by contributor journey stage",
-            overlayLabel: "SNIPPET FROM FIGJAM",
+            value: "Existing system",
+            label: "Improving connected workflows without rebuilding the platform",
+            icon: "flow",
           },
           {
-            type: "image",
-            src: `${transcriptReviewBasePath}/dsgn_evol.png`,
-            alt: "Design evolution from the transcript review redesign process",
-            overlayLabel: "DESIGN EVOLUTION",
+            value: "Limited access",
+            label: "No contributor testing available to validate design decisions",
+            icon: "people",
           },
         ],
       },
       {
-        variant: "text",
-        eyebrow: "Audit Findings",
-        title: "The audit surfaced three recurring problems.",
+        variant: "story",
+        eyebrow: "01 / Context",
+        title: "A platform where contributors help make Bitcoin transcripts more accurate",
         body: [
-          "Each appeared at a different point in the journey: finding work, committing to it, and tracking it. All three came from the same disconnect between screens.",
+          "Bitcoin talks are often turned into written transcripts, but automated transcription doesn't always get everything right. Technical terms, speaker names and formatting still need someone to check them against the original recording.",
+          "BTC Transcript Review gives contributors a place to find these transcripts, claim one and make corrections. Once submitted, the work goes through GitHub for review. If approved, contributors receive a reward in sats, the smallest unit of bitcoin.",
         ],
+        visual: "journey",
       },
       {
-        variant: "butter-container",
-      },
-      {
-        variant: "text",
-        eyebrow: "Approach",
-        title: "Turning disconnected screens into a connected sequence of stages.",
+        variant: "story",
+        eyebrow: "02 / Discovery",
+        title: "What started as an editor redesign revealed problems across the entire contributor journey",
         body: [
-          "The three problems shared one root cause: the product had the right pieces, but nothing connecting them. Instead of fixing each screen on its own, I reorganized the workflow into a sequence of stages-browsing, previewing, claiming, editing and tracking-that stayed connected as contributors moved through them.",
-          "The decisions below show how each stage was resolved.",
+          "The team already knew that parts of the editor were confusing and that claimed transcripts could sit unfinished for 24 hours. Stacie, the project lead, walked me through the product, after which I explored the contributor journey myself in staging, from finding and claiming a transcript to editing and submitting it.",
         ],
+        visual: "finding-work",
+        visualAnchor: "finding-friction",
       },
       {
-        variant: "workflow-comparison",
-      },
-      {
-        variant: "text",
-        eyebrow: "Constraints & Trade-offs",
-        title: "Improving the workflow meant changing the experience without changing the rules underneath.",
+        variant: "story",
+        eyebrow: "03 / Approach",
+        title: "I looked at how other products handled similar workflows, then adapted what worked within our technical constraints",
         body: [
-          "The redesign had to preserve the existing claim and reward logic, use the established design system and minimize backend development. I prioritized changes to navigation, hierarchy and interaction while adapting or deferring ideas that required additional product logic.",
+          "I studied patterns for discovering work, committing to tasks, and managing progress. I evaluated which interactions supported contributors' decisions and which needed adapting to our 24-hour review workflow.",
         ],
+        visual: "approach",
       },
       {
-        variant: "text",
-        eyebrow: "Key Design Decision 01 · Navigation",
-        title: "Primary contributor tasks should remain accessible at every stage.",
+        variant: "story",
+        eyebrow: "04 / The Redesign",
+        title: "Contributors had to start a 24-hour deadline just to inspect a transcript, so I introduced a preview",
         body: [
-          "Available Reviews and My Reviews represented the product's two primary contributor goals: finding new work and continuing existing work.",
-          "I moved both out of the profile drawer and into the primary navigation so contributors could access them throughout the review journey.",
+          "Claiming was the only way to inspect a transcript, but it also started a 24-hour reservation. If contributors couldn't finish, the transcript stayed unavailable to others until the timer expired. Rather than rebuild the claim system, I introduced a preview so contributors could understand the work before committing to it.",
         ],
+        visual: "preview",
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/key-1.png`,
-        alt: "Before and after of moving primary contributor tasks into the main navigation",
-        frame: "before-after",
+        variant: "story",
+        visual: "withdraw",
       },
       {
-        variant: "text",
-        eyebrow: "Key Design Decision 02 · Browsing",
-        title: "Choosing work should feel like browsing opportunities, not scanning a database.",
+        variant: "story",
+        eyebrow: "05 / Discovery & Tradeoffs",
+        title: "I replaced the crowded review table with a simpler list to help contributors compare their options",
         body: [
-          "The original table separated related information across distant columns and repeated Claim on every row. I regrouped each transcript's title, source, speakers, labels, duration and reward into one selectable item that opened a preview.",
-          "This shifted the first action from accepting work to evaluating it.",
+          "I reorganized it into a more browseable list, grouping the details contributors needed to make a decision. Instead of claiming directly from the list, they could open a preview first.",
         ],
+        visual: "browse-list",
       },
       {
-        variant: "browsing-comparison",
-      },
-      {
-        variant: "text",
-        subLabel: "Within Key Design Decision 02",
-        titleSize: "small",
-        title: "Simplifying reward without making payout the primary choice.",
+        variant: "story",
+        title: "My first reward design made payouts too prominent, so I returned to a simpler relative scale",
         body: [
-          "The original reward indicator used both colour and coin quantity, making its levels harder to decode. I proposed displaying exact sats, but the team did not want payout to become the primary selection criterion.",
-          "I retained three relative reward levels while simplifying them into monochrome coin stacks.",
+          "I proposed showing exact rewards in sats, but the team worried payouts would drive contributions. I kept the relative reward system, simplifying it to a consistent 1–3 coin scale so contributors could compare reward levels without emphasizing exact payouts.",
         ],
+        visual: "rewards",
       },
       {
-        variant: "graphic",
-        label: "SIMPLIFYING THE REWARD INDICATOR",
-        src: `${transcriptReviewBasePath}/Stacked_PNG_Icons.png`,
-        alt: "The original reward indicator using colour and coin count, and the redesigned monochrome coin stacks",
-      },
-      {
-        variant: "text",
-        eyebrow: "Key Design Decision 03 · Claiming",
-        title: "Contributors should understand a review before starting the timer.",
+        variant: "story",
+        eyebrow: "06 / Navigation & Tradeoffs",
+        title: "A developer questioned the different layouts, but each served a different purpose.",
         body: [
-          "Selecting a transcript now opens the editor in read-only preview mode. Contributors can inspect the source video, transcript, speakers, labels and review details before claiming it.",
-          "Claiming unlocks the editing controls and begins the existing 24-hour review window.",
+          "A developer questioned why the two screens used different layouts, but each supported a different decision. Available Reviews helped contributors compare options and decide what to claim, while My Reviews helped them identify what needed attention and where to resume work.",
         ],
+        visual: "review-pages",
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/claim preview.png`,
-        alt: "Transcript preview mode before a contributor claims a review",
-        overlayLabel: "PREVIEW BEFORE CLAIMING",
-        frame: "claim-preview",
-      },
-      {
-        variant: "text",
-        eyebrow: "Key Design Decision 04 · Editor",
-        title: "Contributors needed a way to leave work they could not complete.",
+        variant: "story",
+        eyebrow: "07 / Prototyping with AI",
+        title: "I used Figma Make to explore the full journey, including paths beyond successful submission",
         body: [
-          "The editor now keeps claim status and its primary actions visible throughout the review. Contributors can withdraw work they cannot complete, allowing the transcript to return to the available pool instead of remaining unavailable until the claim expires.",
+          "I used Figma Make to turn the redesigned screens into a working end-to-end prototype, making it faster to explore interactions without building each one manually. I focused on scenarios beyond the happy path, like withdrawing a claimed review or navigating between active and past work, so the team could interact with the experience, question assumptions, and catch gaps before development.",
+          "AI helped speed up prototyping, but the workflow decisions, interaction rules, and design refinements remained mine.",
         ],
+        visual: "prototype",
       },
       {
-        variant: "media",
-        type: "image",
-        src: `${transcriptReviewBasePath}/withdraw transcript.png`,
-        alt: "Withdraw transcript confirmation modal in the editor",
-        overlayLabel: "WITHDRAWING CLAIMED REVIEW",
-        frame: "withdraw-transcript",
-      },
-      {
-        variant: "text",
-        subLabel: "Within Key Design Decision 04",
-        titleSize: "small",
-        title: "The editor should support review work without unnecessary context switching.",
+        variant: "story",
+        eyebrow: "08 / Validation & Next Steps",
+        title: "Without a launch, I couldn't measure impact. Here's what I'd test next.",
         body: [
-          "I brought video navigation, timestamp controls and speaker management into the editing workspace. I also reduced competing toolbar actions, collapsed secondary transcript details and clarified the deadline treatment.",
+          "The short timeline and limited access to contributors meant I couldn't conduct usability testing. Since the redesign hasn't been developed, I don't have outcome metrics yet. I'd focus future validation on four questions:",
         ],
-      },
-      {
-        variant: "withdraw-support-row",
-      },
-      {
-        variant: "text",
-        eyebrow: "Key Design Decision 05 · Review States",
-        title: "Active work should take priority over reference information.",
-        body: [
-          "I proposed separating active work from review history because the two views supported different decisions. Active reviews prioritize deadlines and continuation actions, while history tracks pending, published, expired and rewarded work.",
-          "After reviewing alternative structures with the team, we moved forward with this direction.",
-        ],
-      },
-      {
-        variant: "graphic",
-        items: [
-          {
-            label: "ORIGINAL MIXED LAYOUT",
-            src: `${transcriptReviewBasePath}/Mixed-layout.png`,
-            alt: "The original layout showing current and past transcript review jobs together",
-          },
-          {
-            label: "REDESIGNED ACTIVE & PAST REVIEWS",
-            type: "video",
-            src: `${transcriptReviewBasePath}/Active_Past_Reviews.mp4`,
-            alt: "The redesigned tabs separating active reviews from past reviews",
-          },
-        ],
-      },
-      {
-        variant: "text",
-        eyebrow: "Reflection",
-        title: "Designing within real product constraints.",
-        body: [
-          "The redesign was approved and handed off for development. Working inside a live product, most of my decisions were about restraint, not new ideas: I wanted the reward indicator to show exact sats, but the team didn't want payout to be the main reason someone picks a review, so I kept it relative. A lot of this project was telling apart what was broken from what was just a rule I had to work around.",
-          "The audit was based on my own walkthrough, not contributor interviews. Once this ships, I'd want to time how long reviews take in the new editor versus the old one, and check in with contributors on two things: whether the controls I brought into the editor actually made editing feel faster, and whether moving between stages felt smooth.",
-        ],
+        visual: "validation",
       },
       {
         variant: "summary-banner",
@@ -424,7 +359,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Overview",
+        eyebrow: "01 / Overview",
         title: "Restructuring resource discovery and building an identity that could scale",
         body: [
           "As Bitcoin Dev Project grew from a community initiative into a broader platform for Bitcoin developers, its website and identity hadn't evolved with it. Resources were spread across disconnected pages and long lists, making it difficult for visitors to understand what BDP offered and find the right path for their goals.",
@@ -434,7 +369,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Problem",
+        eyebrow: "02 / Problem",
         title: "More resources created more opportunities and more places to get lost",
         body: [
           "BDP had grown to more than 30 learning resources alongside projects and funding opportunities. But those paths were spread across long lists and disconnected pages, making it difficult for someone new to understand what BDP offered or where to begin.",
@@ -443,6 +378,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "graphic",
+        palette: "peach",
         items: [
           {
             label: "SNIPPET FROM THE OLD WEBSITE",
@@ -458,7 +394,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Scope",
+        eyebrow: "03 / Scope",
         title: "My role covered the system people used and the identity they saw",
         body: [
           "Rather than treating the work as a single-page redesign, I worked across the main surfaces developers encountered: the homepage, learning resources, contribution opportunities, and funding.",
@@ -483,7 +419,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Structure",
+        eyebrow: "04 / Structure",
         title: "I reorganized the experience around what developers came to do",
         body: [
           "The previous structure required visitors to understand how BDP organized its programs and resources. I shifted the hierarchy toward three goals a developer could recognize immediately: learn something, contribute to something, or get support to build something.",
@@ -493,6 +429,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         layout: "row",
+        palette: "beige",
         items: [
           {
             label: "BEFORE — SITEMAP SHAPED BY BDP'S INTERNAL STRUCTURE",
@@ -508,7 +445,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Identity",
+        eyebrow: "05 / Identity",
         title: "A new structure also needed a more recognizable BDP",
         body: [
           "I worked on the visual identity alongside the product redesign rather than treating branding as a layer added at the end. The goal was to give BDP a consistent personality across the website, community, and future resources while keeping a technical project approachable.",
@@ -520,7 +457,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Discovery",
+        eyebrow: "06 / Discovery",
         title: "Putting all the resources in one place didn't automatically make them easier to find",
         body: [
           "Centralizing the library removed the fragmentation of the old experience, but it introduced a different question: how much should we show at once?",
@@ -573,7 +510,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Testing",
+        eyebrow: "07 / Testing",
         title: "Once it shipped, I wanted to know where the structure still broke down",
         body: [
           "I ran six moderated usability sessions with developers who were unfamiliar or only slightly familiar with BDP. I asked them to understand what BDP offered, move between the three pathways, find a resource, and work out how they would pursue funding.",
@@ -585,7 +522,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 01",
+        eyebrow: "Finding 01",
         title: "Testing revealed an extra step between developers and what they came to find",
         body: [
           "Some users weren't sure where to go from the homepage. And when they chose Start Exploring, they expected to begin exploring resources, not make another choice.",
@@ -609,6 +546,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "blue",
         items: [
           {
             label: "BEFORE — STANDALONE PAGE BEHIND A CTA",
@@ -624,7 +562,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 02",
+        eyebrow: "Finding 02",
         title:
           "Developers could find the Get Funded page, but the process on how to get funded was buried in the explanation",
         body: [
@@ -655,6 +593,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "slate",
         items: [
           {
             label: "BEFORE — LONG BLOCKS OF TEXT MADE THE PAGE HARD TO SKIM",
@@ -671,7 +610,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 03",
+        eyebrow: "Finding 03",
         title: "The remaining issues were smaller, but easier to act on",
         body: [
           "Not every finding called for a larger redesign. I clarified confusing copy, made difficulty labels easier to understand, added multi-select filtering, and improved interaction feedback on resource cards. These became smaller improvements alongside the larger changes to Explore and Get Funded.",
@@ -679,7 +618,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Collaboration",
+        eyebrow: "08 / Collaboration",
         title: "Async collaboration meant the work had to make sense without me in the room",
         body: [
           "I worked with the Project Lead and two developers to ship the initial redesign, then continued working with developers and open-source contributors as the product evolved.",
@@ -689,6 +628,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "lilac",
         items: [
           {
             label: "EXAMPLE OF DOCUMENTATION",
