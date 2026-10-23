@@ -2,17 +2,18 @@ import { bandSquiggles, ContainerLabel, Squiggles } from "./transcriptStoryParts
 
 /*
  * Before/after graphics on story-layout case studies, built as containers like the Transcript
- * story: a tinted background with brush strokes, a "LEAD / detail" mono label, and screenshots
- * that bleed off the bottom edge. Row layouts (side-by-side diagrams) keep the whole image
- * visible instead of cropping it.
+ * story: a tinted background with brush strokes and "LEAD / detail" mono labels.
+ *  - stacked pairs share one container; each screenshot is cut off at the same height, and the
+ *    last one bleeds off the bottom edge
+ *  - row layouts (side-by-side diagrams) get a container each and keep the whole image visible
  */
-export type StoryPalette = "peach" | "beige" | "blue" | "green" | "lilac";
+export type StoryPalette = "peach" | "beige" | "blue" | "slate" | "lilac";
 
 const PALETTES: Record<StoryPalette, string> = {
   peach: "#f6e4d4",
   beige: "#ece6dc",
   blue: "#dde9f5",
-  green: "#e3efd9",
+  slate: "#e5e9ef",
   lilac: "#ece3f5",
 };
 
@@ -32,6 +33,23 @@ const splitLabel = (label = "") => {
   return { lead, detail: rest.join(" — ") || undefined };
 };
 
+function Item({ item }: { item: StoryGraphicItem }) {
+  const { lead, detail } = splitLabel(item.label);
+
+  return (
+    <div className="story-graphic__item">
+      {item.label ? <ContainerLabel detail={detail} lead={lead} /> : null}
+      <div className="story-graphic__media">
+        {item.type === "video" ? (
+          <video aria-label={item.alt} autoPlay loop muted playsInline preload="metadata" src={item.src} />
+        ) : (
+          <img alt={item.alt ?? ""} loading="lazy" src={item.src} />
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function StoryGraphic({
   items,
   layout,
@@ -47,6 +65,18 @@ export function StoryGraphic({
     x: -40,
     w: 796,
   }));
+  const canvas = (children: StoryGraphicItem[], key?: string) => (
+    <figure
+      className="transcript-story__canvas story-graphic__canvas"
+      key={key}
+      style={{ background: PALETTES[palette] }}
+    >
+      <Squiggles items={strokes} size={SIZE} />
+      {children.map((item) => (
+        <Item item={item} key={item.src} />
+      ))}
+    </figure>
+  );
 
   return (
     <section
@@ -55,31 +85,7 @@ export function StoryGraphic({
       data-fit={layout === "row" ? "contain" : "bleed"}
       data-layout={layout}
     >
-      {items.map((item) => {
-        const { lead, detail } = splitLabel(item.label);
-
-        return (
-          <figure
-            className="transcript-story__canvas story-graphic__canvas"
-            key={item.src}
-            style={{ background: PALETTES[palette] }}
-          >
-            <Squiggles items={strokes} size={SIZE} />
-            {item.label ? (
-              <figcaption>
-                <ContainerLabel detail={detail} lead={lead} />
-              </figcaption>
-            ) : null}
-            <div className="story-graphic__media">
-              {item.type === "video" ? (
-                <video aria-label={item.alt} autoPlay loop muted playsInline preload="metadata" src={item.src} />
-              ) : (
-                <img alt={item.alt ?? ""} loading="lazy" src={item.src} />
-              )}
-            </div>
-          </figure>
-        );
-      })}
+      {layout === "row" ? items.map((item) => canvas([item], item.src)) : canvas(items)}
     </section>
   );
 }
