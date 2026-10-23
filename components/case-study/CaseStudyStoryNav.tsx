@@ -13,7 +13,7 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [markerY, setMarkerY] = useState<number | null>(null);
+  const [marker, setMarker] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const targets = items.map((item) => document.getElementById(item.id));
@@ -58,12 +58,15 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
     };
   }, [items]);
 
-  // Centre the motif on the active link.
+  // Centre the motif on the active link, stepping in with the indent on sub-links.
   useLayoutEffect(() => {
     const link = linkRefs.current[active];
 
     if (link) {
-      setMarkerY(link.offsetTop + link.offsetHeight / 2);
+      setMarker({
+        x: parseFloat(getComputedStyle(link).paddingLeft) || 0,
+        y: link.offsetTop + link.offsetHeight / 2,
+      });
     }
   }, [active]);
 
@@ -74,13 +77,13 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
       data-visible={visible}
       ref={navRef}
     >
-      {markerY !== null ? (
+      {marker ? (
         <img
           alt=""
           aria-hidden="true"
           className="case-study-story-nav__marker"
           src="/assets/home-motif-hover.svg"
-          style={{ transform: `translateY(${markerY}px) translateY(-50%)` }}
+          style={{ transform: `translate(${marker.x}px, ${marker.y}px) translateY(-50%)` }}
         />
       ) : null}
       {items.map((item, index) => (
