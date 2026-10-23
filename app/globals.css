@@ -3489,15 +3489,19 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   text-transform: uppercase;
 }
 
+/* Columns take their content's width with equal space between them; the longest ones wrap
+   first when the row runs out of room. */
 .case-study-page__facts {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
   gap: clamp(1.25rem, 2.4vw, 2.25rem);
   margin-top: 1.875rem;
   padding: 0;
 }
 
 .case-study-page__fact {
+  flex: 0 1 auto;
+  min-width: 0;
   display: grid;
   gap: 0.5rem;
   align-content: start;
@@ -5907,6 +5911,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 @media (max-width: 1080px) {
   .case-study-page__facts {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
