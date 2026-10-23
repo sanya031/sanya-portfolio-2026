@@ -6911,7 +6911,10 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   .transcript-story__finding-shots .transcript-story__shot {
     inset: 0 auto auto 0 !important;
     width: 100% !important;
-    height: auto !important;
+    /* Fill the whole frame so no screenshot leaves a gap at the bottom. */
+    height: 100% !important;
+    object-fit: cover;
+    object-position: left top;
     border-radius: 8px 8px 0 0;
   }
 
