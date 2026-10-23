@@ -8,7 +8,13 @@ import type { CaseStudySectionNavItem } from "./CaseStudySectionRail";
  * motif beside it glides down (or up) to it as the reader scrolls. The list shows from the top of
  * the page and fades out after the last section.
  */
-export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] }) {
+export function CaseStudyStoryNav({
+  items,
+  cta,
+}: {
+  items: CaseStudySectionNavItem[];
+  cta?: { label: string; href: string };
+}) {
   const navRef = useRef<HTMLElement>(null);
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const [active, setActive] = useState(0);
@@ -110,6 +116,12 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
           {item.label}
         </a>
       ))}
+      {cta ? (
+        <a className="case-study-story-nav__cta" href={cta.href} rel="noopener noreferrer" target="_blank">
+          <span aria-hidden="true">↗</span> {cta.label}
+          <span className="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      ) : null}
     </nav>
   );
 }

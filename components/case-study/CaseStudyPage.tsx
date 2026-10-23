@@ -21,7 +21,7 @@ import { PlaybackVideo } from "./PlaybackVideo";
 import { CaseStudyStoryNav } from "./CaseStudyStoryNav";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
-import { TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
+import { PROTOTYPE_EMBED_SRC, TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
 import { HeroContentReveal } from "../transitions/HeroContentReveal";
 import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
@@ -1069,7 +1069,10 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
     <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
       {isStory ? (
-        <CaseStudyStoryNav items={sectionNavItems} />
+        <CaseStudyStoryNav
+          cta={{ label: "Try the prototype", href: PROTOTYPE_EMBED_SRC }}
+          items={sectionNavItems}
+        />
       ) : (
         <>
           <FloatingNavbar
