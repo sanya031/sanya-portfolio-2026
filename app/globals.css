@@ -49,6 +49,17 @@ body {
   color: #16130f;
 }
 
+/* Case studies sit on white, so the same gold is lighter there to keep selected text readable. */
+.case-study-page ::selection {
+  background: rgba(172, 155, 41, 0.35);
+  color: inherit;
+}
+
+.case-study-page ::-moz-selection {
+  background: rgba(172, 155, 41, 0.35);
+  color: inherit;
+}
+
 .route-transition-shell {
   min-height: 100vh;
 }
