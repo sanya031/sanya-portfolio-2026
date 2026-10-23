@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { TranscriptStoryVisual } from "../../data/caseStudyPages";
 import { FindingWorkVisual } from "./FindingWorkVisual";
+import { PrototypeEmbed } from "./PrototypeEmbed";
 import {
   assetPath,
   bandSquiggles,
@@ -279,8 +280,8 @@ function ReviewPagesVisual() {
   );
 }
 
-// Paste the Figma Make / prototype embed URL here (e.g. https://embed.figma.com/proto/...).
-const PROTOTYPE_EMBED_SRC = "";
+// The Figma Make prototype of the redesigned journey.
+const PROTOTYPE_EMBED_SRC = "https://agile-yew-00187717.figma.site/";
 
 function PrototypeVisual() {
   return (
@@ -290,16 +291,10 @@ function PrototypeVisual() {
         <span />
         <span />
       </div>
-      {PROTOTYPE_EMBED_SRC ? (
-        <iframe
-          allowFullScreen
-          loading="lazy"
-          src={PROTOTYPE_EMBED_SRC}
-          title="Interactive Figma Make prototype of the redesigned Transcript Review journey"
-        />
-      ) : (
-        <p className="transcript-story__window-empty">Prototype embed coming soon</p>
-      )}
+      <PrototypeEmbed
+        src={PROTOTYPE_EMBED_SRC}
+        title="Interactive Figma Make prototype of the redesigned Transcript Review journey"
+      />
     </figure>
   );
 }
