@@ -111,6 +111,7 @@ export type CaseStudyPage = {
         title?: string;
         body?: string[];
         visual?: TranscriptStoryVisual;
+        visualAnchor?: string;
         after?: string[];
       })
     | ({ variant: "carousel"; items: CaseStudyAsset[] })
@@ -169,19 +170,17 @@ export const caseStudyPages: CaseStudyPage[] = [
       frame: "hero",
     },
     facts: [
-      {
-        label: "Organisation",
-        value: ["Bitcoin Dev Project", "Bitcoin Transcript Review (Product)"],
-      },
+      { label: "Organisation", value: ["Bitcoin Transcript Review"] },
       { label: "Collaborators", value: ["Team Lead", "1 Developer"] },
-      { label: "Role", value: ["Product Designer"] },
+      { label: "My Role", value: ["Product Designer"] },
       { label: "Timeline", value: ["1 Month"] },
       {
         label: "Responsibilities",
         value: [
-          "UX audit",
+          "Heuristic evaluation",
+          "Competitive analysis",
           "Information architecture",
-          "Interaction and visual design",
+          "AI-assisted prototyping",
           "Developer handoff",
         ],
       },
@@ -223,6 +222,7 @@ export const caseStudyPages: CaseStudyPage[] = [
           "The team already knew that parts of the editor were confusing and that claimed transcripts could sit unfinished for 24 hours. Stacie, the project lead, walked me through the product, after which I explored the contributor journey myself in staging, from finding and claiming a transcript to editing and submitting it.",
         ],
         visual: "finding-work",
+        visualAnchor: "finding-friction",
         after: [
           "The audit shifted my focus from improving individual screens to rethinking how contributors moved through the entire review process.",
         ],

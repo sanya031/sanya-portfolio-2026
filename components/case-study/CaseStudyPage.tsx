@@ -18,6 +18,7 @@ import {
   type CaseStudySectionNavItem,
 } from "./CaseStudySectionRail";
 import { PlaybackVideo } from "./PlaybackVideo";
+import { CaseStudyStoryNav } from "./CaseStudyStoryNav";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
 import { TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
@@ -54,19 +55,25 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
   },
 };
 
+// Story pages use the wireframe's left section list instead of the floating navbar and rail,
+// and open straight on the title.
+const storyLayoutSlugs = new Set(["transcript-review-redesign"]);
+
 const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "transcript-review-redesign": [
     { id: "context", label: "Context" },
     { id: "discovery", label: "Looking beyond the editor" },
+    { id: "discovery", label: "Following the contributor journey", secondary: true },
+    { id: "finding-friction", label: "Finding the Friction", secondary: true },
     { id: "approach", label: "Rethinking the workflow" },
     { id: "preview-before-commitment", label: "Preview before commitment", secondary: true },
-    { id: "managing-active-reviews", label: "Managing active reviews", secondary: true },
     { id: "choosing-work", label: "Finding and choosing work", secondary: true },
+    { id: "managing-active-reviews", label: "Managing active reviews", secondary: true },
     { id: "rethinking-rewards", label: "When decisions were challenged" },
     { id: "rethinking-rewards", label: "Rethinking rewards", secondary: true },
     { id: "consistency-vs-usability", label: "Consistency vs. usability", secondary: true },
     { id: "prototyping", label: "Prototyping beyond the happy path" },
-    { id: "validation", label: "What I'd validate next" },
+    { id: "validation", label: "What I’d validate next" },
   ],
   "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
@@ -140,12 +147,14 @@ function StorySection({
   title,
   body,
   visual,
+  visualAnchor,
   after,
 }: {
   eyebrow?: string;
   title?: string;
   body?: string[];
   visual?: TranscriptStoryVisual;
+  visualAnchor?: string;
   after?: string[];
 }) {
   return (
@@ -159,7 +168,11 @@ function StorySection({
           ))}
         </div>
       ) : null}
-      {visual ? <TranscriptStoryVisualBlock visual={visual} /> : null}
+      {visual ? (
+        <div className="case-study-page__section-anchor" id={visualAnchor}>
+          <TranscriptStoryVisualBlock visual={visual} />
+        </div>
+      ) : null}
       {after?.length ? (
         <div className="case-study-page__body-copy">
           {after.map((paragraph) => (
@@ -1052,43 +1065,54 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
   const heroLayoutId = `case-study-media-${page.slug}`;
   const sectionAnchors = sectionAnchorsBySlug[page.slug] ?? {};
   const sectionNavItems = navItemsBySlug[page.slug] ?? [];
+  const isStory = storyLayoutSlugs.has(page.slug);
 
   return (
     <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
-      <FloatingNavbar
-        autoExpandOnScroll
-        hideOnFirstFold={false}
-        homeHref="/"
-        items={navItems}
-        lockVariant
-        variant="light"
-        workHref="/#work"
-      />
-      {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
+      {isStory ? (
+        <CaseStudyStoryNav items={sectionNavItems} />
+      ) : (
+        <>
+          <FloatingNavbar
+            autoExpandOnScroll
+            hideOnFirstFold={false}
+            homeHref="/"
+            items={navItems}
+            lockVariant
+            variant="light"
+            workHref="/#work"
+          />
+          {sectionNavItems.length ? <CaseStudySectionRail items={sectionNavItems} /> : null}
+        </>
+      )}
       <div className="case-study-page__paper">
         <header className="case-study-page__hero">
           <HeroContentReveal>
-            <BackToWorkLink className="case-study-page__back-link">
-              <span className="case-study-page__back-link-track">
-                <svg aria-hidden="true" viewBox="0 0 18 10">
-                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
-                </svg>
-                Back to work
-                <svg
-                  aria-hidden="true"
-                  className="case-study-page__back-link-next-arrow"
-                  viewBox="0 0 18 10"
-                >
-                  <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
-                </svg>
-              </span>
-            </BackToWorkLink>
-            <div className="case-study-page__meta" aria-label="Case study metadata">
-              {page.meta.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
+            {isStory ? null : (
+              <>
+                <BackToWorkLink className="case-study-page__back-link">
+                  <span className="case-study-page__back-link-track">
+                    <svg aria-hidden="true" viewBox="0 0 18 10">
+                      <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                    </svg>
+                    Back to work
+                    <svg
+                      aria-hidden="true"
+                      className="case-study-page__back-link-next-arrow"
+                      viewBox="0 0 18 10"
+                    >
+                      <path d="M5.1 1 1 5m0 0 4.1 4M1 5h16" />
+                    </svg>
+                  </span>
+                </BackToWorkLink>
+                <div className="case-study-page__meta" aria-label="Case study metadata">
+                  {page.meta.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </>
+            )}
             <h1>{page.title}</h1>
             {page.subtitle ? (
               <p className="case-study-page__subtitle">{page.subtitle}</p>
