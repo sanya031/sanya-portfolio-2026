@@ -120,6 +120,7 @@ function PreviewVisual() {
   return (
     <div className="transcript-story__pair">
       <Canvas background="#f4f4f4" label={<ContainerLabel detail="Claim to inspect" lead="Before" />} size={before}>
+        <Squiggles items={wavySquiggles("wavy-grey")} size={before} />
         <Shot
           alt="Original flow: Browse, then Claim, then Editor, then Submit"
           box={{ x: 197, y: 65, w: 302, h: 27 }}
@@ -167,6 +168,7 @@ function WithdrawVisual() {
       label={<ContainerLabel lead="Now contributors could also withdraw from a claimed review" />}
       size={size}
     >
+      <Squiggles items={wavySquiggles("wavy-grey")} size={size} />
       <Shot
         alt="Withdraw review confirmation over the Silent Payments Part 2 editor, warning that withdrawing releases the review to other contributors and loses unsaved changes"
         box={{ x: 55, y: 52, w: 604, h: 262 }}
@@ -184,6 +186,7 @@ function BrowseListVisual() {
   return (
     <div className="transcript-story__pair">
       <Canvas background="#f1f1f1" label={<ContainerLabel detail="Crowded review table" lead="Before" />} size={before}>
+        <Squiggles items={wavySquiggles("wavy-grey", 1, 1)} size={before} />
         <Shot
           alt="The original Transcripts waiting for review table, with title, speakers, time, reward and a Claim button in separate columns"
           box={{ x: 67, y: 55, w: 582, h: 324 }}
@@ -244,6 +247,10 @@ const rewardStages = [
 function RewardsVisual() {
   return (
     <figure className="transcript-story__panel transcript-story__rewards" style={{ background: "#f5f5f5" }}>
+      <Squiggles
+        items={[...bandSquiggles("grey"), ...bandSquiggles("grey", 20, 300).slice(1, 2)]}
+        size={{ w: 716, h: 510 }}
+      />
       {rewardStages.map((stage) => (
         <div className="transcript-story__reward-stage" key={stage.lead}>
           <div className="transcript-story__reward-copy">
@@ -264,6 +271,10 @@ function RewardsVisual() {
 function ReviewPagesVisual() {
   return (
     <figure className="transcript-story__panel transcript-story__review-pages" style={{ background: "#ffcf95" }}>
+      <Squiggles
+        items={[...bandSquiggles("orange"), ...bandSquiggles("orange", 20, 450)]}
+        size={{ w: 716, h: 899 }}
+      />
       <ContainerLabel lead="My reviews" detail="Prioritizing what needs attention and where to resume work" />
       <img
         alt="My reviews, with In progress and Past reviews tabs and a status for each submitted transcript"
