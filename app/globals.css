@@ -6630,7 +6630,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   padding: 20px;
   color: #1c1c1c;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.25;
   text-transform: uppercase;
 }
@@ -6721,7 +6721,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   border-radius: 18px;
   background: #ffffff;
   color: #000000;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -6742,9 +6742,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   top: 23%;
   left: 2.65%;
   display: grid;
-  gap: 10px;
-  /* Ends before the screenshots start (221 / 716 of the container). */
-  width: 27.5%;
+  gap: 8px;
+  width: 30.7%;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -6759,9 +6758,9 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   padding: 0;
   border: 0;
   background: none;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.24);
   font: inherit;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.25;
   text-align: left;
@@ -6781,8 +6780,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   margin: 0;
   padding-top: 4px;
   color: #101010;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 /* The progress bar beside the active problem: fills top to bottom, then the next stage starts. */
@@ -6890,8 +6889,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   display: grid;
   gap: 8px;
   color: #4c4b4b;
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.3;
 }
 
 .transcript-story__approach figcaption p {
@@ -6938,7 +6937,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .transcript-story__reward-copy p:last-child {
   margin: 0;
   color: #4c4b4b;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.3;
 }
 
@@ -7041,7 +7040,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 @media (max-width: 760px) {
   .transcript-story__label {
     padding: 12px;
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .transcript-story__journey-steps {
