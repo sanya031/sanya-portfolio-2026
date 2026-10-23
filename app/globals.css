@@ -6856,20 +6856,19 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   background: #e9de8f;
 }
 
-.transcript-story__window iframe,
-.transcript-story__window-empty {
-  display: block;
-  width: 100%;
-  aspect-ratio: 716 / 459;
-  border: 0;
+.transcript-story__window-stage {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
 }
 
-.transcript-story__window-empty {
-  display: grid;
-  place-items: center;
-  margin: 0;
-  color: #000000;
-  font-size: 14px;
+.transcript-story__window-stage iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border: 0;
+  transform-origin: top left;
 }
 
 /* Validation: the four open questions */
@@ -6948,11 +6947,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
   .transcript-story__reward-copy {
     padding: 12px 10px 0;
-  }
-
-  .transcript-story__window iframe,
-  .transcript-story__window-empty {
-    aspect-ratio: 3 / 4;
   }
 }
 
