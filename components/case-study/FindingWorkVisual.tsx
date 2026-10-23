@@ -31,7 +31,7 @@ const problems = [
       {
         src: "old-review-table.webp",
         alt: "The original review table, with a Claim button, coloured tags and a reward icon on every row",
-        box: { x: 256, y: 81, w: 485, h: 270 },
+        box: { x: 256, y: 81, w: 505, h: 281 },
       },
       {
         src: "old-review-row.webp",
@@ -61,7 +61,8 @@ const problems = [
       {
         src: "editor-tools.webp",
         alt: "The original transcript editor, with its formatting toolbar and transcript text away from the recording and speaker controls",
-        box: { x: 256, y: 81, w: 460, h: 367 },
+        // Runs past the right edge so the container clips it flush.
+        box: { x: 256, y: 81, w: 480, h: 367 },
       },
     ],
   },
@@ -73,7 +74,8 @@ const problems = [
       {
         src: "old-my-account.webp",
         alt: "The original My Account page, with current and past jobs in similar tables and small Expired statuses",
-        box: { x: 256, y: 81, w: 509, h: 270 },
+        // Runs past the bottom (and right) edge so there's no gap under it.
+        box: { x: 256, y: 81, w: 530, h: 281 },
       },
     ],
   },
