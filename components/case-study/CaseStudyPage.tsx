@@ -95,7 +95,7 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
     { id: "identity", label: "A more recognizable BDP", secondary: true },
     { id: "discovery", label: "Making resources easier to find", secondary: true },
     { id: "testing", label: "Testing after launch" },
-    { id: "findings", label: "An extra step to resources", secondary: true },
+    { id: "findings", label: "Fixing what I got wrong", secondary: true },
     { id: "finding-funding", label: "Making funding visible", secondary: true },
     { id: "finding-smaller", label: "Smaller fixes", secondary: true },
     { id: "collaboration", label: "Working async" },
