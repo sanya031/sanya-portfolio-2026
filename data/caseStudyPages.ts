@@ -223,9 +223,6 @@ export const caseStudyPages: CaseStudyPage[] = [
         ],
         visual: "finding-work",
         visualAnchor: "finding-friction",
-        after: [
-          "The audit shifted my focus from improving individual screens to rethinking how contributors moved through the entire review process.",
-        ],
       },
       {
         variant: "story",
