@@ -7216,5 +7216,5 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 /* Grey containers holding darker screenshots: strokes stay faint and extra soft. */
 .transcript-story__soft-strokes .transcript-story__squiggle img {
-  filter: blur(8px);
+  filter: blur(3px);
 }
