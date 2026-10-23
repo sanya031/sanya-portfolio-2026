@@ -7122,7 +7122,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   position: fixed;
   z-index: 20;
   top: 120px;
-  left: 25px;
+  left: 33px;
   display: none;
   flex-direction: column;
   align-items: flex-start;
@@ -7167,7 +7167,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .case-study-story-nav__marker {
   position: absolute;
   top: 0;
-  left: -11px;
+  /* Sits 8px clear of the links. */
+  left: -19px;
   width: 11px;
   height: 11px;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);

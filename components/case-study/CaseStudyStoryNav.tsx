@@ -5,8 +5,8 @@ import type { CaseStudySectionNavItem } from "./CaseStudySectionRail";
 
 /*
  * Left-hand section list from the Transcript wireframe. The active link turns gold and the
- * motif beside it glides down (or up) to it as the reader scrolls. The list fades in once the
- * story starts and out again after the last section.
+ * motif beside it glides down (or up) to it as the reader scrolls. The list shows from the top of
+ * the page and fades out after the last section.
  */
 export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] }) {
   const navRef = useRef<HTMLElement>(null);
@@ -17,7 +17,6 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
 
   useEffect(() => {
     const targets = items.map((item) => document.getElementById(item.id));
-    const first = targets.find(Boolean);
     const last = [...targets].reverse().find(Boolean);
     let frame = 0;
 
@@ -39,11 +38,7 @@ export function CaseStudyStoryNav({ items }: { items: CaseStudySectionNavItem[] 
       });
 
       setActive(current);
-      setVisible(
-        Boolean(first && last) &&
-          first!.getBoundingClientRect().top < window.innerHeight * 0.6 &&
-          last!.getBoundingClientRect().bottom > window.innerHeight * 0.3,
-      );
+      setVisible(Boolean(last) && last!.getBoundingClientRect().bottom > window.innerHeight * 0.3);
     };
 
     const onScroll = () => {
