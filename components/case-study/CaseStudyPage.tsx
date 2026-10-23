@@ -20,6 +20,7 @@ import {
 import { PlaybackVideo } from "./PlaybackVideo";
 import { CaseStudyBreadcrumb } from "./CaseStudyBreadcrumb";
 import { CaseStudyStoryNav } from "./CaseStudyStoryNav";
+import { StoryGraphic } from "./StoryGraphic";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
 import { PROTOTYPE_EMBED_SRC, TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
@@ -51,13 +52,24 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
     11: "discovery",
     19: "testing",
     21: "findings",
+    26: "finding-funding",
+    32: "finding-smaller",
     33: "collaboration",
   },
 };
 
-// Story pages use the wireframe's left section list instead of the floating navbar and rail,
-// and open straight on the title.
-const storyLayoutSlugs = new Set(["transcript-review-redesign"]);
+// Story pages use the wireframe's left section list (with a breadcrumb above it and a CTA below)
+// instead of the floating navbar and rail, and open straight on the title.
+const storyPages: Record<string, { breadcrumb: string; cta: { label: string; href: string } }> = {
+  "transcript-review-redesign": {
+    breadcrumb: "BTC Transcript Review",
+    cta: { label: "Try the prototype", href: PROTOTYPE_EMBED_SRC },
+  },
+  "bitcoin-dev-project-redesign": {
+    breadcrumb: "Bitcoin Dev Project",
+    cta: { label: "Visit the live site", href: "https://bitcoindevs.xyz" },
+  },
+};
 
 const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "transcript-review-redesign": [
@@ -76,14 +88,17 @@ const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   ],
   "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
-    { id: "problem", label: "Problem" },
-    { id: "scope", label: "Scope" },
-    { id: "structure", label: "Structure" },
-    { id: "identity", label: "Identity" },
-    { id: "discovery", label: "Discovery" },
-    { id: "testing", label: "Testing" },
-    { id: "findings", label: "Findings" },
-    { id: "collaboration", label: "Collaboration" },
+    { id: "problem", label: "Where developers got lost" },
+    { id: "scope", label: "Scope of the redesign" },
+    { id: "structure", label: "Rebuilding the experience" },
+    { id: "structure", label: "Organizing around developer goals", secondary: true },
+    { id: "identity", label: "A more recognizable BDP", secondary: true },
+    { id: "discovery", label: "Making resources easier to find", secondary: true },
+    { id: "testing", label: "Testing after launch" },
+    { id: "findings", label: "An extra step to resources", secondary: true },
+    { id: "finding-funding", label: "Making funding visible", secondary: true },
+    { id: "finding-smaller", label: "Smaller fixes", secondary: true },
+    { id: "collaboration", label: "Working async" },
   ],
 };
 
@@ -1064,16 +1079,14 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
   const heroLayoutId = `case-study-media-${page.slug}`;
   const sectionAnchors = sectionAnchorsBySlug[page.slug] ?? {};
   const sectionNavItems = navItemsBySlug[page.slug] ?? [];
-  const isStory = storyLayoutSlugs.has(page.slug);
+  const story = storyPages[page.slug];
+  const isStory = Boolean(story);
 
   return (
     <main className="case-study-page" data-case-study-slug={page.slug}>
       <ScrollToTopOnMount />
       {isStory ? (
-        <CaseStudyStoryNav
-          cta={{ label: "Try the prototype", href: PROTOTYPE_EMBED_SRC }}
-          items={sectionNavItems}
-        />
+        <CaseStudyStoryNav cta={story.cta} items={sectionNavItems} />
       ) : (
         <>
           <FloatingNavbar
@@ -1089,7 +1102,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         </>
       )}
       <div className="case-study-page__paper">
-        {isStory ? <CaseStudyBreadcrumb current="BTC Transcript Review" /> : null}
+        {isStory ? <CaseStudyBreadcrumb current={story.breadcrumb} /> : null}
         <header className="case-study-page__hero">
           <HeroContentReveal>
             {isStory ? null : (
@@ -1146,16 +1159,26 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
           {page.sections.map((section, index) => {
             const sectionKey = `${section.variant}-${index}`;
             const anchorId = sectionAnchors[index];
-            const withAnchor = (content: ReactNode) =>
-              anchorId ? (
-                <div className="case-study-page__section-anchor" id={anchorId} key={sectionKey}>
-                  {content}
-                </div>
-              ) : (
-                <div className="case-study-page__section-anchor" key={sectionKey}>
-                  {content}
-                </div>
-              );
+            // Story pages group a section's heading, copy and visuals: headed sections start
+            // further apart, and visuals sit close under the text they belong to.
+            const role =
+              section.variant === "text"
+                ? section.eyebrow
+                  ? "heading"
+                  : "text"
+                : section.variant === "summary-banner" || section.variant === "story"
+                  ? undefined
+                  : "visual";
+            const withAnchor = (content: ReactNode) => (
+              <div
+                className="case-study-page__section-anchor"
+                data-story-role={isStory ? role : undefined}
+                id={anchorId}
+                key={sectionKey}
+              >
+                {content}
+              </div>
+            );
 
             if (section.variant === "text") {
               return withAnchor(<TextSection {...section} />);
@@ -1198,6 +1221,12 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "audit-findings") {
               return withAnchor(<AuditFindingsSection items={section.items} />);
+            }
+
+            if (section.variant === "graphic" && isStory && section.items?.length && !section.bare) {
+              return withAnchor(
+                <StoryGraphic items={section.items} layout={section.layout} palette={section.palette} />,
+              );
             }
 
             if (section.variant === "graphic") {

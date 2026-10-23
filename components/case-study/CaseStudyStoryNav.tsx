@@ -6,7 +6,7 @@ import type { CaseStudySectionNavItem } from "./CaseStudySectionRail";
 /*
  * Left-hand section list from the Transcript wireframe. The active link turns gold and the
  * motif beside it glides down (or up) to it as the reader scrolls. The list shows from the top of
- * the page and fades out after the last section.
+ * the page and fades out as the closing "Next up" card comes in.
  */
 export function CaseStudyStoryNav({
   items,
@@ -23,7 +23,9 @@ export function CaseStudyStoryNav({
 
   useEffect(() => {
     const targets = items.map((item) => document.getElementById(item.id));
-    const last = [...targets].reverse().find(Boolean);
+    // The index steps aside when the closing "Next up" card arrives.
+    const banners = document.querySelectorAll(".case-study-page__summary-banner");
+    const end = banners.length > 1 ? banners[banners.length - 1] : null;
     let frame = 0;
 
     const update = () => {
@@ -44,7 +46,7 @@ export function CaseStudyStoryNav({
       });
 
       setActive(current);
-      setVisible(Boolean(last) && last!.getBoundingClientRect().bottom > window.innerHeight * 0.3);
+      setVisible(!end || end.getBoundingClientRect().top > window.innerHeight * 0.6);
     };
 
     const onScroll = () => {
