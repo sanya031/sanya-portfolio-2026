@@ -99,7 +99,7 @@ export type CaseStudyPage = {
         bare?: boolean;
         tint?: string;
         // Story-layout pages: the container's tint and brush-stroke colour.
-        palette?: "peach" | "beige" | "blue" | "green" | "lilac";
+        palette?: "peach" | "beige" | "blue" | "slate" | "lilac";
         items?: Array<{
           label?: string;
           src: string;
@@ -593,7 +593,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
-        palette: "green",
+        palette: "slate",
         items: [
           {
             label: "BEFORE — LONG BLOCKS OF TEXT MADE THE PAGE HARD TO SKIM",

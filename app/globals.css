@@ -7433,36 +7433,35 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   gap: 16px;
 }
 
-.story-graphic:not([data-layout="row"]) > .story-graphic__canvas + .story-graphic__canvas {
-  border-top: 0;
-}
-
-/* The label sits in the flow above the image, so long labels can wrap on narrow screens. */
 .story-graphic__canvas {
   display: flex;
   flex-direction: column;
 }
 
-.story-graphic__canvas > figcaption {
+/* Each label sits in the flow above its image, so long labels can wrap on narrow screens. */
+.story-graphic__item {
   position: relative;
-  order: -1;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  overflow: clip;
+}
+
+.story-graphic__item > * {
+  flex: none;
+  min-width: 0;
+}
+
+/* Room between one screenshot's cut-off edge and the next label. */
+.story-graphic__item + .story-graphic__item {
+  margin-top: 28px;
 }
 
 .story-graphic .transcript-story__label {
   padding: 20px 20px 16px;
   white-space: normal;
-}
-
-.story-graphic__media {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-}
-
-/* Neither part shrinks; anything taller than the container is clipped at its bottom edge. */
-.story-graphic__canvas > figcaption,
-.story-graphic__media {
-  flex: none;
 }
 
 .story-graphic__media img,
@@ -7474,9 +7473,9 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   background: #ffffff;
 }
 
-/* Screenshots reach the bottom edge: short ones set the container's height, tall ones are cut
-   off at the same 716:400 height so they bleed. */
-.story-graphic[data-fit="bleed"] .story-graphic__canvas {
+/* Screenshots are cut off at the same 716:400 height; short ones end where they end, and the
+   last one runs into the container's bottom edge. */
+.story-graphic[data-fit="bleed"] .story-graphic__item {
   max-height: calc(100cqi * 400 / 716);
 }
 
@@ -7486,7 +7485,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .story-graphic[data-fit="bleed"] .story-graphic__media img,
 .story-graphic[data-fit="bleed"] .story-graphic__media video {
-  border-bottom: 0;
   border-radius: 6px 6px 0 0;
 }
 
