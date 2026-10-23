@@ -26,7 +26,7 @@ const problems = [
   {
     stage: "01/ Finding work",
     title: "Too many competing actions",
-    body: "Contributors needed to choose a transcript that matched their interests and available time. Repeated Claim buttons, colorful tags, and reward icons competed for attention, making it harder to compare the work itself.",
+    body: "Repeated Claim buttons, colorful tags, and reward icons competed for attention, making it harder to compare the work itself.",
     shots: [
       {
         src: "old-review-table.webp",
