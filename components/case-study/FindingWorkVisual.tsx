@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, type Transition, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { bandSquiggles, ContainerLabel, Shot, Squiggles } from "./transcriptStoryParts";
+import { bandSquiggles, Shot, Squiggles } from "./transcriptStoryParts";
 
 /* ─────────────────────────────────────────────────────────
  * FINDING WORK STORYBOARD (cycles while the container is on screen)
@@ -11,7 +11,8 @@ import { bandSquiggles, ContainerLabel, Shot, Squiggles } from "./transcriptStor
  *  6000ms   bar is full; the next problem becomes active:
  *             - its body text opens while the previous one closes
  *             - its screenshot fades and settles in as the previous one fades out
- *             - the container label crossfades to the new stage
+ *             - in the container label, the stage number and word roll down to the next
+ *               one while WORK stays put, its gap easing to the new word's width
  *           after the last problem it starts again from the first
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
@@ -24,7 +25,7 @@ const size = { w: 716, h: 352 };
 
 const problems = [
   {
-    stage: "01/ Finding work",
+    stage: "01/ Finding",
     title: "Too many competing actions",
     body: "Repeated Claim buttons, colorful tags, and reward icons competed for attention, making it harder to compare the work itself.",
     shots: [
@@ -42,7 +43,7 @@ const problems = [
     ],
   },
   {
-    stage: "02/ Claiming work",
+    stage: "02/ Claiming",
     title: "Commitment before context",
     body: "Claiming was the only way to inspect a transcript, immediately starting a reservation that could leave it unavailable to others if unfinished.",
     shots: [
@@ -54,7 +55,7 @@ const problems = [
     ],
   },
   {
-    stage: "03/ Editing work",
+    stage: "03/ Editing",
     title: "Tools disconnected from the task",
     body: "The existing interface separated recording, manage speakers and other controls, making it harder to move between related editing tasks.",
     shots: [
@@ -67,7 +68,7 @@ const problems = [
     ],
   },
   {
-    stage: "04/ Tracking work",
+    stage: "04/ Tracking",
     title: "Difficult to track work",
     body: "Similar table layouts and hard-to-scan statuses made it difficult to identify which reviews needed attention.",
     shots: [
@@ -114,12 +115,8 @@ export function FindingWorkVisual() {
       style={{ background: "#a6e1ec", ["--finding-fill" as string]: `${TIMING.fill}ms` }}
     >
       <Squiggles items={bandSquiggles("discovery")} size={size} />
-      <figcaption className="transcript-story__finding-label">
-        {problems.map((problem, index) => (
-          <span aria-hidden={index !== active} data-active={index === active} key={problem.stage}>
-            <ContainerLabel lead={problem.stage} tone="#315a62" />
-          </span>
-        ))}
+      <figcaption>
+        <RollingStageLabel active={active} />
       </figcaption>
 
       <ul className="transcript-story__problems">
@@ -182,5 +179,58 @@ export function FindingWorkVisual() {
         ))}
       </div>
     </figure>
+  );
+}
+
+// "01/ FINDING WORK": only the number and first word roll; WORK stays where it is.
+function RollingStageLabel({ active }: { active: number }) {
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [widths, setWidths] = useState<number[]>([]);
+
+  // Each stage's width, so the gap before WORK can ease between words.
+  useEffect(() => {
+    const measure = measureRef.current;
+
+    if (!measure) {
+      return;
+    }
+
+    const read = () =>
+      setWidths([...measure.children].map((child) => (child as HTMLElement).offsetWidth));
+    const observer = new ResizeObserver(read);
+
+    observer.observe(measure);
+    document.fonts.ready.then(read);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <p className="transcript-story__label transcript-story__rolling-label" style={{ color: "#315a62" }}>
+      <motion.span
+        animate={widths[active] ? { width: widths[active] } : undefined}
+        className="transcript-story__rolling-slot"
+        initial={false}
+        transition={SMOOTH}
+      >
+        <AnimatePresence initial={false}>
+          <motion.span
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            initial={{ y: "-100%", opacity: 0 }}
+            key={active}
+            transition={SMOOTH}
+          >
+            {problems[active].stage}
+          </motion.span>
+        </AnimatePresence>
+      </motion.span>{" "}
+      work
+      <span aria-hidden="true" className="transcript-story__rolling-measure" ref={measureRef}>
+        {problems.map((problem) => (
+          <span key={problem.stage}>{problem.stage}</span>
+        ))}
+      </span>
+    </p>
   );
 }

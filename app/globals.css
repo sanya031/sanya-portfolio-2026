@@ -6661,20 +6661,33 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 }
 
-/* Stage label and screenshots crossfade between problems. */
-.transcript-story__finding-label {
-  display: grid;
+/* Stage label: the number and first word roll down while WORK stays fixed. */
+.transcript-story__rolling-label {
+  position: relative;
+  white-space: nowrap;
 }
 
-.transcript-story__finding-label > span {
+.transcript-story__rolling-slot {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.transcript-story__rolling-slot > span {
   grid-area: 1 / 1;
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.transcript-story__finding-label > span[data-active="false"] {
-  opacity: 0;
+.transcript-story__rolling-measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
 }
 
+.transcript-story__rolling-measure > span {
+  display: inline-block;
+}
+
+/* Screenshots crossfade between problems. */
 .transcript-story__finding-stage {
   position: absolute;
   inset: 0;
