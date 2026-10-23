@@ -18,6 +18,7 @@ import {
   type CaseStudySectionNavItem,
 } from "./CaseStudySectionRail";
 import { PlaybackVideo } from "./PlaybackVideo";
+import { CaseStudyBreadcrumb } from "./CaseStudyBreadcrumb";
 import { CaseStudyStoryNav } from "./CaseStudyStoryNav";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
@@ -1088,6 +1089,7 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
         </>
       )}
       <div className="case-study-page__paper">
+        {isStory ? <CaseStudyBreadcrumb current="BTC Transcript Review" /> : null}
         <header className="case-study-page__hero">
           <HeroContentReveal>
             {isStory ? null : (
