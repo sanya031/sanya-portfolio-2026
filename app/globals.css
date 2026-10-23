@@ -2831,20 +2831,14 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   --case-column-width: 50.875rem;
   --case-heading: #32404f;
   --case-body: #787878;
-  /* Transcript Review's label colour (eyebrows, meta, stat icons, section rail). */
+  /* Label colour (eyebrows, meta, stat icons, section rail), shared by every case study. */
   --case-label: #737373;
   --case-rail-active: var(--case-label);
   --case-border: #e4e0d7;
-  --case-container-border: #e0e0e0;
+  --case-container-border: #c6c6c6;
   background: #fff3a6;
   color: var(--case-body);
   font-family: "Geist", Arial, sans-serif;
-}
-
-.case-study-page[data-case-study-slug="bitcoin-dev-project-redesign"] {
-  --case-label: #cd4429;
-  --case-rail-active: var(--case-label);
-  --case-container-border: #e0e0e0;
 }
 
 .case-study-page__paper {
@@ -7255,4 +7249,117 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .transcript-story[data-visual-only="true"] {
   margin-top: 0;
+}
+
+/* ── Story-layout spacing for pages built from separate text and visual sections (BDP):
+   headed sections start ~60px apart, visuals sit 16px under the text they belong to. ── */
+.case-study-page__section-anchor[data-story-role="heading"] {
+  margin-top: 1.75rem;
+}
+
+.case-study-page__section-anchor[data-story-role="visual"] {
+  margin-top: calc(1rem - clamp(2.1rem, 4vw, 2rem));
+}
+
+/* ── Story-layout before/after graphics (StoryGraphic) ── */
+.story-graphic {
+  display: grid;
+  container-type: inline-size;
+}
+
+.story-graphic[data-layout="row"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.story-graphic:not([data-layout="row"]) > .story-graphic__canvas + .story-graphic__canvas {
+  border-top: 0;
+}
+
+/* The label sits in the flow above the image, so long labels can wrap on narrow screens. */
+.story-graphic__canvas {
+  display: flex;
+  flex-direction: column;
+}
+
+.story-graphic__canvas > figcaption {
+  position: relative;
+  order: -1;
+}
+
+.story-graphic .transcript-story__label {
+  padding: 20px 20px 16px;
+  white-space: normal;
+}
+
+.story-graphic__media {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+/* Neither part shrinks; anything taller than the container is clipped at its bottom edge. */
+.story-graphic__canvas > figcaption,
+.story-graphic__media {
+  flex: none;
+}
+
+.story-graphic__media img,
+.story-graphic__media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #e3e3e3;
+  background: #ffffff;
+}
+
+/* Screenshots reach the bottom edge: short ones set the container's height, tall ones are cut
+   off at the same 716:400 height so they bleed. */
+.story-graphic[data-fit="bleed"] .story-graphic__canvas {
+  max-height: calc(100cqi * 400 / 716);
+}
+
+.story-graphic[data-fit="bleed"] .story-graphic__media {
+  margin: 0 7%;
+}
+
+.story-graphic[data-fit="bleed"] .story-graphic__media img,
+.story-graphic[data-fit="bleed"] .story-graphic__media video {
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Diagrams stay whole. */
+.story-graphic[data-fit="contain"] .story-graphic__canvas {
+  padding: 0 20px 20px;
+}
+
+.story-graphic[data-fit="contain"] .transcript-story__label {
+  padding: 20px 0 14px;
+}
+
+.story-graphic[data-fit="contain"] .story-graphic__media img {
+  border-radius: 6px;
+}
+
+@media (max-width: 760px) {
+  .story-graphic[data-layout="row"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .story-graphic .transcript-story__label {
+    padding: 12px 12px 10px;
+  }
+
+  .story-graphic[data-fit="bleed"] .story-graphic__media {
+    margin: 0 5%;
+  }
+
+  .story-graphic[data-fit="contain"] .story-graphic__canvas {
+    padding: 0 12px 12px;
+  }
+
+  .story-graphic[data-fit="contain"] .transcript-story__label {
+    padding: 12px 0 10px;
+  }
 }

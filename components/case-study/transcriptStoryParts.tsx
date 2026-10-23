@@ -19,7 +19,7 @@ export const place = ({ x, y, w, h }: Box, size: { w: number; h: number }): CSSP
   height: `${(h / size.h) * 100}%`,
 });
 
-type Squiggle = Box & { src: string; inset: string; rotate?: number };
+export type Squiggle = Box & { src: string; inset: string; rotate?: number };
 
 // The squiggles are blurred strokes whose SVG bounds extend past their layer box (the inset).
 export function Squiggles({ items, size }: { items: Squiggle[]; size: { w: number; h: number } }) {
@@ -35,7 +35,11 @@ export function Squiggles({ items, size }: { items: Squiggle[]; size: { w: numbe
             transform: item.rotate ? `rotate(${item.rotate}deg)` : undefined,
           }}
         >
-          <img alt="" src={`${assetPath}/${item.src}`} style={{ inset: item.inset }} />
+          <img
+            alt=""
+            src={item.src.startsWith("/") ? item.src : `${assetPath}/${item.src}`}
+            style={{ inset: item.inset }}
+          />
         </span>
       ))}
     </>

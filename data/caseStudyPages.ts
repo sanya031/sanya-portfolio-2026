@@ -98,6 +98,8 @@ export type CaseStudyPage = {
         layout?: "row";
         bare?: boolean;
         tint?: string;
+        // Story-layout pages: the container's tint and brush-stroke colour.
+        palette?: "peach" | "beige" | "blue" | "green" | "lilac";
         items?: Array<{
           label?: string;
           src: string;
@@ -357,7 +359,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Overview",
+        eyebrow: "01 / Overview",
         title: "Restructuring resource discovery and building an identity that could scale",
         body: [
           "As Bitcoin Dev Project grew from a community initiative into a broader platform for Bitcoin developers, its website and identity hadn't evolved with it. Resources were spread across disconnected pages and long lists, making it difficult for visitors to understand what BDP offered and find the right path for their goals.",
@@ -367,7 +369,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Problem",
+        eyebrow: "02 / Problem",
         title: "More resources created more opportunities and more places to get lost",
         body: [
           "BDP had grown to more than 30 learning resources alongside projects and funding opportunities. But those paths were spread across long lists and disconnected pages, making it difficult for someone new to understand what BDP offered or where to begin.",
@@ -376,6 +378,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "graphic",
+        palette: "peach",
         items: [
           {
             label: "SNIPPET FROM THE OLD WEBSITE",
@@ -391,7 +394,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Scope",
+        eyebrow: "03 / Scope",
         title: "My role covered the system people used and the identity they saw",
         body: [
           "Rather than treating the work as a single-page redesign, I worked across the main surfaces developers encountered: the homepage, learning resources, contribution opportunities, and funding.",
@@ -416,7 +419,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Structure",
+        eyebrow: "04 / Structure",
         title: "I reorganized the experience around what developers came to do",
         body: [
           "The previous structure required visitors to understand how BDP organized its programs and resources. I shifted the hierarchy toward three goals a developer could recognize immediately: learn something, contribute to something, or get support to build something.",
@@ -426,6 +429,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         layout: "row",
+        palette: "beige",
         items: [
           {
             label: "BEFORE — SITEMAP SHAPED BY BDP'S INTERNAL STRUCTURE",
@@ -441,7 +445,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Identity",
+        eyebrow: "05 / Identity",
         title: "A new structure also needed a more recognizable BDP",
         body: [
           "I worked on the visual identity alongside the product redesign rather than treating branding as a layer added at the end. The goal was to give BDP a consistent personality across the website, community, and future resources while keeping a technical project approachable.",
@@ -453,7 +457,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Discovery",
+        eyebrow: "06 / Discovery",
         title: "Putting all the resources in one place didn't automatically make them easier to find",
         body: [
           "Centralizing the library removed the fragmentation of the old experience, but it introduced a different question: how much should we show at once?",
@@ -506,7 +510,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Testing",
+        eyebrow: "07 / Testing",
         title: "Once it shipped, I wanted to know where the structure still broke down",
         body: [
           "I ran six moderated usability sessions with developers who were unfamiliar or only slightly familiar with BDP. I asked them to understand what BDP offered, move between the three pathways, find a resource, and work out how they would pursue funding.",
@@ -518,7 +522,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 01",
+        eyebrow: "Finding 01",
         title: "Testing revealed an extra step between developers and what they came to find",
         body: [
           "Some users weren't sure where to go from the homepage. And when they chose Start Exploring, they expected to begin exploring resources, not make another choice.",
@@ -542,6 +546,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "blue",
         items: [
           {
             label: "BEFORE — STANDALONE PAGE BEHIND A CTA",
@@ -557,7 +562,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 02",
+        eyebrow: "Finding 02",
         title:
           "Developers could find the Get Funded page, but the process on how to get funded was buried in the explanation",
         body: [
@@ -588,6 +593,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "green",
         items: [
           {
             label: "BEFORE — LONG BLOCKS OF TEXT MADE THE PAGE HARD TO SKIM",
@@ -604,7 +610,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Finding — 03",
+        eyebrow: "Finding 03",
         title: "The remaining issues were smaller, but easier to act on",
         body: [
           "Not every finding called for a larger redesign. I clarified confusing copy, made difficulty labels easier to understand, added multi-select filtering, and improved interaction feedback on resource cards. These became smaller improvements alongside the larger changes to Explore and Get Funded.",
@@ -612,7 +618,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       },
       {
         variant: "text",
-        eyebrow: "Collaboration",
+        eyebrow: "08 / Collaboration",
         title: "Async collaboration meant the work had to make sense without me in the room",
         body: [
           "I worked with the Project Lead and two developers to ship the initial redesign, then continued working with developers and open-source contributors as the product evolved.",
@@ -622,6 +628,7 @@ export const caseStudyPages: CaseStudyPage[] = [
       {
         variant: "graphic",
         tint: "#e1dbd0",
+        palette: "lilac",
         items: [
           {
             label: "EXAMPLE OF DOCUMENTATION",
