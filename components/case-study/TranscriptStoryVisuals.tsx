@@ -301,7 +301,7 @@ function PreviewVisual() {
 }
 
 function WithdrawVisual() {
-  const size = { w: 716, h: 289 };
+  const size = { w: 716, h: 315 };
 
   return (
     <Canvas
@@ -310,8 +310,8 @@ function WithdrawVisual() {
       size={size}
     >
       <Shot
-        alt="Withdraw Review confirmation in the editor, warning that the transcript will return to the available pool"
-        box={{ x: 70, y: 55, w: 556, h: 374 }}
+        alt="Withdraw review confirmation over the Silent Payments Part 2 editor, warning that withdrawing releases the review to other contributors and loses unsaved changes"
+        box={{ x: 55, y: 52, w: 604, h: 262 }}
         size={size}
         src="withdraw-modal.webp"
       />
