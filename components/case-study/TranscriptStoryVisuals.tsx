@@ -11,6 +11,16 @@ import {
   wavySquiggles,
 } from "./transcriptStoryParts";
 
+// Faint grey wavy strokes stretched past both sides so they run edge to edge, for the grey
+// containers holding darker screenshots (blurred further in CSS).
+const softSquiggles = () =>
+  wavySquiggles("wavy-faint").map((item) => ({
+    ...item,
+    x: -40,
+    w: 796,
+    rotate: item.rotate ? item.rotate / 2 : undefined,
+  }));
+
 /** A container whose contents are positioned in the wireframe's pixel space. */
 function Canvas({
   size,
@@ -119,8 +129,13 @@ function PreviewVisual() {
 
   return (
     <div className="transcript-story__pair">
-      <Canvas background="#f4f4f4" label={<ContainerLabel detail="Claim to inspect" lead="Before" />} size={before}>
-        <Squiggles items={wavySquiggles("wavy-grey")} size={before} />
+      <Canvas
+        background="#f4f4f4"
+        className="transcript-story__soft-strokes"
+        label={<ContainerLabel detail="Claim to inspect" lead="Before" />}
+        size={before}
+      >
+        <Squiggles items={softSquiggles()} size={before} />
         <Shot
           alt="Original flow: Browse, then Claim, then Editor, then Submit"
           box={{ x: 197, y: 65, w: 302, h: 27 }}
@@ -165,10 +180,11 @@ function WithdrawVisual() {
   return (
     <Canvas
       background="#f9f9f9"
+      className="transcript-story__soft-strokes"
       label={<ContainerLabel lead="Now contributors could also withdraw from a claimed review" />}
       size={size}
     >
-      <Squiggles items={wavySquiggles("wavy-grey")} size={size} />
+      <Squiggles items={softSquiggles()} size={size} />
       <Shot
         alt="Withdraw review confirmation over the Silent Payments Part 2 editor, warning that withdrawing releases the review to other contributors and loses unsaved changes"
         box={{ x: 55, y: 52, w: 604, h: 262 }}
@@ -185,8 +201,13 @@ function BrowseListVisual() {
 
   return (
     <div className="transcript-story__pair">
-      <Canvas background="#f1f1f1" label={<ContainerLabel detail="Crowded review table" lead="Before" />} size={before}>
-        <Squiggles items={wavySquiggles("wavy-grey", 1, 1)} size={before} />
+      <Canvas
+        background="#f1f1f1"
+        className="transcript-story__soft-strokes"
+        label={<ContainerLabel detail="Crowded review table" lead="Before" />}
+        size={before}
+      >
+        <Squiggles items={softSquiggles()} size={before} />
         <Shot
           alt="The original Transcripts waiting for review table, with title, speakers, time, reward and a Claim button in separate columns"
           box={{ x: 67, y: 55, w: 582, h: 324 }}
@@ -271,8 +292,14 @@ function RewardsVisual() {
 function ReviewPagesVisual() {
   return (
     <figure className="transcript-story__panel transcript-story__review-pages" style={{ background: "#ffcf95" }}>
+      {/* Edge to edge, behind the two labels and along the bottom where the panel shows through. */}
       <Squiggles
-        items={[...bandSquiggles("orange"), ...bandSquiggles("orange", 20, 450)]}
+        items={bandSquiggles("orange").map((item, index) => ({
+          ...item,
+          x: -40,
+          w: 796,
+          y: [-20, 430, 850][index],
+        }))}
         size={{ w: 716, h: 899 }}
       />
       <ContainerLabel lead="My reviews" detail="Prioritizing what needs attention and where to resume work" />

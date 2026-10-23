@@ -23,7 +23,7 @@
 <use xlink:href="#stroke0_0_72" transform="translate(722.784 116.322) scale(0.131422) rotate(114.432)"/>
 <use xlink:href="#stroke0_0_72" transform="translate(722.919 178.235) scale(0.263842) rotate(-132.575)"/>
 </mask>
-<rect x="4" y="4" width="767.142" height="154.975" fill="#E6E6E6" mask="url(#stroke1_0_72)"/>
+<rect x="4" y="4" width="767.142" height="154.975" fill="#EAEAEA" mask="url(#stroke1_0_72)"/>
 </g>
 <defs>
 <filter id="filter0_f_0_72" x="0" y="0" width="775.142" height="162.975" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

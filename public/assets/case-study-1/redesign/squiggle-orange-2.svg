@@ -25,7 +25,7 @@
 <use xlink:href="#stroke0_0_70" transform="translate(759.972 102.704) scale(0.135415) rotate(49.9062)"/>
 <use xlink:href="#stroke0_0_70" transform="translate(790.115 58.7469) scale(0.265381) rotate(56.4805)"/>
 </mask>
-<rect x="4" y="4" width="813.696" height="182.877" fill="#F6BB73" fill-opacity="0.2" mask="url(#stroke1_0_70)"/>
+<rect x="4" y="4" width="813.696" height="182.877" fill="#F2AC58" fill-opacity="0.2" mask="url(#stroke1_0_70)"/>
 </g>
 <defs>
 <filter id="filter0_f_0_70" x="0" y="0" width="821.696" height="190.877" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
