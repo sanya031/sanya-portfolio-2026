@@ -7237,3 +7237,29 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     opacity: 0;
   }
 }
+
+.case-study-story-nav__cta {
+  margin-top: 16px;
+  color: #867600;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-story-nav__cta:hover,
+.case-study-story-nav__cta:focus-visible {
+  color: #5c5100;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

@@ -281,7 +281,7 @@ function ReviewPagesVisual() {
 }
 
 // The Figma Make prototype of the redesigned journey.
-const PROTOTYPE_EMBED_SRC = "https://agile-yew-00187717.figma.site/";
+export const PROTOTYPE_EMBED_SRC = "https://agile-yew-00187717.figma.site/";
 
 function PrototypeVisual() {
   return (
