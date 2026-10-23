@@ -6152,7 +6152,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     margin-left: 0.55rem;
   }
 
-  .case-study-page__facts,
   .case-study-page__split-grid,
   .case-study-page__section[data-columns="true"] .case-study-page__ordered-list {
     grid-template-columns: 1fr;
@@ -6547,36 +6546,43 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   align-self: flex-start;
 }
 
+/* Everything in the row is sized in em, so on narrow containers the whole row shrinks
+   together and stays on one line (it measures about 54em wide). */
+.transcript-story__journey {
+  container-type: inline-size;
+}
+
 .transcript-story__journey-steps {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 0.33em;
   margin: 9px 0 0;
   padding: 0 20px;
+  font-size: min(12px, calc((100cqi - 24px) / 54));
   list-style: none;
 }
 
 .transcript-story__journey-steps li {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.33em;
 }
 
 .transcript-story__journey-steps img {
-  width: 28px;
+  width: 2.33em;
   height: auto;
 }
 
 .transcript-story__journey-steps span {
-  padding: 6px 8px;
-  border-radius: 18px;
+  padding: 0.5em 0.67em;
+  border-radius: 1.5em;
   background: #ffffff;
   color: #000000;
-  font-size: 12px;
+  font-size: 1em;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -6918,6 +6924,11 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     font-size: 10px;
   }
 
+  .transcript-story__journey {
+    min-height: 0;
+    padding-bottom: 20px;
+  }
+
   .transcript-story__journey-steps {
     margin-top: 0;
   }
@@ -7217,4 +7228,21 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 /* Grey containers holding darker screenshots: strokes stay faint and extra soft. */
 .transcript-story__soft-strokes .transcript-story__squiggle img {
   filter: blur(3px);
+}
+
+/* Facts on phones: two rows of two, with the odd last item (the longest list) across the full
+   width. Kept last so it wins over the 3-column tablet rule. */
+@media (max-width: 860px) {
+  .case-study-page__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-study-page__fact:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Finding work screenshots sit straight on the aqua, without the framed outline. */
+.transcript-story__finding .transcript-story__shot--framed {
+  border: 0;
 }
