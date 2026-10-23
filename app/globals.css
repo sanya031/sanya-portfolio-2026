@@ -6955,7 +6955,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   padding: 10px;
   overflow: hidden;
   overflow: clip;
-  border: 1px solid #c0c0c0;
+  border: 1px solid #c6c6c6;
 }
 
 /* Content sits above the brush strokes. */
@@ -7027,7 +7027,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .transcript-story__window {
   overflow: hidden;
   margin: 0;
-  border: 1px solid #dddddd;
+  border: 1px solid #c6c6c6;
   border-radius: 8px 8px 0 0;
 }
 
