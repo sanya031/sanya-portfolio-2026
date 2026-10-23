@@ -6592,3 +6592,428 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .hero-intro[data-motif-layout="below"] .hero-intro__motif-label {
   font-size: clamp(9px, calc(var(--hero-cell) * 0.3), 12px);
 }
+
+/* ── Transcript Review story sections (eyebrow, serif heading, copy, built visual container) ── */
+.transcript-story {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.transcript-story > .case-study-page__section-title {
+  margin-bottom: 0;
+}
+
+.transcript-story > .case-study-page__body-copy + * {
+  margin-top: 0.25rem;
+}
+
+.transcript-story__canvas {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #c6c6c6;
+}
+
+.transcript-story__canvas > figcaption {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+
+.transcript-story__label {
+  margin: 0;
+  padding: 20px;
+  color: #1c1c1c;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.transcript-story__label span {
+  color: rgba(28, 28, 28, 0.7);
+}
+
+.transcript-story__squiggle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.transcript-story__squiggle img {
+  position: absolute;
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+}
+
+.transcript-story__shot {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  max-width: none;
+  object-fit: cover;
+}
+
+.transcript-story__shot--framed {
+  border: 0.5px solid #5f84a8;
+  border-radius: 8px;
+}
+
+.transcript-story__shot--top-rounded {
+  border-radius: 6px 6px 0 0;
+}
+
+.transcript-story__shot--soft {
+  border: 1px solid #e3e3e3;
+  border-radius: 6px;
+}
+
+.transcript-story__shot--row {
+  box-shadow: 0 10px 24px rgba(31, 61, 92, 0.18);
+}
+
+/* Context: the original journey as a row of steps */
+.transcript-story__journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 132px;
+  padding-bottom: 36px;
+}
+
+.transcript-story__journey > figcaption {
+  position: relative;
+  align-self: flex-start;
+}
+
+.transcript-story__journey-steps {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 9px 0 0;
+  padding: 0 20px;
+  list-style: none;
+}
+
+.transcript-story__journey-steps li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.transcript-story__journey-steps img {
+  width: 28px;
+  height: auto;
+}
+
+.transcript-story__journey-steps span {
+  padding: 6px 8px;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Discovery: the problem list beside the original table */
+.transcript-story__finding {
+  aspect-ratio: 716 / 352;
+}
+
+.transcript-story__finding-shots {
+  position: absolute;
+  inset: 0;
+}
+
+.transcript-story__problems {
+  position: absolute;
+  z-index: 2;
+  top: 23%;
+  left: 2.65%;
+  display: grid;
+  gap: 8px;
+  width: 30.7%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.transcript-story__problems li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+
+.transcript-story__problems strong {
+  color: rgba(0, 0, 0, 0.24);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.transcript-story__problems li[data-active="true"] strong {
+  color: #101010;
+}
+
+.transcript-story__problems p {
+  margin: 0;
+  color: #101010;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.transcript-story__problem-marker {
+  position: absolute;
+  top: 8px;
+  left: -12px;
+  width: 13px;
+  height: 2px;
+  transform: rotate(90deg);
+}
+
+/* Approach: two reference products */
+.transcript-story__approach {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.transcript-story__approach > figure {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  margin: 0;
+}
+
+.transcript-story__reference-name {
+  position: absolute;
+  z-index: 2;
+  top: 6px;
+  left: 11px;
+  margin: 0;
+  color: #4c4b4b;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+.transcript-story__approach figcaption {
+  display: grid;
+  gap: 8px;
+  color: #4c4b4b;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.transcript-story__approach figcaption p {
+  margin: 0;
+}
+
+.transcript-story__approach figcaption ul {
+  margin: 0;
+  list-style: disc;
+  padding-left: 21px;
+}
+
+/* Before / after containers stacked into one block */
+.transcript-story__pair {
+  display: grid;
+}
+
+.transcript-story__pair > .transcript-story__canvas + .transcript-story__canvas {
+  border-top: 0;
+}
+
+/* Rewards and review pages: containers with flowing content */
+.transcript-story__panel {
+  display: grid;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #c0c0c0;
+}
+
+.transcript-story__rewards {
+  gap: 12px;
+}
+
+.transcript-story__reward-copy {
+  display: grid;
+  gap: 10px;
+  padding: 20px 20px 0;
+}
+
+.transcript-story__reward-copy .transcript-story__label {
+  padding: 0;
+}
+
+.transcript-story__reward-copy p:last-child {
+  margin: 0;
+  color: #4c4b4b;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.transcript-story__reward-images {
+  display: grid;
+  padding: 20px 10px 10px;
+}
+
+.transcript-story__reward-images img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #ced4da;
+  background: #ffffff;
+}
+
+.transcript-story__rewards > :first-child .transcript-story__reward-images img {
+  max-width: 573px;
+}
+
+.transcript-story__reward-images[data-count="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding-inline: 16px;
+}
+
+.transcript-story__reward-images[data-count="3"] img {
+  border-width: 0.5px;
+}
+
+.transcript-story__review-pages {
+  gap: 10px;
+  overflow: hidden;
+}
+
+.transcript-story__review-pages img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Prototyping: the embed sits inside a browser-style window */
+.transcript-story__window {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid #dddddd;
+  border-radius: 8px 8px 0 0;
+}
+
+.transcript-story__window-bar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 21px;
+  padding-left: 6px;
+  background: #a18e00;
+}
+
+.transcript-story__window-bar span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e9de8f;
+}
+
+.transcript-story__window iframe,
+.transcript-story__window-empty {
+  display: block;
+  width: 100%;
+  aspect-ratio: 716 / 459;
+  border: 0;
+}
+
+.transcript-story__window-empty {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #000000;
+  font-size: 14px;
+}
+
+/* Validation: the four open questions */
+.transcript-story__questions {
+  display: grid;
+  gap: 1em;
+  margin: 0;
+  padding-left: 21px;
+  list-style: disc;
+  color: var(--case-body);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.transcript-story__questions strong {
+  color: var(--case-heading);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .transcript-story__label {
+    padding: 12px;
+    font-size: 10px;
+  }
+
+  .transcript-story__journey-steps {
+    margin-top: 0;
+  }
+
+  /* The problem list and table stack instead of sitting side by side. */
+  .transcript-story__finding {
+    display: grid;
+    gap: 16px;
+    aspect-ratio: auto;
+    padding: 44px 16px 0 28px;
+  }
+
+  .transcript-story__problems,
+  .transcript-story__finding-shots {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+
+  .transcript-story__finding-shots .transcript-story__shot {
+    position: relative;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .transcript-story__finding-shots .transcript-story__shot:first-child {
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* The zoomed row is the same table again, so it only appears beside the full table. */
+  .transcript-story__finding-shots .transcript-story__shot--row {
+    display: none;
+  }
+
+  .transcript-story__approach {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .transcript-story__reward-images[data-count="3"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding-inline: 10px;
+  }
+
+  .transcript-story__reward-copy {
+    padding: 12px 10px 0;
+  }
+
+  .transcript-story__window iframe,
+  .transcript-story__window-empty {
+    aspect-ratio: 3 / 4;
+  }
+}
