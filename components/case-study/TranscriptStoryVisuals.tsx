@@ -285,17 +285,27 @@ export const PROTOTYPE_EMBED_SRC = "https://agile-yew-00187717.figma.site/";
 
 function PrototypeVisual() {
   return (
-    <figure className="transcript-story__window">
-      <div aria-hidden="true" className="transcript-story__window-bar">
-        <span />
-        <span />
-        <span />
-      </div>
-      <PrototypeEmbed
-        src={PROTOTYPE_EMBED_SRC}
-        title="Interactive Figma Make prototype of the redesigned Transcript Review journey"
-      />
-    </figure>
+    <div className="transcript-story__window-group">
+      <figure className="transcript-story__window">
+        <div aria-hidden="true" className="transcript-story__window-bar">
+          <span />
+          <span />
+          <span />
+        </div>
+        <PrototypeEmbed
+          src={PROTOTYPE_EMBED_SRC}
+          title="Interactive Figma Make prototype of the redesigned Transcript Review journey"
+        />
+      </figure>
+      <p className="transcript-story__window-caption">
+        Best explored full screen.{" "}
+        <a href={PROTOTYPE_EMBED_SRC} rel="noopener noreferrer" target="_blank">
+          Open the prototype in a new tab
+          <span className="visually-hidden"> (opens in a new tab)</span>
+        </a>
+        .
+      </p>
+    </div>
   );
 }
 

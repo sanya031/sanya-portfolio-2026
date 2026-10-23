@@ -8,13 +8,17 @@ import { useEffect, useRef, useState } from "react";
  *
  *     0ms   cursor glides in from the bottom-right, like a collaborator joining the file
  *  1100ms   name tag types out "Interact with this prototype", one letter at a time
- *  ~2.5s    typing done; the caret blinks out and the cursor drifts between a few
- *           resting spots, pausing at each, for as long as the window is in view
+ *  ~3.1s    typing done; the cursor starts drifting between a few resting spots,
+ *           pausing at each, for as long as the window is in view
+ *           the message rests for 3.5s, erases, waits 1.5s and types out again, on a loop
  *  hover    while the visitor's own pointer is over the prototype the cursor fades away
  * ───────────────────────────────────────────────────────── */
 const TIMING = {
   typeStart: 1100, // ms after entering before the first letter
-  perLetter: 45, // ms between letters
+  perLetter: 70, // ms between letters while typing
+  hold: 3500, // ms the full message stays up
+  perErase: 30, // ms between letters while erasing
+  gap: 1500, // ms with an empty tag before typing again
   drift: 2800, // ms between resting spots
 };
 
@@ -39,32 +43,55 @@ export function CollaboratorCursor({ hidden }: { hidden: boolean }) {
   const reduceMotion = useReducedMotion();
   const [typed, setTyped] = useState(0);
   const [spot, setSpot] = useState(-1);
+  const [drifting, setDrifting] = useState(false);
 
-  // Enter, then type the message.
+  // Enter, then type, hold, erase and retype the message on a loop.
   useEffect(() => {
     if (!inView) {
       return;
     }
 
+    setSpot(0);
+
     if (reduceMotion) {
-      setSpot(0);
       setTyped(MESSAGE.length);
       return;
     }
 
-    setSpot(0);
-    const timers = MESSAGE.split("").map((_, index) =>
-      window.setTimeout(() => setTyped(index + 1), TIMING.typeStart + index * TIMING.perLetter),
-    );
+    let timer = 0;
+    const wait = (ms: number, then: () => void) => {
+      timer = window.setTimeout(then, ms);
+    };
+    const type = (count: number) => {
+      setTyped(count);
 
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
+      if (count < MESSAGE.length) {
+        wait(TIMING.perLetter, () => type(count + 1));
+      } else {
+        setDrifting(true);
+        wait(TIMING.hold, () => erase(count - 1));
+      }
+    };
+    const erase = (count: number) => {
+      setTyped(count);
+
+      if (count > 0) {
+        wait(TIMING.perErase, () => erase(count - 1));
+      } else {
+        wait(TIMING.gap, () => type(1));
+      }
+    };
+
+    wait(TIMING.typeStart, () => type(1));
+
+    return () => window.clearTimeout(timer);
   }, [inView, reduceMotion]);
 
   const doneTyping = typed === MESSAGE.length;
 
-  // Drift between resting spots once the message is written.
+  // Drift between resting spots once the message has been written the first time.
   useEffect(() => {
-    if (!doneTyping || reduceMotion) {
+    if (!drifting || reduceMotion) {
       return;
     }
 
@@ -74,7 +101,7 @@ export function CollaboratorCursor({ hidden }: { hidden: boolean }) {
     );
 
     return () => window.clearInterval(interval);
-  }, [doneTyping, reduceMotion]);
+  }, [drifting, reduceMotion]);
 
   const at = spot >= 0 ? SPOTS[spot] : { x: 92, y: 96 };
 

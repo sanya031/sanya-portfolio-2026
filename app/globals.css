@@ -7150,3 +7150,27 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     border-bottom: 1px solid #e6e6e6;
   }
 }
+
+.transcript-story__window-group {
+  display: grid;
+  gap: 8px;
+}
+
+.transcript-story__window-caption {
+  margin: 0;
+  color: #9a9a9a;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.transcript-story__window-caption a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__window-caption a:hover,
+.transcript-story__window-caption a:focus-visible {
+  color: #867600;
+}
