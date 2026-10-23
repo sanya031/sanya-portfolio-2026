@@ -7078,15 +7078,29 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 }
 
 .case-study-story-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   margin-top: 16px;
+  padding-bottom: 2px;
+  /* A border rather than text-decoration, so the underline runs under the arrow too. */
+  border-bottom: 1px solid currentColor;
   color: #867600;
   font-size: 14px;
   line-height: 18px;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-decoration: none;
   white-space: nowrap;
   transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-study-story-nav__cta-arrow {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .case-study-story-nav__cta:hover,

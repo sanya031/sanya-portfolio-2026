@@ -118,7 +118,10 @@ export function CaseStudyStoryNav({
       ))}
       {cta ? (
         <a className="case-study-story-nav__cta" href={cta.href} rel="noopener noreferrer" target="_blank">
-          <span aria-hidden="true">↳</span> {cta.label} <span aria-hidden="true">↗</span>
+          {cta.label}
+          <svg aria-hidden="true" className="case-study-story-nav__cta-arrow" viewBox="0 0 10 10">
+            <path d="M2.5 7.5 7.5 2.5M3.5 2.5h4v4" />
+          </svg>
           <span className="visually-hidden"> (opens in a new tab)</span>
         </a>
       ) : null}
