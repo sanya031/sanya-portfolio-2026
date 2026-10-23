@@ -2,6 +2,7 @@ import type {
   CaseStudyAsset,
   CaseStudyFinding,
   CaseStudyPage as CaseStudyPageData,
+  TranscriptStoryVisual,
 } from "../../data/caseStudyPages";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -19,6 +20,7 @@ import {
 import { PlaybackVideo } from "./PlaybackVideo";
 import { ResourceCardStack } from "./ResourceCardStack";
 import { TestingInfographic } from "./TestingInfographic";
+import { TranscriptStoryVisualBlock } from "./TranscriptStoryVisuals";
 import { HeroContentReveal } from "../transitions/HeroContentReveal";
 import { ScrollToTopOnMount } from "../transitions/ScrollToTopOnMount";
 
@@ -28,18 +30,16 @@ export type CaseStudyPageProps = {
 
 const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
   "transcript-review-redesign": {
-    1: "overview",
-    2: "audit",
-    4: "audit-findings",
-    6: "solution",
-    7: "workflow-comparison",
-    8: "constraints",
-    9: "primary-navigation",
-    11: "transcript-browsing",
-    15: "preview-before-claiming",
-    17: "withdrawing-work",
-    21: "review-states",
-    23: "reflection",
+    1: "context",
+    2: "discovery",
+    3: "approach",
+    4: "preview-before-commitment",
+    5: "managing-active-reviews",
+    6: "choosing-work",
+    7: "rethinking-rewards",
+    8: "consistency-vs-usability",
+    9: "prototyping",
+    10: "validation",
   },
   "bitcoin-dev-project-redesign": {
     1: "overview",
@@ -56,19 +56,17 @@ const sectionAnchorsBySlug: Record<string, Record<number, string>> = {
 
 const navItemsBySlug: Record<string, CaseStudySectionNavItem[]> = {
   "transcript-review-redesign": [
-    { id: "overview", label: "Overview" },
-    { id: "audit", label: "Audit" },
-    { id: "audit-findings", label: "Problems", secondary: true },
-    { id: "solution", label: "Approach" },
-    { id: "workflow-comparison", label: "Workflow Comparison", secondary: true },
-    { id: "constraints", label: "Constraints & Trade-offs", secondary: true },
-    { id: "primary-navigation", label: "Key Decisions" },
-    { id: "primary-navigation", label: "Navigation", secondary: true },
-    { id: "transcript-browsing", label: "Browsing", secondary: true },
-    { id: "preview-before-claiming", label: "Claiming", secondary: true },
-    { id: "withdrawing-work", label: "Editor", secondary: true },
-    { id: "review-states", label: "Review States", secondary: true },
-    { id: "reflection", label: "Reflection" },
+    { id: "context", label: "Context" },
+    { id: "discovery", label: "Looking beyond the editor" },
+    { id: "approach", label: "Rethinking the workflow" },
+    { id: "preview-before-commitment", label: "Preview before commitment", secondary: true },
+    { id: "managing-active-reviews", label: "Managing active reviews", secondary: true },
+    { id: "choosing-work", label: "Finding and choosing work", secondary: true },
+    { id: "rethinking-rewards", label: "When decisions were challenged" },
+    { id: "rethinking-rewards", label: "Rethinking rewards", secondary: true },
+    { id: "consistency-vs-usability", label: "Consistency vs. usability", secondary: true },
+    { id: "prototyping", label: "Prototyping beyond the happy path" },
+    { id: "validation", label: "What I'd validate next" },
   ],
   "bitcoin-dev-project-redesign": [
     { id: "overview", label: "Overview" },
@@ -132,6 +130,43 @@ function TextSection({
           </div>
         ) : null}
       </div>
+    </section>
+  );
+}
+
+// Eyebrow, serif heading, copy and a built visual container, kept together as one section.
+function StorySection({
+  eyebrow,
+  title,
+  body,
+  visual,
+  after,
+}: {
+  eyebrow?: string;
+  title?: string;
+  body?: string[];
+  visual?: TranscriptStoryVisual;
+  after?: string[];
+}) {
+  return (
+    <section className="case-study-page__section transcript-story" data-visual-only={title ? undefined : "true"}>
+      {eyebrow ? <p className="case-study-page__eyebrow">{eyebrow}</p> : null}
+      {title ? <h2 className="case-study-page__section-title">{title}</h2> : null}
+      {body?.length ? (
+        <div className="case-study-page__body-copy">
+          {body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
+      {visual ? <TranscriptStoryVisualBlock visual={visual} /> : null}
+      {after?.length ? (
+        <div className="case-study-page__body-copy">
+          {after.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -1097,6 +1132,10 @@ export function CaseStudyPage({ page }: CaseStudyPageProps) {
 
             if (section.variant === "text") {
               return withAnchor(<TextSection {...section} />);
+            }
+
+            if (section.variant === "story") {
+              return withAnchor(<StorySection {...section} />);
             }
 
             if (section.variant === "split") {
