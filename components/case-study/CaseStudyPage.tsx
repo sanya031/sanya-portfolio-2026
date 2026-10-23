@@ -67,7 +67,7 @@ const storyPages: Record<string, { breadcrumb: string; cta: { label: string; hre
   },
   "bitcoin-dev-project-redesign": {
     breadcrumb: "Bitcoin Dev Project",
-    cta: { label: "Visit the live site", href: "https://bitcoindevs.xyz" },
+    cta: { label: "Visit the live site", href: "https://bitcoindevs.xyz/learn" },
   },
 };
 
