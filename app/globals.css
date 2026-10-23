@@ -7264,7 +7264,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   white-space: nowrap;
 }
 
-/* ── Story case studies: "← Home / page" breadcrumb, placement picked in the Page navigation panel ── */
+/* ── Story case studies: "Home / page" breadcrumb ── */
 .case-study-breadcrumb ol {
   display: flex;
   align-items: center;
@@ -7293,20 +7293,14 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   color: #acacac;
 }
 
-/* hero: in the column, above the title */
-.case-study-breadcrumb[data-placement="hero"] {
-  width: min(100%, var(--case-column-width));
-  margin: 0 auto 1.25rem;
-}
-
-/* index header: pinned above the section index (falls back to the hero spot where the index is hidden) */
-.case-study-breadcrumb[data-placement="index header"] {
+/* Above the title by default; pinned above the section index where that index is shown. */
+.case-study-breadcrumb {
   width: min(100%, var(--case-column-width));
   margin: 0 auto 1.25rem;
 }
 
 @media (min-width: 1360px) {
-  .case-study-breadcrumb[data-placement="index header"] {
+  .case-study-breadcrumb {
     position: fixed;
     z-index: 20;
     top: 72px;
@@ -7316,46 +7310,4 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     padding-bottom: 14px;
     border-bottom: 1px solid #e6e6e6;
   }
-}
-
-/* top bar: thin frosted strip across the top, text aligned to the reading column */
-.case-study-breadcrumb[data-placement="top bar"] {
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 12px clamp(1.3rem, 6vw, 5rem);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.case-study-breadcrumb[data-placement="top bar"] ol {
-  width: min(100%, var(--case-column-width));
-  margin: 0 auto;
-}
-
-/* corner pill: small floating pill, top-left */
-.case-study-breadcrumb[data-placement="corner pill"] {
-  position: fixed;
-  z-index: 30;
-  top: 20px;
-  left: 20px;
-  padding: 7px 14px;
-  border: 1px solid #e6e6e6;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* bottom corner: pinned bottom-left */
-.case-study-breadcrumb[data-placement="bottom corner"] {
-  position: fixed;
-  z-index: 30;
-  bottom: 24px;
-  left: 33px;
 }
