@@ -6452,6 +6452,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   width: 100%;
   margin: 0;
   overflow: hidden;
+  /* clip, unlike hidden, can't be scrolled when a button inside takes focus */
+  overflow: clip;
   border: 1px solid #c6c6c6;
 }
 
@@ -6589,34 +6591,112 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .transcript-story__problems li {
   position: relative;
   display: grid;
-  gap: 4px;
 }
 
-.transcript-story__problems strong {
+.transcript-story__problems button {
+  padding: 0;
+  border: 0;
+  background: none;
   color: rgba(0, 0, 0, 0.24);
+  font: inherit;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.transcript-story__problems li[data-active="true"] strong {
+.transcript-story__problems li[data-active="true"] button {
   color: #101010;
 }
 
-.transcript-story__problems p {
+.transcript-story__problem-body {
+  overflow: hidden;
+}
+
+.transcript-story__problem-body p {
   margin: 0;
+  padding-top: 4px;
   color: #101010;
   font-size: 12px;
   line-height: 1.3;
 }
 
-.transcript-story__problem-marker {
+/* The progress bar beside the active problem: fills top to bottom, then the next stage starts. */
+.transcript-story__problem-track {
   position: absolute;
-  top: 8px;
-  left: -12px;
-  width: 13px;
-  height: 2px;
-  transform: rotate(90deg);
+  top: 2px;
+  bottom: 2px;
+  left: -10px;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__problems li[data-active="true"] .transcript-story__problem-track {
+  opacity: 1;
+}
+
+.transcript-story__problem-fill {
+  display: block;
+  height: 100%;
+  background: #2e2e2e;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: transcript-story-fill var(--finding-fill, 6000ms) linear forwards;
+  animation-play-state: paused;
+}
+
+.transcript-story__problem-fill[data-playing="true"] {
+  animation-play-state: running;
+}
+
+@keyframes transcript-story-fill {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Stage label and screenshots crossfade between problems. */
+.transcript-story__finding-label {
+  display: grid;
+}
+
+.transcript-story__finding-label > span {
+  grid-area: 1 / 1;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__finding-label > span[data-active="false"] {
+  opacity: 0;
+}
+
+.transcript-story__finding-stage {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.transcript-story__finding-stage[data-active="false"] {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transcript-story__finding-stage {
+    transition: opacity 0.3s linear;
+  }
+
+  .transcript-story__finding-stage[data-active="false"] {
+    transform: none;
+  }
 }
 
 /* Approach: two reference products */
@@ -6814,21 +6894,24 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     padding: 44px 16px 0 28px;
   }
 
-  .transcript-story__problems,
-  .transcript-story__finding-shots {
+  .transcript-story__problems {
     position: relative;
     inset: auto;
     width: auto;
   }
 
-  .transcript-story__finding-shots .transcript-story__shot {
+  /* Screenshots keep one fixed frame so the stages can crossfade in place. */
+  .transcript-story__finding-shots {
     position: relative;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
+    inset: auto;
+    aspect-ratio: 485 / 280;
+    overflow: hidden;
   }
 
-  .transcript-story__finding-shots .transcript-story__shot:first-child {
+  .transcript-story__finding-shots .transcript-story__shot {
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    height: auto !important;
     border-radius: 8px 8px 0 0;
   }
 
