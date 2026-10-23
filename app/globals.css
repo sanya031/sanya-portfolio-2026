@@ -7173,3 +7173,67 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     transition-duration: 0.01s;
   }
 }
+
+/* Figma-style collaborator cursor over the prototype; never blocks clicks. */
+.collaborator-cursor-layer {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.collaborator-cursor {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+}
+
+.collaborator-cursor__arrow {
+  width: 16px;
+  height: 18px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+.collaborator-cursor__arrow path {
+  fill: var(--cursor-colour);
+  stroke: #ffffff;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.collaborator-cursor__tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  margin: 14px 0 0 -2px;
+  padding: 3px 8px;
+  border-radius: 3px 11px 11px 11px;
+  background: var(--cursor-colour);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.collaborator-cursor__tag[data-empty="true"] {
+  opacity: 0;
+}
+
+.collaborator-cursor__caret {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  margin-left: 1px;
+  background: currentColor;
+  animation: collaborator-caret 0.8s steps(1) infinite;
+}
+
+@keyframes collaborator-caret {
+  50% {
+    opacity: 0;
+  }
+}
