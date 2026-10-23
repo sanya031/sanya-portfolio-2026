@@ -3584,6 +3584,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .case-study-page__content {
   display: grid;
+  /* One column that never grows past the screen, whatever its widest child wants. */
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(2.1rem, 4vw, 2rem);
   margin-top: clamp(2.6rem, 5vw, 4rem);
   overflow: hidden;
@@ -4899,6 +4901,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 .case-study-page__identity-cell {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   gap: 0.75rem;
   min-width: 0;
@@ -5006,7 +5009,17 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
 @media (max-width: 760px) {
   .case-study-page__identity-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The primary and accent colour swatches stack instead of squeezing side by side. */
+  .case-study-page__identity-colors {
+    flex-wrap: wrap;
+  }
+
+  .case-study-page__identity-colors > img,
+  .case-study-page__identity-colors .case-study-page__accent-colors-stack {
+    flex-basis: 100%;
   }
 
   .case-study-page__identity-cell[data-cell="colors"],
@@ -6759,7 +6772,8 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   left: 2.65%;
   display: grid;
   gap: 8px;
-  width: 30.7%;
+  /* Ends before the zoomed table row starts (221 / 716 of the container). */
+  width: 28%;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -7520,5 +7534,28 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
   .story-graphic[data-fit="contain"] .transcript-story__label {
     padding: 12px 0 10px;
+  }
+}
+
+/* Positioned containers (Canvas): on desktop the label floats over the stage's empty top edge;
+   on phones it sits above the stage, and the stage slides up under it by that same empty edge
+   (52 of 716 wireframe px), so a label of any length never covers the screenshots. */
+.transcript-story__stage {
+  position: relative;
+}
+
+@media (max-width: 760px) {
+  .transcript-story__canvas--staged {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .transcript-story__canvas--staged > figcaption {
+    position: relative;
+    order: -1;
+  }
+
+  .transcript-story__canvas--staged > .transcript-story__stage {
+    margin-top: calc(-52 / 716 * 100%);
   }
 }

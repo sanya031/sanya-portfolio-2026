@@ -37,10 +37,13 @@ function Canvas({
 }) {
   return (
     <figure
-      className={`transcript-story__canvas${className ? ` ${className}` : ""}`}
-      style={{ aspectRatio: `${size.w} / ${size.h}`, background }}
+      className={`transcript-story__canvas transcript-story__canvas--staged${className ? ` ${className}` : ""}`}
+      style={{ background }}
     >
-      {children}
+      {/* The positioned content lives in a stage, so on phones the label can move above it. */}
+      <div className="transcript-story__stage" style={{ aspectRatio: `${size.w} / ${size.h}` }}>
+        {children}
+      </div>
       <figcaption>{label}</figcaption>
     </figure>
   );
