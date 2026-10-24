@@ -1,7 +1,6 @@
 "use client";
 
 import { type DialConfig, type ResolvedValues, useDialKit } from "dialkit";
-import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { MOTIF_PALETTE } from "../../data/motifPalette";
@@ -111,14 +110,10 @@ function useTorontoTemperature() {
 
 export function SiteFooter() {
   const time = useTorontoTime();
-  // The floating PAGE and CONTACT links are left off the case study pages.
-  const showFloatingLinks = !usePathname().startsWith("/work");
   const temperature = useTorontoTemperature();
   const [emailCopied, setEmailCopied] = useState(false);
   const [blooms, setBlooms] = useState<Bloom[]>([]);
   const footerRef = useRef<HTMLElement>(null);
-  const floatLeftRef = useRef<HTMLElement>(null);
-  const floatRightRef = useRef<HTMLElement>(null);
   const nextBloomId = useRef(0);
   const lastColour = useRef(-1);
   const bloomsRef = useRef<Bloom[]>([]);
@@ -299,24 +294,6 @@ export function SiteFooter() {
 
       const showing = footer.offsetHeight - stillCovered;
 
-      // Floating PAGE and CONTACT: shown past the first fold while the page still covers the
-      // footer's own copy; their glass backing fades as the footer arrives beneath them.
-      const sheetBottom = sheet.getBoundingClientRect().bottom;
-      const pastFirstFold = window.scrollY > window.innerHeight * 0.13;
-
-      for (const column of [floatLeftRef.current, floatRightRef.current]) {
-        if (!column) {
-          continue;
-        }
-
-        const top = column.getBoundingClientRect().top;
-        const visible = pastFirstFold && sheetBottom > top + 1;
-
-        column.dataset.visible = String(visible);
-        column.inert = !visible;
-        column.style.setProperty("--float-glass", Math.min(Math.max((sheetBottom - top) / 80, 0), 1).toFixed(3));
-      }
-
       if (!isRevealed.current && showing >= ARRIVAL_PEEK_PX) {
         isRevealed.current = true;
         playRound();
@@ -369,47 +346,7 @@ export function SiteFooter() {
     setBlooms((current) => current.filter((bloom) => bloom.id !== id));
   }, []);
 
-  // PAGE and CONTACT render twice: in the footer, and as a floating copy pinned to the same
-  // screen corners (see the float effect above).
-  const pageColumn = (
-    <div className="site-footer__column site-footer__text">
-      <h2 className="site-footer__heading">Page</h2>
-      {pageLinks.map((link) => (
-        <a
-          className="site-footer__item site-footer__link"
-          href={link.href}
-          key={link.label}
-          rel={link.external ? "noreferrer" : undefined}
-          target={link.external ? "_blank" : undefined}
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
-  );
-
-  const contactColumn = (
-    <div className="site-footer__column site-footer__text">
-      <h2 className="site-footer__heading">Contact</h2>
-      <button className="site-footer__item site-footer__link" onClick={copyEmail} type="button">
-        <span aria-live="polite">{emailCopied ? "Copied" : "Email"}</span>
-      </button>
-      {contactLinks.map((link) => (
-        <a
-          className="site-footer__item site-footer__link"
-          href={link.href}
-          key={link.label}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
-  );
-
   return (
-    <>
     <footer
       className="site-footer"
       data-brush={controls.brushCursor}
@@ -448,41 +385,39 @@ export function SiteFooter() {
           </p>
         </div>
 
-        {pageColumn}
+        <div className="site-footer__column site-footer__text">
+          <h2 className="site-footer__heading">Page</h2>
+          {pageLinks.map((link) => (
+            <a
+              className="site-footer__item site-footer__link"
+              href={link.href}
+              key={link.label}
+              rel={link.external ? "noreferrer" : undefined}
+              target={link.external ? "_blank" : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
 
-        {contactColumn}
+        <div className="site-footer__column site-footer__text">
+          <h2 className="site-footer__heading">Contact</h2>
+          <button className="site-footer__item site-footer__link" onClick={copyEmail} type="button">
+            <span aria-live="polite">{emailCopied ? "Copied" : "Email"}</span>
+          </button>
+          {contactLinks.map((link) => (
+            <a
+              className="site-footer__item site-footer__link"
+              href={link.href}
+              key={link.label}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
       </nav>
     </footer>
-
-    {/*
-      From the second fold on, PAGE and CONTACT float in the bottom corners exactly where the
-      corners layout puts them in the footer (the footer is pinned to the bottom of the screen).
-      The footer sits beneath the page, so this copy floats above it; once the footer has been
-      uncovered underneath a column, the copy hides and the footer's own column, in the same
-      spot, takes over.
-    */}
-    {showFloatingLinks ? (
-    <div className="site-footer-float" data-layout={controls.layout}>
-      <nav
-        aria-label="Page links"
-        className="site-footer-float__column"
-        data-corner="left"
-        inert
-        ref={floatLeftRef}
-      >
-        {pageColumn}
-      </nav>
-      <nav
-        aria-label="Contact links"
-        className="site-footer-float__column"
-        data-corner="right"
-        inert
-        ref={floatRightRef}
-      >
-        {contactColumn}
-      </nav>
-    </div>
-    ) : null}
-    </>
   );
 }

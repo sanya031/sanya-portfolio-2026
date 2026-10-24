@@ -1658,29 +1658,6 @@ video {
   pointer-events: none;
 }
 
-/*
- * Scroll mode: HeroCrossfadeShell drives the three reveal layers directly from the scroll
- * position, so their timed transitions are switched off. The doubled class outranks the timed
- * mode's [data-revealed] rules, which still toggle clickability.
- */
-.home-page.home-page[data-reveal-mode="scroll"] .hero-intro::before,
-.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__content,
-.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__motif,
-.home-page.home-page[data-reveal-mode="scroll"] .hero-intro__scroll-prompt {
-  opacity: var(--scrub-boxes, 1);
-  transition: none;
-}
-
-.home-page.home-page[data-reveal-mode="scroll"] .home-page__hero-shell::before {
-  opacity: var(--scrub-overlay, 0.11);
-  transition: none;
-}
-
-.home-page.home-page[data-reveal-mode="scroll"] .work-section {
-  opacity: var(--scrub-work, 0);
-  transition: none;
-}
-
 /* Used for the first paint and replays so the page lands in place without animating. */
 .home-page[data-reveal-instant="true"] *,
 .home-page[data-reveal-instant="true"] *::before,
@@ -5557,86 +5534,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 }
 
 /*
- * Floating PAGE and CONTACT (corners layout, desktop): pinned to the same bottom corners they
- * occupy in the footer, above the page, from the second fold on. A dark glass backing keeps them
- * readable over the page and fades out as the footer arrives beneath them.
- */
-.site-footer-float {
-  display: none;
-}
-
-@media (min-width: 861px) {
-  .site-footer-float[data-layout="corners"] {
-    --site-footer-text: #fdf9ed;
-    --site-footer-muted: rgba(253, 249, 237, 0.6);
-    display: block;
-    font-family: "Geist", Arial, sans-serif;
-  }
-
-  /* Keep the vertically centred navbar clear of the floating PAGE column on shorter screens. */
-  .floating-navbar {
-    top: min(50%, calc(100svh - 25rem));
-  }
-
-  .site-footer-float__column {
-    position: fixed;
-    bottom: clamp(2rem, 3.4vw, 3.25rem);
-    z-index: 15;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(0.5rem);
-    transition:
-      opacity 220ms ease,
-      transform 220ms ease;
-  }
-
-  .site-footer-float__column[data-visible="true"] {
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-  }
-
-  /* A soft, borderless backing that feathers out at its edges instead of reading as a box. */
-  .site-footer-float__column::before {
-    position: absolute;
-    inset: -1.75rem -2rem;
-    z-index: -1;
-    background: rgba(16, 15, 13, 0.6);
-    content: "";
-    opacity: var(--float-glass, 1);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    --float-feather: 1.6rem;
-    -webkit-mask-image:
-      linear-gradient(to right, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent),
-      linear-gradient(to bottom, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to right, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent),
-      linear-gradient(to bottom, transparent, #000 var(--float-feather), #000 calc(100% - var(--float-feather)), transparent);
-    mask-composite: intersect;
-  }
-
-  .site-footer-float__column[data-corner="left"] {
-    left: clamp(1.25rem, 3.4vw, 3.5rem);
-  }
-
-  .site-footer-float__column[data-corner="right"] {
-    right: clamp(1.25rem, 3.4vw, 3.5rem);
-  }
-
-  .site-footer-float__column[data-corner="left"] .site-footer__column {
-    justify-items: start;
-    text-align: left;
-  }
-
-  .site-footer-float__column[data-corner="right"] .site-footer__column {
-    justify-items: end;
-    text-align: right;
-  }
-}
-
-/*
  * Footer text layouts, picked from the Footer DialKit panel while comparing options. Desktop
  * only: on phones every layout stacks the same way. "classic" is the base layout above.
  */
@@ -6587,34 +6484,6 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 }
 
-/*
- * Hero frame padding, set last so it applies at every breakpoint: at least 18px (up to one grid
- * cell) above and below the copy. The frame then grows by whole rows and centres the copy.
- */
-.hero-intro__content {
-  padding-top: clamp(18px, var(--hero-cell), 28px);
-  padding-bottom: clamp(18px, var(--hero-cell), 28px);
-}
-
-/*
- * Narrower hero layouts: chips stay 2×2 cells, so their icon, label and padding scale with the
- * cell size to fit inside. HeroIntro sets data-motif-layout from --hero-motif-layout.
- */
-.hero-intro[data-motif-layout="below"] .hero-intro__motif {
-  gap: calc(var(--hero-cell) * 0.08);
-  padding: calc(var(--hero-cell) * 0.14);
-}
-
-.hero-intro[data-motif-layout="below"] .hero-intro__motif-content img,
-.hero-intro[data-motif-layout="below"] .hero-intro__motif-icon svg {
-  width: calc(var(--hero-cell) * 0.85);
-  height: calc(var(--hero-cell) * 0.85);
-}
-
-.hero-intro[data-motif-layout="below"] .hero-intro__motif-label {
-  font-size: clamp(9px, calc(var(--hero-cell) * 0.3), 12px);
-}
-
 /* ── Transcript Review story sections (eyebrow, serif heading, copy, built visual container) ── */
 .transcript-story {
   display: grid;
@@ -7558,4 +7427,32 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   .transcript-story__canvas--staged > .transcript-story__stage {
     margin-top: calc(-52 / 716 * 100%);
   }
+}
+
+/*
+ * Hero frame padding, set last so it applies at every breakpoint: at least 18px (up to one grid
+ * cell) above and below the copy. The frame then grows by whole rows and centres the copy.
+ */
+.hero-intro__content {
+  padding-top: clamp(18px, var(--hero-cell), 28px);
+  padding-bottom: clamp(18px, var(--hero-cell), 28px);
+}
+
+/*
+ * Narrower hero layouts: chips stay 2×2 cells, so their icon, label and padding scale with the
+ * cell size to fit inside. HeroIntro sets data-motif-layout from --hero-motif-layout.
+ */
+.hero-intro[data-motif-layout="below"] .hero-intro__motif {
+  gap: calc(var(--hero-cell) * 0.08);
+  padding: calc(var(--hero-cell) * 0.14);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-content img,
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-icon svg {
+  width: calc(var(--hero-cell) * 0.85);
+  height: calc(var(--hero-cell) * 0.85);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-label {
+  font-size: clamp(9px, calc(var(--hero-cell) * 0.3), 12px);
 }
