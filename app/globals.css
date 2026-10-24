@@ -7427,6 +7427,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   .transcript-story__canvas--staged > .transcript-story__stage {
     margin-top: calc(-52 / 716 * 100%);
   }
+}
 
 /*
  * Hero frame padding, set last so it applies at every breakpoint: at least 18px (up to one grid
