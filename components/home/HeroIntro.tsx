@@ -49,13 +49,50 @@ export function HeroIntro({
     const panel = copy?.parentElement;
     if (!intro || !copy || !panel) return;
 
-    // Keep the frame on whole grid rows, even after font loading or text zoom.
+    const lineNumber = (value: string, fallback: number) => {
+      const parsed = Number.parseInt(value, 10);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    // Snap the copy frame and the motif chips to whole grid cells, even after font loading,
+    // text zoom or a breakpoint change, so every border lands on a grid line.
     const snapPanel = () => {
-      const cell = Number.parseFloat(getComputedStyle(intro).gridTemplateColumns);
+      const introStyle = getComputedStyle(intro);
+      const cell = Number.parseFloat(introStyle.gridTemplateColumns);
+      if (!(cell > 0)) return;
+
+      // Copy frame: as many rows as the copy plus its padding needs; spare space splits evenly.
       const style = getComputedStyle(panel);
       const height = copy.getBoundingClientRect().height +
         Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom) + 2;
-      if (cell > 0) intro.style.setProperty("--hero-content-rows", String(Math.ceil(height / cell)));
+      const contentRows = Math.ceil(height / cell);
+      intro.style.setProperty("--hero-content-rows", String(contentRows));
+
+      // Narrower layouts stack the chips under the frame, measured from where it actually ends:
+      // About under its left edge, Resume diagonally below-right of About, Work under its right edge.
+      // Chips are always 2×2 cells; below the frame their contents scale with the cell size.
+      const placeBelow = introStyle.getPropertyValue("--hero-motif-layout").trim() === "below";
+      const span = 2;
+      intro.dataset.motifLayout = placeBelow ? "below" : "beside";
+      const motifs = Array.from(intro.querySelectorAll<HTMLElement>(".hero-intro__motif"));
+      const panelStyle = getComputedStyle(panel);
+      const colStart = lineNumber(panelStyle.gridColumnStart, 1);
+      const colSpan = lineNumber(panelStyle.gridColumnEnd.replace("span", ""), 1);
+      const rowEnd = lineNumber(panelStyle.gridRowStart, 1) + contentRows;
+      const gap = lineNumber(introStyle.getPropertyValue("--hero-motif-gap"), 3);
+      const workOffset = lineNumber(introStyle.getPropertyValue("--hero-work-row-offset"), 1);
+      const aboutRow = rowEnd + gap;
+      const placements: Record<string, [number, number]> = {
+        about: [colStart, aboutRow],
+        resume: [colStart + span, aboutRow + span],
+        work: [colStart + colSpan - span, aboutRow + workOffset],
+      };
+
+      motifs.forEach((motif) => {
+        const place = placements[motif.dataset.motifLabel ?? ""];
+        motif.style.gridColumn = placeBelow && place ? `${place[0]} / span ${span}` : "";
+        motif.style.gridRow = placeBelow && place ? `${place[1]} / span ${span}` : "";
+      });
     };
     const observer = new ResizeObserver(snapPanel);
     observer.observe(copy);

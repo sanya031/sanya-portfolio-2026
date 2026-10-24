@@ -1673,19 +1673,24 @@ video {
 }
 
 .hero-intro {
-  --hero-cell: 40px;
+  /* 40px squares, shrinking only when the stage would be wider than the screen. */
+  --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
   --hero-cols: 36;
   --hero-rows: 20;
   --hero-stage-width: calc(var(--hero-cols) * var(--hero-cell));
   --hero-stage-offset: max(0px, calc((100vw - var(--hero-stage-width)) / 2));
-  --hero-content-start: 3;
+  /* Content starts at column 4 and the chips end at 33, leaving 3 columns either side. */
+  --hero-content-start: 4;
   --hero-grid-line: rgba(253, 249, 237, 0.09);
+  /* "beside": chips at fixed cells next to the frame; "below": HeroIntro places them under it. */
+  --hero-motif-layout: beside;
   position: sticky;
   top: 0;
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(var(--hero-cols), var(--hero-cell));
   grid-template-rows: repeat(var(--hero-rows), var(--hero-cell));
+  grid-auto-rows: var(--hero-cell);
   align-items: stretch;
   justify-content: start;
   width: var(--hero-stage-width);
@@ -1719,7 +1724,7 @@ video {
 .hero-intro__content {
   position: relative;
   grid-column: var(--hero-content-start) / span 18;
-  grid-row: 4 / span 6;
+  grid-row: 4 / span var(--hero-content-rows, 6);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -1958,18 +1963,18 @@ video {
 }
 
 .hero-intro__motif[data-motif-label="about"] {
-  grid-column: 29 / span 2;
-  grid-row: 7 / span 2;
+  grid-column: 30 / span var(--hero-motif-span, 2);
+  grid-row: 7 / span var(--hero-motif-span, 2);
 }
 
 .hero-intro__motif[data-motif-label="work"] {
-  grid-column: 21 / span 2;
-  grid-row: 10 / span 2;
+  grid-column: 22 / span var(--hero-motif-span, 2);
+  grid-row: 10 / span var(--hero-motif-span, 2);
 }
 
 .hero-intro__motif[data-motif-label="resume"] {
-  grid-column: 31 / span 2;
-  grid-row: 9 / span 2;
+  grid-column: 32 / span var(--hero-motif-span, 2);
+  grid-row: 9 / span var(--hero-motif-span, 2);
 }
 
 .hero-intro__motif[data-motif-label="resume"] .hero-intro__corner-plus[data-corner="top-left"] {
@@ -1984,25 +1989,32 @@ video {
 
 @media (max-width: 1320px) {
   .hero-intro {
-    /* Shrink cells below 40px when the 30-column stage would be wider than the screen. */
-    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
+    /* Content 3–20 and chips 21–28 leave 2 columns either side of the 30. */
+    --hero-content-start: 3;
     --hero-cols: 30;
   }
 
+  .hero-intro__motif[data-motif-label="work"] {
+    grid-column: 21 / span var(--hero-motif-span, 2);
+  }
+
   .hero-intro__motif[data-motif-label="about"] {
-    grid-column: 25 / span 2;
+    grid-column: 25 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-column: 27 / span 2;
+    grid-column: 27 / span var(--hero-motif-span, 2);
   }
 }
 
 @media (max-width: 1080px) {
   .hero-intro {
-    --hero-cell: min(40px, calc(100vw / var(--hero-cols)));
-    --hero-content-start: 7;
+    /* Content spans 18 of 24 columns, starting at 4, so it sits centred on the stage. */
+    --hero-content-start: 4;
     --hero-cols: 24;
+    --hero-motif-layout: below;
+    --hero-motif-gap: 3;
+    --hero-work-row-offset: 1;
   }
 
   .hero-intro::before {
@@ -2012,8 +2024,8 @@ video {
   }
 
   .hero-intro__content {
-    grid-column: var(--hero-content-start) / span 17;
-    grid-row: 4 / span 6;
+    grid-column: var(--hero-content-start) / span 18;
+    grid-row: 4 / span var(--hero-content-rows, 6);
   }
 
   .hero-intro__headline {
@@ -2038,19 +2050,20 @@ video {
     height: clamp(2.196rem, 3.6vw, 2.952rem);
   }
 
+  /* Chips sit under the centred box, mirroring its left and right edges. */
   .hero-intro__motif[data-motif-label="about"] {
-    grid-column: 7 / span 2;
-    grid-row: 13 / span 2;
+    grid-column: 5 / span var(--hero-motif-span, 2);
+    grid-row: 13 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="work"] {
-    grid-column: 17 / span 2;
-    grid-row: 14 / span 2;
+    grid-column: 18 / span var(--hero-motif-span, 2);
+    grid-row: 14 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-column: 9 / span 2;
-    grid-row: 16 / span 2;
+    grid-column: 7 / span var(--hero-motif-span, 2);
+    grid-row: 16 / span var(--hero-motif-span, 2);
   }
 
 }
@@ -2558,7 +2571,13 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 .case-study-card__link {
   position: relative;
   display: grid;
+  /* minmax(0, …) stops wide media (e.g. Safari sizing aspect-ratio boxes) from widening the card. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.7rem;
+}
+
+.case-study-card__link > * {
+  min-width: 0;
 }
 
 .case-study-card__media-frame {
@@ -5759,6 +5778,9 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     --hero-content-start: 2;
     --hero-cols: 10;
     --hero-rows: 24;
+    --hero-motif-layout: below;
+    --hero-motif-gap: 2;
+    --hero-work-row-offset: -1;
     width: var(--hero-stage-width);
     z-index: 2;
     overflow: visible;
@@ -5774,7 +5796,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   .hero-intro__content {
     position: relative;
     grid-column: var(--hero-content-start) / span 8;
-    grid-row: 4 / span 8;
+    grid-row: 4 / span var(--hero-content-rows, 8);
     width: auto;
     margin: 0;
     padding: clamp(0.9rem, 4vw, 1.1rem);
@@ -5814,18 +5836,18 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 
   .hero-intro__motif[data-motif-label="about"] {
-    grid-column: 2 / span 2;
-    grid-row: 15 / span 2;
+    grid-column: 2 / span var(--hero-motif-span, 2);
+    grid-row: 15 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-column: 4 / span 2;
-    grid-row: 17 / span 2;
+    grid-column: 4 / span var(--hero-motif-span, 2);
+    grid-row: 17 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="work"] {
-    grid-column: 8 / span 2;
-    grid-row: 14 / span 2;
+    grid-column: 8 / span var(--hero-motif-span, 2);
+    grid-row: 14 / span var(--hero-motif-span, 2);
   }
 
   .interactive-statement__preview-line {
@@ -5852,10 +5874,16 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
 
   .case-study-card__image,
   .case-study-card__video,
-  .case-study-card__placeholder {
+  .case-study-card__placeholder,
+  .bdp-card-animation,
+  .transcript-card-animation {
     aspect-ratio: 16 / 9;
     min-height: 0;
     height: 100%;
+  }
+
+  .work-section__heading {
+    width: min(70%, 20rem);
   }
 
   .case-study-card::before,
@@ -5941,13 +5969,15 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
     --hero-content-start: 7;
     --hero-cols: 24;
     --hero-rows: 20;
+    --hero-motif-layout: below;
+    --hero-motif-gap: 3;
+    --hero-work-row-offset: -1;
   }
 
   .hero-intro__content {
     grid-column: var(--hero-content-start) / span 12;
-    grid-row: 3 / span 7;
+    grid-row: 3 / span var(--hero-content-rows, 7);
     padding: clamp(0.75rem, 1.5vw, 1rem);
-    height: fit-content;
   }
 
   .hero-intro__headline {
@@ -5967,18 +5997,18 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 
   .hero-intro__motif[data-motif-label="about"] {
-    grid-column: 7 / span 2;
-    grid-row: 14 / span 2;
+    grid-column: 7 / span var(--hero-motif-span, 2);
+    grid-row: 14 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="work"] {
-    grid-column: 17 / span 2;
-    grid-row: 13 / span 2;
+    grid-column: 17 / span var(--hero-motif-span, 2);
+    grid-row: 13 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-column: 9 / span 2;
-    grid-row: 16 / span 2;
+    grid-column: 9 / span var(--hero-motif-span, 2);
+    grid-row: 16 / span var(--hero-motif-span, 2);
   }
 
   .interactive-statement__sentence {
@@ -6106,7 +6136,7 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 
   .hero-intro__content {
-    grid-row: 4 / span 6;
+    grid-row: 4 / span var(--hero-content-rows, 6);
     padding: 1rem 1rem 1.1rem;
   }
 
@@ -6116,15 +6146,15 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   }
 
   .hero-intro__motif[data-motif-label="about"] {
-    grid-row: 12 / span 2;
+    grid-row: 12 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="work"] {
-    grid-row: 11 / span 2;
+    grid-row: 11 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__motif[data-motif-label="resume"] {
-    grid-row: 14 / span 2;
+    grid-row: 14 / span var(--hero-motif-span, 2);
   }
 
   .hero-intro__scroll-prompt {
@@ -7397,4 +7427,32 @@ html[data-a11y-nav-focus-ring="true"] .floating-navbar__link:focus-visible {
   .transcript-story__canvas--staged > .transcript-story__stage {
     margin-top: calc(-52 / 716 * 100%);
   }
+}
+
+/*
+ * Hero frame padding, set last so it applies at every breakpoint: at least 18px (up to one grid
+ * cell) above and below the copy. The frame then grows by whole rows and centres the copy.
+ */
+.hero-intro__content {
+  padding-top: clamp(18px, var(--hero-cell), 28px);
+  padding-bottom: clamp(18px, var(--hero-cell), 28px);
+}
+
+/*
+ * Narrower hero layouts: chips stay 2×2 cells, so their icon, label and padding scale with the
+ * cell size to fit inside. HeroIntro sets data-motif-layout from --hero-motif-layout.
+ */
+.hero-intro[data-motif-layout="below"] .hero-intro__motif {
+  gap: calc(var(--hero-cell) * 0.08);
+  padding: calc(var(--hero-cell) * 0.14);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-content img,
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-icon svg {
+  width: calc(var(--hero-cell) * 0.85);
+  height: calc(var(--hero-cell) * 0.85);
+}
+
+.hero-intro[data-motif-layout="below"] .hero-intro__motif-label {
+  font-size: clamp(9px, calc(var(--hero-cell) * 0.3), 12px);
 }
