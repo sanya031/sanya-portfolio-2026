@@ -22,10 +22,6 @@ export function CaseStudyStoryNav({
   const [marker, setMarker] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    const targets = items.map((item) => document.getElementById(item.id));
-    // The index steps aside when the closing "Next up" card arrives.
-    const banners = document.querySelectorAll(".case-study-page__summary-banner");
-    const end = banners.length > 1 ? banners[banners.length - 1] : null;
     let frame = 0;
 
     const update = () => {
@@ -34,16 +30,28 @@ export function CaseStudyStoryNav({
       let current = 0;
       let currentTop = -Infinity;
 
-      // The last target above the reading line wins; where a group heading and its first
-      // sub-link share a target, the sub-link (later in the list) is the one shown as active.
-      targets.forEach((target, index) => {
-        const top = target?.getBoundingClientRect().top;
+      // Sections are looked up on every check rather than once: if the page re-renders, a saved
+      // element is detached, reports a top of 0 and would count as already scrolled past.
+      // The last section above the reading line wins; where a group heading and its first
+      // sub-link share a section, the sub-link (later in the list) is the one shown as active.
+      items.forEach((item, index) => {
+        const target = document.getElementById(item.id);
 
-        if (top !== undefined && top <= line && top >= currentTop) {
+        if (!target?.isConnected) {
+          return;
+        }
+
+        const top = target.getBoundingClientRect().top;
+
+        if (top <= line && top >= currentTop) {
           current = index;
           currentTop = top;
         }
       });
+
+      // The index steps aside when the closing "Next up" card arrives.
+      const banners = document.querySelectorAll(".case-study-page__summary-banner");
+      const end = banners.length > 1 ? banners[banners.length - 1] : null;
 
       setActive(current);
       setVisible(!end || end.getBoundingClientRect().top > window.innerHeight * 0.6);
